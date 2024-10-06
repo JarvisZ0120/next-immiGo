@@ -49,7 +49,7 @@ const translations = {
         welcome: "欢迎来到 ImmiGO",
         description: "加拿大快速通道移民系统的实时跟踪工具",
         about: "关于 ImmiGo",
-        aboutContent: "ImmiGo 是一个致力于提供关加拿大移民的��息的平台，帮助用户了解移民过程和最新动态。",
+        aboutContent: "ImmiGo 是一个致力于提供关加拿大移民��息的平台，帮助用户了解移民过程和最新动态。",
         expressEntry: "快速通道概述",
         latestDraw: "最新抽签",
         minimumScore: "最低分数:",
@@ -395,27 +395,27 @@ export default function Home() {
                 </section>
 
                 <section className="mt-12">
-                    <h2 className="text-3xl font-semibold mb-6 text-center text-black">{translations[language].whyChoose}</h2>
+                    <h2 className="text-4xl font-semibold mb-6 text-center text-black">{translations[language].whyChoose}</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="bg-gradient-to-r from-blue-500 to-blue-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                            <div className="flex items-center mb-4">
-                                <img src="/icons/realtime.svg" alt="Real-time Updates" className="w-12 h-12 mr-2" />
-                                <h3 className="text-2xl font-semibold text-white">{translations[language].realTimeUpdates}</h3>
+                            <div className="flex items-center mb-6">
+                                <img src="/icons/realtime.png" alt="Real-time Updates" className="w-16 h-16 mr-4 bg-blue-500" />
+                                <h3 className="text-3xl font-semibold text-white">{translations[language].realTimeUpdates}</h3>
                             </div>
                             <p className="text-white">Get the latest Express Entry draw information and score changes.</p>
                         </div>
                         <div className="bg-gradient-to-r from-green-500 to-green-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                            <div className="flex items-center mb-4">
-                                <img src="/icons/data-visualization.svg" alt="Data Visualization" className="w-12 h-12 mr-2" />
-                                <h3 className="text-2xl font-semibold text-white">{translations[language].dataVisualization}</h3>
+                            <div className="flex items-center mb-6">
+                                <img src="/icons/data-visualization.png" alt="Data Visualization" className="w-16 h-16 mr-4 bg-green-500" />
+                                <h3 className="text-3xl font-semibold text-white">{translations[language].dataVisualization}</h3>
                             </div>
                             <p className="text-white">Understand historical trends and data analysis through intuitive charts.</p>
                         </div>
                         <div className="bg-gradient-to-r from-purple-500 to-purple-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                            <div className="flex items-center mb-4">
-                                <img src="/icons/free-service.svg" alt="Free Service" className="w-12 h-12 mr-2" />
-                                <h3 className="text-2xl font-semibold text-white">{translations[language].freeService}</h3>
-                            </div>
+                            <div className="flex items-center mb-6">
+                              <img src="/icons/free-service.png" alt="Free Service" className="w-16 h-16 mr-4 bg-purple-500" />
+                              <h3 className="text-3xl font-extrabold text-white">{translations[language].freeService}</h3>
+                            </div>  
                             <p className="text-white">All core features are completely free to help you achieve your immigration dreams.</p>
                         </div>
                     </div>

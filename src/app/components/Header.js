@@ -48,7 +48,7 @@ export default function Header({ setLanguage, language }) {
             <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
                 <Logo /> {/* 添加 Logo */}
                 <ul className="flex flex-col md:flex-row justify-end space-y-2 md:space-y-0 md:space-x-4 md:text-base"> {/* 修改为响应式布局 */}
-                    <li><Link href="/dashboard" className="hover:text-blue-200">{currentTranslations.dashboard}</Link></li>
+                    <li><Link href="/dashboard" className="hover:text-blue-200">{currentTranslations.dashboard}</Link></li>          
                     <li><Link href="/" className="hover:text-blue-200">{currentTranslations.donate}</Link></li>
                     <li><Link href="/about" className="hover:text-blue-200">{currentTranslations.about}</Link></li>
                     <li>
