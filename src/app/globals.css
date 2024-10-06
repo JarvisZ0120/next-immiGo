@@ -1,0 +1,73 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Arial', sans-serif; /* 默认字体 */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+
+/* 自定义样式 */
+.combined-chart-container {
+  @layer components {
+    .combined-chart-container {
+      max-width: 80rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+/* 为图表容器添加响应式高度 */
+.chart-container {
+  /* @apply h-64 md:h-96; */
+  height: 16rem; /* h-64 */
+  @media (min-width: 768px) {
+    height: 24rem; /* md:h-96 */
+  }
+}
+
+/* 自定义滑块样式 */
+.slider {
+  /* @apply w-full; */
+  width: 100%; /* 使用标准 CSS 替代 @apply */
+}
+
+/* 自定义播放/暂停按钮样式 */
+.play-pause-button {
+  /* @apply 语法不被支持，手动添加样式 */
+  background-color: #3b82f6; /* bg-blue-500 */
+  color: white; /* text-white */
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.375rem; /* rounded */
+  transition: background-color 0.3s; /* transition duration-300 */
+}
+
+.play-pause-button:hover {
+  background-color: #2563eb; /* hover:bg-blue-600 */
+}
+
+/* 在 globals.css 或其他样式文件中 */
+.text-black {
+  font-family: 'Arial', sans-serif; /* 其他文本使用默认字体 */
+}
