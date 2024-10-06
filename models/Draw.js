@@ -1,3 +1,4 @@
+"use client";
 // models/Draw.js
 const mongoose = require('mongoose');
 

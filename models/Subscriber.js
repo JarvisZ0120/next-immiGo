@@ -1,4 +1,5 @@
 // models/Subscriber.js
+"use client";
 const mongoose = require('mongoose');
 
 const subscriberSchema = new mongoose.Schema({
@@ -12,5 +13,3 @@ const subscriberSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Subscriber', subscriberSchema);
-
-
