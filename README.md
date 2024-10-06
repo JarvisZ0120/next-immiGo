@@ -1,3 +1,66 @@
+Welcome to My Next.js Immigration Tracker ImmiGo, an application built with Next.js and MongoDB designed to help users track the latest updates in Canada's Express Entry immigration system.
+
+## Features
+
+- Real-time updates on Canada's Express Entry draw information
+- Users can subscribe to email notifications for the latest draws
+- Interactive dashboard displaying historical data and CRS score distribution
+
+## Tech Stack
+
+- **Frontend**: Next.js, React
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Styling**: Tailwind CSS
+
+## Installation and Running
+
+1. Clone the project:
+
+   ```bash
+   git clone https://github.com/yourusername/my-next-app.git
+   cd my-next-app
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+
+   Create a `.env` file in the root directory of the project and add the following content:
+
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   PORT=3000
+   ```
+
+4. Start the server:
+
+   ```bash
+   node server.js
+   ```
+
+5. Open your browser and visit [http://localhost:3000](http://localhost:3000).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+## License
+
+This project is licensed under the MIT License. For more details, please see the [LICENSE](LICENSE) file.
+
+
+
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -44,7 +107,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 
-
+TODO：
 - Unsubscribe page
 - dashboard 'bar' issue on the first chart
 - new draw and congrats email
