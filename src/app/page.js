@@ -25,6 +25,15 @@ const translations = {
         freeService: "Free Service",
         enterEmail: "Enter your email",
         programName: "Program Name:",
+        historicalTrends: "Historical Trends",
+        ChartsWillBeDisplayedHere: "Charts will be displayed here",
+        enterYourName: "Enter your name",
+        selectProgramsToFollow: "Select Programs to Follow:",
+        areYouCurrentlyInThePool: "Are you currently in the pool?",
+        starMessage: "More than 2,002 applicants saved time effortlessly",
+        realTimeMsg: "Get the latest Express Entry draw information and score changes.",
+        dataMsg: "Understand historical trends and data analysis through intuitive charts.",
+        freeMsg: "All core features are completely free to help you achieve your immigration dreams.",  
     },
     fr: {
         welcome: "Bienvenue à ImmiGO",
@@ -44,12 +53,21 @@ const translations = {
         freeService: "Service gratuit",
         enterEmail: "Entrez votre email",
         programName: "Nom du programme:",
+        historicalTrends: "Tendances historiques",
+        ChartsWillBeDisplayedHere: "Les graphiques seront affichés ici",
+        enterYourName: "Entrez votre nom",
+        selectProgramsToFollow: "Sélectionnez les programmes à suivre:",
+        areYouCurrentlyInThePool: "Êtes-vous actuellement dans le bassin?",
+        starMessage: "Plus de 2 002 candidats ont économisé du temps sans effort",
+        realTimeMsg: "Obtenez les dernières informations sur le tirage Express Entry et les changements de score.",
+        dataMsg: "Comprenez les tendances historiques et l'analyse des données à travers des graphiques intuitifs.",
+        freeMsg: "Toutes les fonctionnalités de base sont entièrement gratuites pour vous aider à réaliser vos rêves d'immigration.",  
     },
     zh: {
         welcome: "欢迎来到 ImmiGO",
         description: "加拿大快速通道移民系统的实时跟踪工具",
         about: "关于 ImmiGo",
-        aboutContent: "ImmiGo 是一个致力于提供关加拿大移民��息的平台，帮助用户了解移民过程和最新动态。",
+        aboutContent: "ImmiGo是一个致力于提供关加拿大移民信息的平台，帮助用户了解移民过程和最新动态。",
         expressEntry: "快速通道概述",
         latestDraw: "最新抽签",
         minimumScore: "最低分数:",
@@ -63,6 +81,15 @@ const translations = {
         freeService: "免费服务",
         enterEmail: "输入您的电子邮件",
         programName: "项目名称:",
+        historicalTrends: "历史趋势",
+        ChartsWillBeDisplayedHere: "图表将在这里显示",
+        enterYourName: "输入您的姓名",
+        selectProgramsToFollow: "选择要关注的项目:",
+        areYouCurrentlyInThePool: "您目前是否在池中?",
+        starMessage: "超过2,002名申请人轻松节省时间",
+        realTimeMsg: "获取最新的Express Entry抽签信息和分数变化。",
+        dataMsg: "通过直观的图表了解历史趋势和数据分析。",
+        freeMsg: "所有核心功能都是完全免费的，以帮助您实现移民梦想。",  
     },
     hi: {
         welcome: "ImmiGO में आपका स्वागत है",
@@ -78,10 +105,19 @@ const translations = {
         subscribeButton: "सब्सक्राइब करें",
         whyChoose: "ImmiGo को क्यों चुनें?",
         realTimeUpdates: "वास्तविक समय अपडेट",
-        dataVisualization: "डेटा विज़ुअलाइज़ेशन",
+        dataVisualization: "डेटा विज़ुअइज़ेशन",
         freeService: "मुफ्त सेवा",
         enterEmail: "अपना ईमेल दर्ज करें",
         programName: "कार्यक्रम का नाम:",
+        historicalTrends: "ऐतिहासिक प्रवृत्तियाँ",
+        ChartsWillBeDisplayedHere: "यहाँ चार्ट्स प्रदर्शित किए जाएंगे",
+        enterYourName: "अपना नाम दर्ज करें",
+        selectProgramsToFollow: "फॉलो करने के लिए कार्यक्रम चुनें:",
+        areYouCurrentlyInThePool: "क्या आप वर्तमान में पूल में हैं?",
+        starMessage: "2,002 से अधिक आवेदकों ने समय आसानी से बचाया",
+        realTimeMsg: "नवीनतम एक्सप्रेस एंट्री ड्रा जानकारी और स्कोर परिवर्तन प्राप्त करें।",
+        dataMsg: "समझें इतिहासिक प्रवृत्तियाँ और डेटा विश्लेषण को सरल चार्ट्स के माध्यम से।",
+        freeMsg: "आपकी इमिग्रेशन सपनों को पूरा करने में मदद करने के लिए सभी मूल विशेषताएँ पूरी तरह से मुफ्त हैं।",  
     },
 };
 
@@ -281,8 +317,8 @@ export default function Home() {
                             }
                         />
                         <InfoCard
-                            title="Historical Trends"
-                            content={<p className="text-black">Charts will be displayed here</p>}
+                            title= {translations[language].historicalTrends}
+                            content={<p className="text-black">{translations[language].ChartsWillBeDisplayedHere} </p>}
                             link="/dashboard"
                         />
                     </div>
@@ -294,7 +330,7 @@ export default function Home() {
                         <div className="flex flex-col mb-4">
                             <input 
                                 type="text" 
-                                placeholder="Enter your name" // 姓名输入框
+                                placeholder={translations[language].enterYourName}  // 姓名输入框
                                 className="form-input mb-2 text-black border rounded p-2.5 mx-auto w-full" 
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -312,7 +348,7 @@ export default function Home() {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block mb-2 text-black font-bold">Select Programs to Follow:</label> {/* 加粗 */}
+                            <label className="block mb-2 text-black font-bold">{translations[language].selectProgramsToFollow} </label> {/* 加粗 */}
                             {programs.map((program) => (
                                 <label key={program} className="inline-flex items-center mr-4">
                                     <input 
@@ -332,7 +368,7 @@ export default function Home() {
                             ))}
                         </div>
                         <div className="mb-4">
-                            <label className="block mb-2 text-black font-bold">Are you currently in the pool?</label> {/* 加粗 */}
+                            <label className="block mb-2 text-black font-bold">{translations[language].areYouCurrentlyInThePool} </label> {/* 加粗 */}
                             <div className="flex items-center mb-4 justify-center">
                                 <label className="mr-4 text-black">
                                     <input 
@@ -389,7 +425,7 @@ export default function Home() {
                         {message && <p className="subscribe-message text-red-500 font-bold">{message}</p>}
                         <div className="testimonial">
                           <span className="stars">⭐⭐⭐⭐⭐</span>
-                          <span className="text-black"> More than 2,002 applicants saved time effortlessly</span>
+                          <span className="text-black"> {translations[language].starMessage}</span>
                         </div>
                     </form>
                 </section>
@@ -402,21 +438,21 @@ export default function Home() {
                                 <img src="/icons/realtime.png" alt="Real-time Updates" className="w-16 h-16 mr-4 bg-blue-500" />
                                 <h3 className="text-3xl font-semibold text-white">{translations[language].realTimeUpdates}</h3>
                             </div>
-                            <p className="text-white">Get the latest Express Entry draw information and score changes.</p>
+                            <p className="text-white">{translations[language].realTimeMsg} </p>
                         </div>
                         <div className="bg-gradient-to-r from-green-500 to-green-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
                             <div className="flex items-center mb-6">
                                 <img src="/icons/data-visualization.png" alt="Data Visualization" className="w-16 h-16 mr-4 bg-green-500" />
                                 <h3 className="text-3xl font-semibold text-white">{translations[language].dataVisualization}</h3>
                             </div>
-                            <p className="text-white">Understand historical trends and data analysis through intuitive charts.</p>
+                            <p className="text-white">{translations[language].dataMsg}</p>
                         </div>
                         <div className="bg-gradient-to-r from-purple-500 to-purple-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
                             <div className="flex items-center mb-6">
                               <img src="/icons/free-service.png" alt="Free Service" className="w-16 h-16 mr-4 bg-purple-500" />
                               <h3 className="text-3xl font-extrabold text-white">{translations[language].freeService}</h3>
                             </div>  
-                            <p className="text-white">All core features are completely free to help you achieve your immigration dreams.</p>
+                            <p className="text-white">{translations[language].freeMsg} </p>
                         </div>
                     </div>
                 </section>
