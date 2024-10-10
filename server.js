@@ -244,6 +244,6 @@ app.post('/api/unsubscribe', async (req, res) => {
 
 // 启动服务器
 app.listen(3001, () => {
-    console.log('Server running on http://localhost:3001');
+    console.log('Server running on https://localhost:3001');
 });
 
