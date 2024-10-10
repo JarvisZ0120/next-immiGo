@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from '/src/app/components/Header';
 import Footer from '/src/app/components/Footer';
+import Confetti from '/src/app/components/Confetti';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // 导入 axios
 
@@ -164,6 +165,7 @@ export default function Home() {
     const [currentProgram, setCurrentProgram] = useState('');
     const [inPool, setInPool] = useState(false); // 新增状态
     const [message, setMessage] = useState(''); // 新增消息状态
+    const [showConfetti, setShowConfetti] = useState(false); // 控制撒花效果
 
 
 
@@ -257,6 +259,10 @@ export default function Home() {
           const resultSubscribeEmail = await responseSubscribeEmail.json();
 
           if (resultSubscribeEmail.success) {
+            setShowConfetti(true); // 显示撒花效果
+            setTimeout(() => {
+              setShowConfetti(false); // 几秒后隐藏撒花效果
+              }, 3000); // 3秒后隐藏
             setMessage('Subscription successful! Check your email for updates.');
           } else {
             setMessage(resultSubscribeEmail.message || 'Failed to subscribe. Please try again.');
@@ -423,6 +429,8 @@ export default function Home() {
                             {translations[language].subscribeButton}
                         </button>
                         {message && <p className="subscribe-message text-red-500 font-bold">{message}</p>}
+                        {/* 触发撒花效果 */}
+                        {showConfetti && <Confetti />}
                         <div className="testimonial">
                           <span className="stars">⭐⭐⭐⭐⭐</span>
                           <span className="text-black"> {translations[language].starMessage}</span>

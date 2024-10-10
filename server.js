@@ -153,6 +153,10 @@ async function sendUpdateEmail(subscriber, draw) {
         },
     });
 
+
+    const updatedDrawDate = new Date(draw.date);
+    updatedDrawDate.setDate(updatedDrawDate.getDate() + 1);
+
     const mailOptions = {
         from: process.env.GMAIL_USER,
         to: subscriber.email,
@@ -162,7 +166,7 @@ async function sendUpdateEmail(subscriber, draw) {
       <div style="font-family: Arial, sans-serif; text-align: center;">
         <h3 style="color: #333; margin-bottom: 10px;">Recent Draw Update</h3>
         <p style="color: #333; margin-bottom: 20px;">
-          The latest draw for <strong style="color: #007BFF;">${draw.details}</strong> took place on <strong style="color: #007BFF;">${draw.date.toDateString()}</strong>. 
+          The latest draw for <strong style="color: #007BFF;">${draw.details}</strong> took place on <strong style="color: #007BFF;">${updatedDrawDate.toDateString()}</strong>. 
           The minimum score required was <strong style="color: #007BFF;">${draw.crsScore}</strong>, and a total of <strong style="color: #007BFF;">${draw.invitations}</strong> invitations were sent out.
         </p>
       </div>
@@ -194,7 +198,7 @@ async function sendCongratsEmail(subscriber, draw) {
         html: `
       <div style="font-family: Arial, sans-serif; text-align: center;">
         <h2 style="color: #007BFF;">Congratulations!</h2>
-        <p style="color: #333; margin-bottom: 20px;">You have surpassed the latest draw's CRS score of <strong style="color: #007BFF;">${draw.crsScore}</strong> with your score of <strong style="color: #007BFF;">${subscriber.score}</strong>.</p>
+        <p style="color: #333; margin-bottom: 20px;">You have surpassed the latest <strong style="color: #007BFF;">${draw.details}</strong> draw's minimum CRS score of <strong style="color: #007BFF;">${draw.crsScore}</strong> with your score of <strong style="color: #007BFF;">${subscriber.score}</strong>.</p>
         <p style="color: #333;">Keep an eye on your email for further updates.</p>
       </div>
     `,
