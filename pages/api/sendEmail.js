@@ -1,3 +1,4 @@
+"use client";
 import nodemailer from 'nodemailer';
 
 // 使用 Gmail 的 SMTP 配置
