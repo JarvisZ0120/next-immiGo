@@ -2,12 +2,12 @@
   "name": "next-immigo",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "concurrently \"next dev\" \"node server.js\"",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "start:server": "node server.js"
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "start:server": "node server.js"
   },
   "dependencies": {
     "@visactor/vchart": "^1.12.7",
