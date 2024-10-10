@@ -1,5 +1,9 @@
 // server.js
 require('dotenv').config(); // 加载环境变量
+
+const https = require('https');
+const fs = require('fs');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
@@ -12,6 +16,12 @@ const Subscriber = require('./models/Subscriber'); // 导入订阅者模型
 const Draw = require('./models/Draw'); // 导入Draw模型
 
 const app = express();
+
+// 读取自签名证书和私钥
+const privateKey = fs.readFileSync('server.key', 'utf8');
+const certificate = fs.readFileSync('server.cert', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
 app.use(cors()); // 允许跨域请求
 app.use(express.json());
 
@@ -243,7 +253,10 @@ app.post('/api/unsubscribe', async (req, res) => {
 
 
 // 启动服务器
-app.listen(3001, () => {
-    console.log('Server running on https://localhost:3001');
-});
+// app.listen(3001, () => {
+//     console.log('Server running on http://localhost:3001');
+// });
 
+https.createServer(credentials, app).listen(3001, () => {
+    console.log('HTTPS Server running on https://localhost:3001');
+});
