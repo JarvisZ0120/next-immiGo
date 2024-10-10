@@ -208,7 +208,7 @@ export default function Home() {
 
       try {
         // 发送订阅请求到后端
-        const response = await fetch('http://localhost:3001/api/subscribe', {
+        const response = await fetch('https://next-immigo-production.up.railway.app:3001/api/subscribe', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

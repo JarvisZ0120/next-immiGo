@@ -165,7 +165,7 @@ async function sendUpdateEmail(subscriber, draw) {
 
 
     const updatedDrawDate = new Date(draw.date);
-    updatedDrawDate.setDate(updatedDrawDate.getDate() + 1);
+    updatedDrawDate.setDate(updatedDrawDate.getDate());
 
     const mailOptions = {
         from: process.env.GMAIL_USER,
