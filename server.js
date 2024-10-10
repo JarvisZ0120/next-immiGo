@@ -24,7 +24,7 @@ const credentials = { key: privateKey, cert: certificate };
 
 app.use(cors()); // 允许跨域请求
 app.use(cors({
-    origin: 'https://next-immigo-production.up.railway.app'
+  origin: 'https://next-immigo-production.up.railway.app'
 }));
 
 app.use(express.json());
@@ -262,5 +262,5 @@ app.post('/api/unsubscribe', async (req, res) => {
 // });
 
 https.createServer(credentials, app).listen(3001, () => {
-    console.log('HTTPS Server running on https://next-immigo-production.up.railway.app:3001');
+    console.log('HTTPS Server running on https://next-immigo-production.up.railway.app:3001/ http://localhost:3001');
 });

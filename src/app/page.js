@@ -180,9 +180,10 @@ export default function Home() {
 
           // 假设你只想获取最新一轮的抽签数据
           const latestRound = rounds[0];
+          const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version 1\)/g, '').trim();
 
           setLatestDraw({
-            drawName: latestRound.drawName,
+            drawName: type,
             drawCRS: latestRound.drawCRS,
             drawSize: latestRound.drawSize,
             drawDate: latestRound.drawDateFull,
@@ -208,7 +209,7 @@ export default function Home() {
 
       try {
         // 发送订阅请求到后端
-        const response = await fetch('https://next-immigo-production.up.railway.app:3001/api/subscribe', {
+        const response = await fetch('/api/subscribe', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
