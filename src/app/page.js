@@ -19,6 +19,7 @@ const translations = {
     numberOfInvitations: "Number of Invitations:",
     date: "Date:",
     subscribe: "Subscribe for Updates",
+    subscribeContent:"We will provide immediate updates whenever a new draw is made from the EE System.",
     subscribeButton: "Subscribe",
     whyChoose: "Why Choose ImmiGo?",
     realTimeUpdates: "Real-time Updates",
@@ -49,6 +50,7 @@ const translations = {
     numberOfInvitations: "Nombre d'Invitations:",
     date: "Date:",
     subscribe: "S'abonner aux mises à jour",
+    subscribeContent:"Nous fournirons des mises à jour immédiates dès qu'un nouveau tirage sera effectué depuis le système EE.",
     subscribeButton: "S'abonner",
     whyChoose: "Pourquoi choisir ImmiGo?",
     realTimeUpdates: "Mises à jour en temps réel",
@@ -79,6 +81,7 @@ const translations = {
     numberOfInvitations: "邀请人数:",
     date: "日期:",
     subscribe: "订阅更新",
+    subscribeContent: "每当EE系统有新的抽签时，我们将提供即时更新",
     subscribeButton: "订阅",
     whyChoose: "为什么选择 ImmiGo?",
     realTimeUpdates: "实时更新",
@@ -109,6 +112,7 @@ const translations = {
     numberOfInvitations: "आमंत्रणों की संख्या:",
     date: "तारीख:",
     subscribe: "अपडेट के लिए सब्सक्राइब करें",
+    subscribeContent: "हम EE सिस्टम से एक नया ड्रॉ होने पर तुरंत अपडेट प्रदान करेंगे।",
     subscribeButton: "सब्सक्राइब करें",
     whyChoose: "ImmiGo को क्यों चुनें?",
     realTimeUpdates: "वास्तविक समय अपडेट",
@@ -268,10 +272,14 @@ export default function Home() {
           const resultSubscribeEmail = await responseSubscribeEmail.json();
 
           if (resultSubscribeEmail.success) {
+
+            // TODO: There is a Confetti issue needs to be fixed
             setShowConfetti(true); // 显示撒花效果
             setTimeout(() => {
               setShowConfetti(false); // 几秒后隐藏撒花效果
               }, 3000); // 3秒后隐藏
+
+
             setMessage('Subscription successful! Check your email for updates.');
           } else {
             setMessage(resultSubscribeEmail.message || 'Failed to subscribe. Please try again.');
@@ -341,6 +349,7 @@ export default function Home() {
 
                 <section id="subscribe" className="bg-white p-8 rounded-lg shadow-md mb-12 text-center">
                     <h2 className="text-3xl font-semibold mb-6 text-black">{translations[language].subscribe}</h2>
+                    <p className="text-black mb-8 text-center">{translations[language].subscribeContent}</p>
                     <form className="max-w-md mx-auto" onSubmit={handleSubscribe}>
                         <div className="flex flex-col mb-4">
                             <input 
