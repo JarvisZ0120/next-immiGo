@@ -24,7 +24,7 @@ const credentials = { key: privateKey, cert: certificate };
 
 app.use(cors()); // 允许跨域请求
 app.use(cors({
-    origin: 'https://next-immigo-production.up.railway.app'
+    origin: 'https://immigoo.com'
 }));
 
 app.use(express.json());

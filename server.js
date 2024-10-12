@@ -24,7 +24,7 @@ const credentials = { key: privateKey, cert: certificate };
 
 app.use(cors()); // 允许跨域请求
 app.use(cors({
-  origin: 'https://next-immigo-production.up.railway.app'
+    origin: 'https://immigoo.com'
 }));
 
 app.use(express.json());
@@ -38,37 +38,39 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((error) => console.error('Failed to connect to MongoDB Atlas:', error));
 
 // API 路由：处理订阅请求并保存订阅者信息
-app.post('/api/subscribe', async (req, res) => {
-    const { name, email, score, selectedPrograms, currentProgram } = req.body;
+// app.post('/api/subscribe', async (req, res) => {
+//     const { name, email, score, selectedPrograms, currentProgram } = req.body;
 
-    if (!name || !email ) {
-        return res.status(400).json({ error: 'Please provide all required fields.' });
-    }
+//     if (!name || !email ) {
+//         return res.status(400).json({ error: 'Please provide all required fields.' });
+//     }
 
-    try {
-        // 检查是否已存在相同的订阅者
-        const existingSubscriber = await Subscriber.findOne({ email });
-        if (existingSubscriber) {
-            return res.status(409).json({ message: 'This email is already subscribed.' });
-        }
+//     try {
+//         // 检查是否已存在相同的订阅者
+//         const existingSubscriber = await Subscriber.findOne({ email });
+//         if (existingSubscriber) {
+//             return res.status(409).json({ message: 'This email is already subscribed.' });
+//         }
 
-        // 创建新的订阅者对象
-        const newSubscriber = new Subscriber({
-            name,
-            email,
-            score,
-            selectedPrograms,
-            currentProgram,
-        });
+//         // 创建新的订阅者对象
+//         const newSubscriber = new Subscriber({
+//             name,
+//             email,
+//             score,
+//             selectedPrograms,
+//             currentProgram,
+//         });
 
-        // 保存订阅者到数据库
-        await newSubscriber.save();
-        res.status(200).json({ success: true, message: 'Subscribed successfully!' });
-    } catch (error) {
-        console.error('Error saving subscriber:', error);
-        res.status(500).json({ success: false, message: 'Failed to save subscriber.' });
-    }
-});
+//         // 保存订阅者到数据库
+//         await newSubscriber.save();
+//         res.status(200).json({ success: true, message: 'Subscribed successfully!' });
+//     } catch (error) {
+//         console.error('Error saving subscriber:', error);
+//         res.status(500).json({ success: false, message: 'Failed to save subscriber.' });
+//     }
+// });
+
+
 
 // 定时任务 - 每分钟检查一次最新的 draws 更新
 // cron.schedule('0 * * * *', async () => {
@@ -183,6 +185,12 @@ async function sendUpdateEmail(subscriber, draw) {
           The latest draw for <strong style="color: #007BFF;">${draw.details}</strong> took place on <strong style="color: #007BFF;">${updatedDrawDate.toDateString()}</strong>. 
           The minimum score required was <strong style="color: #007BFF;">${draw.crsScore}</strong>, and a total of <strong style="color: #007BFF;">${draw.invitations}</strong> invitations were sent out.
         </p>
+        <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
+        <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
+        Opt out of receiving further emails by clicking on the following
+        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault(); handleUnsubscribe('${email}');" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
+        </p>
+        <p>ImmiGo, Vancouver, BC, Canada</p>
       </div>
     `,
     };
@@ -214,6 +222,13 @@ async function sendCongratsEmail(subscriber, draw) {
         <h2 style="color: #007BFF;">Congratulations!</h2>
         <p style="color: #333; margin-bottom: 20px;">You have surpassed the latest <strong style="color: #007BFF;">${draw.details}</strong> draw's minimum CRS score of <strong style="color: #007BFF;">${draw.crsScore}</strong> with your score of <strong style="color: #007BFF;">${subscriber.score}</strong>.</p>
         <p style="color: #333;">Keep an eye on your email for further updates.</p>
+
+        <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
+        <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
+        Opt out of receiving further emails by clicking on the following
+        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault(); handleUnsubscribe('${email}');" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
+        </p>
+        <p>ImmiGo, Vancouver, BC, Canada</p>        
       </div>
     `,
     };
@@ -228,31 +243,31 @@ async function sendCongratsEmail(subscriber, draw) {
 
 
 // 取消订阅 API 路由
-app.post('/api/unsubscribe', async (req, res) => {
-    const { email } = req.body;
+// app.post('/api/unsubscribe', async (req, res) => {
+//     const { email } = req.body;
 
-    if (!email) {
-        return res.status(400).json({ error: 'Email is required.' });
-    }
+//     if (!email) {
+//         return res.status(400).json({ error: 'Email is required.' });
+//     }
 
-    try {
-        // 查找订阅者并更新其订阅状态为 false
-        const subscriber = await Subscriber.findOneAndUpdate(
-            { email },
-            { isSubscribed: false },
-            { new: true }
-        );
+//     try {
+//         // 查找订阅者并更新其订阅状态为 false
+//         const subscriber = await Subscriber.findOneAndUpdate(
+//             { email },
+//             { isSubscribed: false },
+//             { new: true }
+//         );
 
-        if (!subscriber) {
-            return res.status(404).json({ message: 'Subscriber not found.' });
-        }
+//         if (!subscriber) {
+//             return res.status(404).json({ message: 'Subscriber not found.' });
+//         }
 
-        res.status(200).json({ success: true, message: 'You have successfully unsubscribed.' });
-    } catch (error) {
-        console.error('Error updating subscriber:', error);
-        res.status(500).json({ success: false, message: 'Failed to unsubscribe.' });
-    }
-});
+//         res.status(200).json({ success: true, message: 'You have successfully unsubscribed.' });
+//     } catch (error) {
+//         console.error('Error updating subscriber:', error);
+//         res.status(500).json({ success: false, message: 'Failed to unsubscribe.' });
+//     }
+// });
 
 
 
@@ -262,5 +277,5 @@ app.post('/api/unsubscribe', async (req, res) => {
 // });
 
 https.createServer(credentials, app).listen(3001, () => {
-    console.log('HTTPS Server running on https://next-immigo-production.up.railway.app:3001/ http://localhost:3001');
+    console.log('HTTPS Server running on https://immigoo.com:3001/ http://localhost:3001');
 });
