@@ -188,7 +188,7 @@ async function sendUpdateEmail(subscriber, draw) {
         <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
         <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
         Opt out of receiving further emails by clicking on the following
-        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault(); handleUnsubscribe('${email}');" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
+        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault();" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
         </p>
         <p>ImmiGo, Vancouver, BC, Canada</p>
       </div>
@@ -226,7 +226,7 @@ async function sendCongratsEmail(subscriber, draw) {
         <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
         <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
         Opt out of receiving further emails by clicking on the following
-        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault(); handleUnsubscribe('${email}');" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
+        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault();" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
         </p>
         <p>ImmiGo, Vancouver, BC, Canada</p>        
       </div>
