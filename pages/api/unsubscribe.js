@@ -29,9 +29,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// MongoDB Atlas 连接字符串
-const mongoURI = process.env.MONGODB_URI;
-
 
 // 连接到 MongoDB Atlas
 const connectDB = async () => {

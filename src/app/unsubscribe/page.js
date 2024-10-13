@@ -1,10 +1,7 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Header from '/src/app/components/Header'; // 导入 Header 组件
 import Footer from '/src/app/components/Footer'; //
-
-
 
 const translations = {
     en: {
@@ -25,16 +22,14 @@ const translations = {
     },
 };
 
-
-
-
 export default function Unsubscribe() {
     const [email, setEmail] = useState('');
     const [language, setLanguage] = useState('en'); // 默认语言
-    const [message, setMessage] = useState(''); // 新增消息状态
-
+    const [message, setMessage] = useState(''); // 消息状态
+    const [isSubmitting, setIsSubmitting] = useState(false); // 提交状态
 
     const handleUnsubscribe = async (email) => {
+        setIsSubmitting(true); // 禁用按钮，防止重复提交
         try {
             const response = await fetch('/api/unsubscribe', {
                 method: 'POST',
@@ -46,20 +41,22 @@ export default function Unsubscribe() {
 
             const result = await response.json();
             if (result.success) {
-                alert('You have successfully unsubscribed.');
+                setMessage('You have successfully unsubscribed.');
             } else {
-                alert(result.message || 'Failed to unsubscribe. Please try again.');
+                setMessage(result.message || 'Failed to unsubscribe. Please try again.');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred. Please try again later.');
+            setMessage('An error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false); // 重新启用按钮
         }
     };
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <Header setLanguage={setLanguage} language={language} />
-            <main onSubmit={handleUnsubscribe} className="flex flex-col items-center justify-center flex-grow">
+            <main className="flex flex-col items-center justify-center flex-grow">
                 <div className="mb-4 mt-4">
                     <input
                         type="email"
@@ -70,11 +67,18 @@ export default function Unsubscribe() {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary text-white bg-blue-600 hover:bg-blue-700 rounded p-2 mx-auto">
-                    {translations[language].unsubscribeButton}
+                <button
+                    type="button"  // 改为 button 类型
+                    className="btn btn-primary text-white bg-blue-600 hover:bg-blue-700 rounded p-2 mx-auto"
+                    onClick={() => handleUnsubscribe(email)}  // 绑定点击事件
+                    disabled={isSubmitting}  // 按钮禁用逻辑
+                >
+                    {isSubmitting ? 'Processing...' : translations[language].unsubscribeButton}
                 </button>
+                {message && <p className="mt-4 text-center text-red-500 font-bold">{message}</p>} 
             </main>
-            <Footer language={language} /> {/* 传递当前语言 */}
+            <Footer language={language} />
         </div>
     );
 }
+

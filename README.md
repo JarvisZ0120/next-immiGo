@@ -109,6 +109,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 TODO：
 - dashboard 'bar' issue on the first chart
-- new draw and congrats email
-- translate 校对 
 - new 分组叠加图
