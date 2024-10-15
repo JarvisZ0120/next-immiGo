@@ -178,7 +178,12 @@ export default function Dashboard() {
                             data: filteredInvitations,
                             backgroundColor: roundTypeColors[type] || 'rgba(0, 0, 0, 0.5)',
                             yAxisID: 'y-invites',
-                            barThickness: 5,
+                            barThickness: 'flex',  // 自动调整柱状图厚度
+                            maxBarThickness: 200,  // 增加最大柱状图厚度
+                            minBarLength: 10,      // 保证最小的柱状图长度
+                            categoryPercentage: 0.7, // 稍微增加分类区域宽度，让柱子整体向右移动
+                            barPercentage: 2.2,    // 保持柱子的宽度比例
+                            offset: true,          // 在分类区内启用偏移，使柱子向右对齐居中
                         },
                         showCrsScores && {
                             type: 'line',
