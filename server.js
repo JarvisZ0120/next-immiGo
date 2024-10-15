@@ -72,10 +72,11 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 
-// 定时任务 - 每分钟检查一次最新的 draws 更新
+// 定时任务 - 每小时检查一次最新的 draws 更新
 // cron.schedule('0 * * * *', async () => {
-// 定时任务 - 每分钟检查一次最新的 draws 更新
-cron.schedule('* * * * *', async () => {
+    
+// 定时任务 - 每 7 分钟检查一次最新的 draws 更新
+cron.schedule('*/7 * * * *', async () => {
     console.log('Checking for new draws...');
     try {
         const latestDraw = await fetchLatestDraw();
