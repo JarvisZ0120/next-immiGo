@@ -428,6 +428,7 @@ export default function Dashboard() {
                                     grid: {
                                         drawOnChartArea: false,
                                     },
+                                    beginAtZero: false,
                                 },
                             },
                         }}
