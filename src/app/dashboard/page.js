@@ -1,9 +1,11 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import Link from 'next/link';
 import Header from '/src/app/components/Header'; // 导入 Header 组件
-import Footer from '/src/app/components/Footer'; //
+import Footer from '/src/app/components/Footer'; // 导入 Footer 组件
+import PieChart from '/src/app/crsScorePieChart/page'; // 导入 Pie chart 组件
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -282,7 +284,7 @@ export default function Dashboard() {
                     labels: alignedTotalDates,
                     datasets: [
                         {
-                            type: 'bar',
+                            type: 'line',
                             label: 'Total Number of Candidates',
                             data: alignedTotalData,
                             backgroundColor: 'rgba(153, 102, 255, 0.6)',
@@ -335,7 +337,7 @@ export default function Dashboard() {
     const currentTranslations = translations[language]; // 根据当前语言获取翻译
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col min-h-screen bg-white">
             <Header setLanguage={setLanguage} language={language} /> {/* 传递 setLanguage 和 language */}
             
             <h2 className="text-2xl font-semibold mb-6 text-center text-black">{currentTranslations.crsOverTime}</h2>
@@ -458,69 +460,45 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            <div className="mb-12" style={{ transform: 'scale(0.9)', Align: 'center' }}> 
-                {totalCandidatesData.datasets && (
-                    <Bar
-                        data={totalCandidatesData}
-                        options={{
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: {
-                                x: {
-                                    reverse: true,
-                                    title: {
-                                        display: true,
-                                        text: 'Date',
+            <div className="flex justify-center items-start mb-12">
+                {/* Line chart on the left */}
+                <div className="w-1/2" style={{ transform: 'scale(1.0)' }}>
+                    {totalCandidatesData.datasets && (
+                        <Line
+                            data={totalCandidatesData}
+                            options={{
+                                responsive: true,
+                                plugins: { legend: { position: 'top' } },
+                                scales: {
+                                    x: {
+                                        reverse: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Date',
+                                        },
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Total Number of Candidates',
+                                        },
+                                        beginAtZero: false,
                                     },
                                 },
-                                y: {
-                                    title: {
-                                        display: true,
-                                        text: 'Total Number of Candidates',
-                                    },
-                                    beginAtZero: true,
-                                },
-                            },
-                        }}
-                        height={130}
-                    />
-                )}
+                            }}
+                            height={200}
+                        />
+                    )}
+                </div>
+
+                {/* Pie chart on the right */}
+                <div className="w-1/2">
+                    <PieChart />
+                </div>
             </div>
+
             
             
-            {/* <h2 className="text-2xl font-semibold mb-6 text-center text-black">{currentTranslations.crsOverTime}</h2>
-            <div className="mb-12">
-                <Bar
-                    data={crsDistributionData}
-                    options={{
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'top' },
-                        },
-                        scales: {
-                            x: {
-                                stacked: true, // 启用堆叠
-                                title: {
-                                    display: true,
-                                    text: 'Date',
-                                },
-                            },
-                            y: {
-                                stacked: true, // 启用堆叠
-                                title: {
-                                    display: true,
-                                    text: 'Number of Candidates',
-                                },
-                                beginAtZero: true,
-                            },
-                        },
-                    }}
-                    height={400}
-                />
-            </div> */}
-
-
-
 
             <div className="mt-8 text-center mb-8 mx-auto" >
                 <a

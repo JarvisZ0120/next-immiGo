@@ -1,0 +1,3371 @@
+{
+    "values": [
+        [
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "601-1200",
+                "population": 640
+            },
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "501-600",
+                "population": 8975
+            },
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "451-500",
+                "population": 62330
+            },
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "401-450",
+                "population": 57987
+            },
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "351-400",
+                "population": 68325
+            },
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "301-350",
+                "population": 35522
+            },
+            {
+                "drawDate": "2022-08-03",
+                "crsScore": "0-300",
+                "population": 5145
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "601-1200",
+                "population": 538
+            },
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "501-600",
+                "population": 8221
+            },
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "451-500",
+                "population": 62753
+            },
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "401-450",
+                "population": 58113
+            },
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "351-400",
+                "population": 68440
+            },
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "301-350",
+                "population": 35745
+            },
+            {
+                "drawDate": "2022-08-17",
+                "crsScore": "0-300",
+                "population": 5137
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "601-1200",
+                "population": 466
+            },
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "501-600",
+                "population": 7224
+            },
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "451-500",
+                "population": 63270
+            },
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "401-450",
+                "population": 58141
+            },
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "351-400",
+                "population": 68974
+            },
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "301-350",
+                "population": 36001
+            },
+            {
+                "drawDate": "2022-08-31",
+                "crsScore": "0-300",
+                "population": 5120
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "601-1200",
+                "population": 408
+            },
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "501-600",
+                "population": 6228
+            },
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "451-500",
+                "population": 63860
+            },
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "401-450",
+                "population": 58019
+            },
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "351-400",
+                "population": 68857
+            },
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "301-350",
+                "population": 35833
+            },
+            {
+                "drawDate": "2022-09-14",
+                "crsScore": "0-300",
+                "population": 5068
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "601-1200",
+                "population": 479
+            },
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "501-600",
+                "population": 4411
+            },
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "451-500",
+                "population": 64097
+            },
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "401-450",
+                "population": 58143
+            },
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "351-400",
+                "population": 69175
+            },
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "301-350",
+                "population": 36006
+            },
+            {
+                "drawDate": "2022-09-28",
+                "crsScore": "0-300",
+                "population": 5112
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "601-1200",
+                "population": 601
+            },
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "501-600",
+                "population": 2785
+            },
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "451-500",
+                "population": 64536
+            },
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "401-450",
+                "population": 57962
+            },
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "351-400",
+                "population": 68680
+            },
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "301-350",
+                "population": 35501
+            },
+            {
+                "drawDate": "2022-10-12",
+                "crsScore": "0-300",
+                "population": 5055
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "601-1200",
+                "population": 762
+            },
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "501-600",
+                "population": 937
+            },
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "451-500",
+                "population": 64829
+            },
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "401-450",
+                "population": 58249
+            },
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "351-400",
+                "population": 69192
+            },
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "301-350",
+                "population": 35904
+            },
+            {
+                "drawDate": "2022-10-26",
+                "crsScore": "0-300",
+                "population": 5108
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "601-1200",
+                "population": 958
+            },
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "501-600",
+                "population": 1206
+            },
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "451-500",
+                "population": 63525
+            },
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "401-450",
+                "population": 58522
+            },
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "351-400",
+                "population": 68711
+            },
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "301-350",
+                "population": 35610
+            },
+            {
+                "drawDate": "2022-11-09",
+                "crsScore": "0-300",
+                "population": 5087
+            }
+        ],
+        [
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "601-1200",
+                "population": 876
+            },
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "501-600",
+                "population": 1227
+            },
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "451-500",
+                "population": 62400
+            },
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "401-450",
+                "population": 58357
+            },
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "351-400",
+                "population": 68489
+            },
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "301-350",
+                "population": 35614
+            },
+            {
+                "drawDate": "2022-11-23",
+                "crsScore": "0-300",
+                "population": 5252
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "601-1200",
+                "population": 2995
+            },
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "501-600",
+                "population": 3897
+            },
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "451-500",
+                "population": 64866
+            },
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "401-450",
+                "population": 59277
+            },
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "351-400",
+                "population": 70204
+            },
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "301-350",
+                "population": 36547
+            },
+            {
+                "drawDate": "2023-01-11",
+                "crsScore": "0-300",
+                "population": 5469
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "601-1200",
+                "population": 614
+            },
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "501-600",
+                "population": 1918
+            },
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "451-500",
+                "population": 65296
+            },
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "401-450",
+                "population": 59491
+            },
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "351-400",
+                "population": 70421
+            },
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "301-350",
+                "population": 36754
+            },
+            {
+                "drawDate": "2023-01-18",
+                "crsScore": "0-300",
+                "population": 5519
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "601-1200",
+                "population": 937
+            },
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "501-600",
+                "population": 1553
+            },
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "451-500",
+                "population": 64382
+            },
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "401-450",
+                "population": 59921
+            },
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "351-400",
+                "population": 70484
+            },
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "301-350",
+                "population": 36636
+            },
+            {
+                "drawDate": "2023-02-01",
+                "crsScore": "0-300",
+                "population": 5502
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "601-1200",
+                "population": 937
+            },
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "501-600",
+                "population": 1553
+            },
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "451-500",
+                "population": 64382
+            },
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "401-450",
+                "population": 59921
+            },
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "351-400",
+                "population": 70484
+            },
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "301-350",
+                "population": 36636
+            },
+            {
+                "drawDate": "2023-02-02",
+                "crsScore": "0-300",
+                "population": 5502
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "601-1200",
+                "population": 725
+            },
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "501-600",
+                "population": 1415
+            },
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "451-500",
+                "population": 64315
+            },
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "401-450",
+                "population": 60559
+            },
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "351-400",
+                "population": 70932
+            },
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "301-350",
+                "population": 36722
+            },
+            {
+                "drawDate": "2023-02-15",
+                "crsScore": "0-300",
+                "population": 5596
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "601-1200",
+                "population": 606
+            },
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "501-600",
+                "population": 2129
+            },
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "451-500",
+                "population": 65187
+            },
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "401-450",
+                "population": 61086
+            },
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "351-400",
+                "population": 71529
+            },
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "301-350",
+                "population": 37131
+            },
+            {
+                "drawDate": "2023-03-01",
+                "crsScore": "0-300",
+                "population": 5706
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "601-1200",
+                "population": 784
+            },
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "501-600",
+                "population": 3216
+            },
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "451-500",
+                "population": 65826
+            },
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "401-450",
+                "population": 61240
+            },
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "351-400",
+                "population": 71292
+            },
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "301-350",
+                "population": 37113
+            },
+            {
+                "drawDate": "2023-03-15",
+                "crsScore": "0-300",
+                "population": 5650
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "601-1200",
+                "population": 310
+            },
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "501-600",
+                "population": 534
+            },
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "451-500",
+                "population": 63666
+            },
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "401-450",
+                "population": 61323
+            },
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "351-400",
+                "population": 71424
+            },
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "301-350",
+                "population": 37208
+            },
+            {
+                "drawDate": "2023-03-23",
+                "crsScore": "0-300",
+                "population": 5681
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "601-1200",
+                "population": 261
+            },
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "501-600",
+                "population": 468
+            },
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "451-500",
+                "population": 58698
+            },
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "401-450",
+                "population": 61381
+            },
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "351-400",
+                "population": 71304
+            },
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "301-350",
+                "population": 37124
+            },
+            {
+                "drawDate": "2023-03-29",
+                "crsScore": "0-300",
+                "population": 5711
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "601-1200",
+                "population": 501
+            },
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "501-600",
+                "population": 1180
+            },
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "451-500",
+                "population": 56092
+            },
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "401-450",
+                "population": 61379
+            },
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "351-400",
+                "population": 69975
+            },
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "301-350",
+                "population": 36419
+            },
+            {
+                "drawDate": "2023-04-12",
+                "crsScore": "0-300",
+                "population": 5573
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "601-1200",
+                "population": 604
+            },
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "501-600",
+                "population": 884
+            },
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "451-500",
+                "population": 55867
+            },
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "401-450",
+                "population": 61108
+            },
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "351-400",
+                "population": 69709
+            },
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "301-350",
+                "population": 36432
+            },
+            {
+                "drawDate": "2023-04-26",
+                "crsScore": "0-300",
+                "population": 5585
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "601-1200",
+                "population": 535
+            },
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "501-600",
+                "population": 992
+            },
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "451-500",
+                "population": 55439
+            },
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "401-450",
+                "population": 59827
+            },
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "351-400",
+                "population": 67883
+            },
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "301-350",
+                "population": 35242
+            },
+            {
+                "drawDate": "2023-05-10",
+                "crsScore": "0-300",
+                "population": 5470
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "601-1200",
+                "population": 642
+            },
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "501-600",
+                "population": 1896
+            },
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "451-500",
+                "population": 57405
+            },
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "401-450",
+                "population": 59015
+            },
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "351-400",
+                "population": 67331
+            },
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "301-350",
+                "population": 35098
+            },
+            {
+                "drawDate": "2023-05-24",
+                "crsScore": "0-300",
+                "population": 5455
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "601-1200",
+                "population": 768
+            },
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "501-600",
+                "population": 1092
+            },
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "451-500",
+                "population": 56653
+            },
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "401-450",
+                "population": 58274
+            },
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "351-400",
+                "population": 65791
+            },
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "301-350",
+                "population": 34208
+            },
+            {
+                "drawDate": "2023-06-08",
+                "crsScore": "0-300",
+                "population": 5380
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "601-1200",
+                "population": 1254
+            },
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "501-600",
+                "population": 1258
+            },
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "451-500",
+                "population": 55991
+            },
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "401-450",
+                "population": 57269
+            },
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "351-400",
+                "population": 64936
+            },
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "301-350",
+                "population": 33866
+            },
+            {
+                "drawDate": "2023-06-27",
+                "crsScore": "0-300",
+                "population": 5429
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "601-1200",
+                "population": 1254
+            },
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "501-600",
+                "population": 1258
+            },
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "451-500",
+                "population": 55991
+            },
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "401-450",
+                "population": 57269
+            },
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "351-400",
+                "population": 64936
+            },
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "301-350",
+                "population": 33866
+            },
+            {
+                "drawDate": "2023-06-28",
+                "crsScore": "0-300",
+                "population": 5429
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "601-1200",
+                "population": 353
+            },
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "501-600",
+                "population": 726
+            },
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "451-500",
+                "population": 54732
+            },
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "401-450",
+                "population": 56673
+            },
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "351-400",
+                "population": 63679
+            },
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "301-350",
+                "population": 33051
+            },
+            {
+                "drawDate": "2023-07-04",
+                "crsScore": "0-300",
+                "population": 5315
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "601-1200",
+                "population": 353
+            },
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "501-600",
+                "population": 726
+            },
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "451-500",
+                "population": 54732
+            },
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "401-450",
+                "population": 56673
+            },
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "351-400",
+                "population": 63679
+            },
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "301-350",
+                "population": 33051
+            },
+            {
+                "drawDate": "2023-07-05",
+                "crsScore": "0-300",
+                "population": 5315
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "601-1200",
+                "population": 353
+            },
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "501-600",
+                "population": 726
+            },
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "451-500",
+                "population": 54732
+            },
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "401-450",
+                "population": 56673
+            },
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "351-400",
+                "population": 63679
+            },
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "301-350",
+                "population": 33051
+            },
+            {
+                "drawDate": "2023-07-06",
+                "crsScore": "0-300",
+                "population": 5315
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "601-1200",
+                "population": 353
+            },
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "501-600",
+                "population": 726
+            },
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "451-500",
+                "population": 54732
+            },
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "401-450",
+                "population": 56673
+            },
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "351-400",
+                "population": 63679
+            },
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "301-350",
+                "population": 33051
+            },
+            {
+                "drawDate": "2023-07-07",
+                "crsScore": "0-300",
+                "population": 5315
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "601-1200",
+                "population": 276
+            },
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "501-600",
+                "population": 619
+            },
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "451-500",
+                "population": 51689
+            },
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "401-450",
+                "population": 55570
+            },
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "351-400",
+                "population": 63039
+            },
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "301-350",
+                "population": 32771
+            },
+            {
+                "drawDate": "2023-07-11",
+                "crsScore": "0-300",
+                "population": 5299
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "601-1200",
+                "population": 276
+            },
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "501-600",
+                "population": 619
+            },
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "451-500",
+                "population": 51689
+            },
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "401-450",
+                "population": 55570
+            },
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "351-400",
+                "population": 63039
+            },
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "301-350",
+                "population": 32771
+            },
+            {
+                "drawDate": "2023-07-12",
+                "crsScore": "0-300",
+                "population": 5299
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "601-1200",
+                "population": 1308
+            },
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "501-600",
+                "population": 2019
+            },
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "451-500",
+                "population": 55295
+            },
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "401-450",
+                "population": 54173
+            },
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "351-400",
+                "population": 61438
+            },
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "301-350",
+                "population": 32077
+            },
+            {
+                "drawDate": "2023-08-01",
+                "crsScore": "0-300",
+                "population": 5219
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "601-1200",
+                "population": 1308
+            },
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "501-600",
+                "population": 2019
+            },
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "451-500",
+                "population": 55295
+            },
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "401-450",
+                "population": 54173
+            },
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "351-400",
+                "population": 61438
+            },
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "301-350",
+                "population": 32077
+            },
+            {
+                "drawDate": "2023-08-02",
+                "crsScore": "0-300",
+                "population": 5219
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "601-1200",
+                "population": 1308
+            },
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "501-600",
+                "population": 2019
+            },
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "451-500",
+                "population": 55295
+            },
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "401-450",
+                "population": 54173
+            },
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "351-400",
+                "population": 61438
+            },
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "301-350",
+                "population": 32077
+            },
+            {
+                "drawDate": "2023-08-03",
+                "crsScore": "0-300",
+                "population": 5219
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "601-1200",
+                "population": 984
+            },
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "501-600",
+                "population": 2172
+            },
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "451-500",
+                "population": 55924
+            },
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "401-450",
+                "population": 53709
+            },
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "351-400",
+                "population": 61289
+            },
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "301-350",
+                "population": 31980
+            },
+            {
+                "drawDate": "2023-08-15",
+                "crsScore": "0-300",
+                "population": 5298
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "601-1200",
+                "population": 2637
+            },
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "501-600",
+                "population": 3091
+            },
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "451-500",
+                "population": 58838
+            },
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "401-450",
+                "population": 54240
+            },
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "351-400",
+                "population": 60575
+            },
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "301-350",
+                "population": 31418
+            },
+            {
+                "drawDate": "2023-09-19",
+                "crsScore": "0-300",
+                "population": 5236
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "601-1200",
+                "population": 2637
+            },
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "501-600",
+                "population": 3091
+            },
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "451-500",
+                "population": 58838
+            },
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "401-450",
+                "population": 54240
+            },
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "351-400",
+                "population": 60575
+            },
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "301-350",
+                "population": 31418
+            },
+            {
+                "drawDate": "2023-09-20",
+                "crsScore": "0-300",
+                "population": 5236
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "601-1200",
+                "population": 544
+            },
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "501-600",
+                "population": 2923
+            },
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "451-500",
+                "population": 58645
+            },
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "401-450",
+                "population": 54225
+            },
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "351-400",
+                "population": 60843
+            },
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "301-350",
+                "population": 31532
+            },
+            {
+                "drawDate": "2023-09-26",
+                "crsScore": "0-300",
+                "population": 5288
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "601-1200",
+                "population": 544
+            },
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "501-600",
+                "population": 2923
+            },
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "451-500",
+                "population": 58645
+            },
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "401-450",
+                "population": 54225
+            },
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "351-400",
+                "population": 60843
+            },
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "301-350",
+                "population": 31532
+            },
+            {
+                "drawDate": "2023-09-27",
+                "crsScore": "0-300",
+                "population": 5288
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "601-1200",
+                "population": 544
+            },
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "501-600",
+                "population": 2923
+            },
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "451-500",
+                "population": 58645
+            },
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "401-450",
+                "population": 54225
+            },
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "351-400",
+                "population": 60843
+            },
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "301-350",
+                "population": 31532
+            },
+            {
+                "drawDate": "2023-09-28",
+                "crsScore": "0-300",
+                "population": 5288
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "601-1200",
+                "population": 1210
+            },
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "501-600",
+                "population": 2237
+            },
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "451-500",
+                "population": 59674
+            },
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "401-450",
+                "population": 54162
+            },
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "351-400",
+                "population": 60078
+            },
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "301-350",
+                "population": 30996
+            },
+            {
+                "drawDate": "2023-10-10",
+                "crsScore": "0-300",
+                "population": 5235
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "601-1200",
+                "population": 1536
+            },
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "501-600",
+                "population": 1307
+            },
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "451-500",
+                "population": 60587
+            },
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "401-450",
+                "population": 54565
+            },
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "351-400",
+                "population": 60378
+            },
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "301-350",
+                "population": 31189
+            },
+            {
+                "drawDate": "2023-10-24",
+                "crsScore": "0-300",
+                "population": 5311
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "601-1200",
+                "population": 1536
+            },
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "501-600",
+                "population": 1307
+            },
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "451-500",
+                "population": 60587
+            },
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "401-450",
+                "population": 54565
+            },
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "351-400",
+                "population": 60378
+            },
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "301-350",
+                "population": 31189
+            },
+            {
+                "drawDate": "2023-10-25",
+                "crsScore": "0-300",
+                "population": 5311
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "601-1200",
+                "population": 1536
+            },
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "501-600",
+                "population": 1307
+            },
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "451-500",
+                "population": 60587
+            },
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "401-450",
+                "population": 54565
+            },
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "351-400",
+                "population": 60378
+            },
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "301-350",
+                "population": 31189
+            },
+            {
+                "drawDate": "2023-10-26",
+                "crsScore": "0-300",
+                "population": 5311
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "601-1200",
+                "population": 4525
+            },
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "501-600",
+                "population": 5457
+            },
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "451-500",
+                "population": 60014
+            },
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "401-450",
+                "population": 53502
+            },
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "351-400",
+                "population": 58457
+            },
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "301-350",
+                "population": 30148
+            },
+            {
+                "drawDate": "2023-12-06",
+                "crsScore": "0-300",
+                "population": 5267
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "601-1200",
+                "population": 4525
+            },
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "501-600",
+                "population": 5457
+            },
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "451-500",
+                "population": 60014
+            },
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "401-450",
+                "population": 53502
+            },
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "351-400",
+                "population": 58457
+            },
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "301-350",
+                "population": 30148
+            },
+            {
+                "drawDate": "2023-12-07",
+                "crsScore": "0-300",
+                "population": 5267
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "601-1200",
+                "population": 4525
+            },
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "501-600",
+                "population": 5457
+            },
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "451-500",
+                "population": 60014
+            },
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "401-450",
+                "population": 53502
+            },
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "351-400",
+                "population": 58457
+            },
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "301-350",
+                "population": 30148
+            },
+            {
+                "drawDate": "2023-12-08",
+                "crsScore": "0-300",
+                "population": 5267
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "601-1200",
+                "population": 1011
+            },
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "501-600",
+                "population": 4433
+            },
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "451-500",
+                "population": 56223
+            },
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "401-450",
+                "population": 53698
+            },
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "351-400",
+                "population": 58033
+            },
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "301-350",
+                "population": 29955
+            },
+            {
+                "drawDate": "2023-12-18",
+                "crsScore": "0-300",
+                "population": 5285
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "601-1200",
+                "population": 1011
+            },
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "501-600",
+                "population": 4433
+            },
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "451-500",
+                "population": 56223
+            },
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "401-450",
+                "population": 53698
+            },
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "351-400",
+                "population": 58033
+            },
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "301-350",
+                "population": 29955
+            },
+            {
+                "drawDate": "2023-12-19",
+                "crsScore": "0-300",
+                "population": 5285
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "601-1200",
+                "population": 1011
+            },
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "501-600",
+                "population": 4433
+            },
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "451-500",
+                "population": 56223
+            },
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "401-450",
+                "population": 53698
+            },
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "351-400",
+                "population": 58033
+            },
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "301-350",
+                "population": 29955
+            },
+            {
+                "drawDate": "2023-12-20",
+                "crsScore": "0-300",
+                "population": 5285
+            }
+        ],
+        [
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "601-1200",
+                "population": 1011
+            },
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "501-600",
+                "population": 4433
+            },
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "451-500",
+                "population": 56223
+            },
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "401-450",
+                "population": 53698
+            },
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "351-400",
+                "population": 58033
+            },
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "301-350",
+                "population": 29955
+            },
+            {
+                "drawDate": "2023-12-21",
+                "crsScore": "0-300",
+                "population": 5285
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "601-1200",
+                "population": 1298
+            },
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "501-600",
+                "population": 6345
+            },
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "451-500",
+                "population": 58298
+            },
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "401-450",
+                "population": 53671
+            },
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "351-400",
+                "population": 57703
+            },
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "301-350",
+                "population": 29542
+            },
+            {
+                "drawDate": "2024-01-10",
+                "crsScore": "0-300",
+                "population": 5300
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "601-1200",
+                "population": 646
+            },
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "501-600",
+                "population": 6915
+            },
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "451-500",
+                "population": 59043
+            },
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "401-450",
+                "population": 53905
+            },
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "351-400",
+                "population": 57979
+            },
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "301-350",
+                "population": 29690
+            },
+            {
+                "drawDate": "2024-01-23",
+                "crsScore": "0-300",
+                "population": 5348
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "601-1200",
+                "population": 534
+            },
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "501-600",
+                "population": 7926
+            },
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "451-500",
+                "population": 60120
+            },
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "401-450",
+                "population": 54181
+            },
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "351-400",
+                "population": 57855
+            },
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "301-350",
+                "population": 29709
+            },
+            {
+                "drawDate": "2024-01-31",
+                "crsScore": "0-300",
+                "population": 5401
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "601-1200",
+                "population": 534
+            },
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "501-600",
+                "population": 7926
+            },
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "451-500",
+                "population": 60120
+            },
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "401-450",
+                "population": 54181
+            },
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "351-400",
+                "population": 57855
+            },
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "301-350",
+                "population": 29709
+            },
+            {
+                "drawDate": "2024-02-01",
+                "crsScore": "0-300",
+                "population": 5401
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "601-1200",
+                "population": 587
+            },
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "501-600",
+                "population": 9004
+            },
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "451-500",
+                "population": 60043
+            },
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "401-450",
+                "population": 51356
+            },
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "351-400",
+                "population": 55850
+            },
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "301-350",
+                "population": 29141
+            },
+            {
+                "drawDate": "2024-02-13",
+                "crsScore": "0-300",
+                "population": 5292
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "601-1200",
+                "population": 587
+            },
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "501-600",
+                "population": 9004
+            },
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "451-500",
+                "population": 60043
+            },
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "401-450",
+                "population": 51356
+            },
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "351-400",
+                "population": 55850
+            },
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "301-350",
+                "population": 29141
+            },
+            {
+                "drawDate": "2024-02-14",
+                "crsScore": "0-300",
+                "population": 5292
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "601-1200",
+                "population": 587
+            },
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "501-600",
+                "population": 9004
+            },
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "451-500",
+                "population": 60043
+            },
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "401-450",
+                "population": 51356
+            },
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "351-400",
+                "population": 55850
+            },
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "301-350",
+                "population": 29141
+            },
+            {
+                "drawDate": "2024-02-16",
+                "crsScore": "0-300",
+                "population": 5292
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "601-1200",
+                "population": 965
+            },
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "501-600",
+                "population": 9567
+            },
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "451-500",
+                "population": 59371
+            },
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "401-450",
+                "population": 50695
+            },
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "351-400",
+                "population": 56178
+            },
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "301-350",
+                "population": 29305
+            },
+            {
+                "drawDate": "2024-02-28",
+                "crsScore": "0-300",
+                "population": 5406
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "601-1200",
+                "population": 965
+            },
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "501-600",
+                "population": 9567
+            },
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "451-500",
+                "population": 59371
+            },
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "401-450",
+                "population": 50695
+            },
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "351-400",
+                "population": 56178
+            },
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "301-350",
+                "population": 29305
+            },
+            {
+                "drawDate": "2024-02-29",
+                "crsScore": "0-300",
+                "population": 5406
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "601-1200",
+                "population": 987
+            },
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "501-600",
+                "population": 10573
+            },
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "451-500",
+                "population": 60108
+            },
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "401-450",
+                "population": 50569
+            },
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "351-400",
+                "population": 55099
+            },
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "301-350",
+                "population": 28536
+            },
+            {
+                "drawDate": "2024-03-12",
+                "crsScore": "0-300",
+                "population": 5348
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "601-1200",
+                "population": 987
+            },
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "501-600",
+                "population": 10573
+            },
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "451-500",
+                "population": 60108
+            },
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "401-450",
+                "population": 50569
+            },
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "351-400",
+                "population": 55099
+            },
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "301-350",
+                "population": 28536
+            },
+            {
+                "drawDate": "2024-03-13",
+                "crsScore": "0-300",
+                "population": 5348
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "601-1200",
+                "population": 987
+            },
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "501-600",
+                "population": 10342
+            },
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "451-500",
+                "population": 60488
+            },
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "401-450",
+                "population": 50882
+            },
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "351-400",
+                "population": 55586
+            },
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "301-350",
+                "population": 28287
+            },
+            {
+                "drawDate": "2024-03-25",
+                "crsScore": "0-300",
+                "population": 5390
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "601-1200",
+                "population": 987
+            },
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "501-600",
+                "population": 10342
+            },
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "451-500",
+                "population": 60488
+            },
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "401-450",
+                "population": 50882
+            },
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "351-400",
+                "population": 55586
+            },
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "301-350",
+                "population": 28287
+            },
+            {
+                "drawDate": "2024-03-26",
+                "crsScore": "0-300",
+                "population": 5390
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "601-1200",
+                "population": 1093
+            },
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "501-600",
+                "population": 12051
+            },
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "451-500",
+                "population": 62073
+            },
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "401-450",
+                "population": 51694
+            },
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "351-400",
+                "population": 56015
+            },
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "301-350",
+                "population": 27831
+            },
+            {
+                "drawDate": "2024-04-10",
+                "crsScore": "0-300",
+                "population": 5410
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "601-1200",
+                "population": 1093
+            },
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "501-600",
+                "population": 12051
+            },
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "451-500",
+                "population": 62073
+            },
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "401-450",
+                "population": 51694
+            },
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "351-400",
+                "population": 56015
+            },
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "301-350",
+                "population": 27831
+            },
+            {
+                "drawDate": "2024-04-11",
+                "crsScore": "0-300",
+                "population": 5410
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "601-1200",
+                "population": 1057
+            },
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "501-600",
+                "population": 10625
+            },
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "451-500",
+                "population": 60933
+            },
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "401-450",
+                "population": 52475
+            },
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "351-400",
+                "population": 56383
+            },
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "301-350",
+                "population": 27740
+            },
+            {
+                "drawDate": "2024-04-23",
+                "crsScore": "0-300",
+                "population": 5484
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "601-1200",
+                "population": 1057
+            },
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "501-600",
+                "population": 10625
+            },
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "451-500",
+                "population": 60933
+            },
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "401-450",
+                "population": 52475
+            },
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "351-400",
+                "population": 56383
+            },
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "301-350",
+                "population": 27740
+            },
+            {
+                "drawDate": "2024-04-24",
+                "crsScore": "0-300",
+                "population": 5484
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "601-1200",
+                "population": 2918
+            },
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "501-600",
+                "population": 14211
+            },
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "451-500",
+                "population": 63353
+            },
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "401-450",
+                "population": 54078
+            },
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "351-400",
+                "population": 57028
+            },
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "301-350",
+                "population": 27210
+            },
+            {
+                "drawDate": "2024-05-30",
+                "crsScore": "0-300",
+                "population": 5606
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "601-1200",
+                "population": 2918
+            },
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "501-600",
+                "population": 14211
+            },
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "451-500",
+                "population": 63353
+            },
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "401-450",
+                "population": 54078
+            },
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "351-400",
+                "population": 57028
+            },
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "301-350",
+                "population": 27210
+            },
+            {
+                "drawDate": "2024-05-31",
+                "crsScore": "0-300",
+                "population": 5606
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "601-1200",
+                "population": 3002
+            },
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "501-600",
+                "population": 14330
+            },
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "451-500",
+                "population": 63451
+            },
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "401-450",
+                "population": 54200
+            },
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "351-400",
+                "population": 57086
+            },
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "301-350",
+                "population": 27247
+            },
+            {
+                "drawDate": "2024-06-19",
+                "crsScore": "0-300",
+                "population": 5624
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "601-1200",
+                "population": 940
+            },
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "501-600",
+                "population": 16521
+            },
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "451-500",
+                "population": 64761
+            },
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "401-450",
+                "population": 54148
+            },
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "351-400",
+                "population": 54902
+            },
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "301-350",
+                "population": 25752
+            },
+            {
+                "drawDate": "2024-07-02",
+                "crsScore": "0-300",
+                "population": 5523
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "601-1200",
+                "population": 940
+            },
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "501-600",
+                "population": 16521
+            },
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "451-500",
+                "population": 64761
+            },
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "401-450",
+                "population": 54148
+            },
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "351-400",
+                "population": 54902
+            },
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "301-350",
+                "population": 25752
+            },
+            {
+                "drawDate": "2024-07-04",
+                "crsScore": "0-300",
+                "population": 5523
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "601-1200",
+                "population": 940
+            },
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "501-600",
+                "population": 16521
+            },
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "451-500",
+                "population": 64761
+            },
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "401-450",
+                "population": 54148
+            },
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "351-400",
+                "population": 54902
+            },
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "301-350",
+                "population": 25752
+            },
+            {
+                "drawDate": "2024-07-05",
+                "crsScore": "0-300",
+                "population": 5523
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "601-1200",
+                "population": 940
+            },
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "501-600",
+                "population": 16521
+            },
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "451-500",
+                "population": 64761
+            },
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "401-450",
+                "population": 54148
+            },
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "351-400",
+                "population": 54902
+            },
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "301-350",
+                "population": 25752
+            },
+            {
+                "drawDate": "2024-07-08",
+                "crsScore": "0-300",
+                "population": 5523
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "601-1200",
+                "population": 1407
+            },
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "501-600",
+                "population": 16800
+            },
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "451-500",
+                "population": 60006
+            },
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "401-450",
+                "population": 52500
+            },
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "351-400",
+                "population": 54576
+            },
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "301-350",
+                "population": 25621
+            },
+            {
+                "drawDate": "2024-07-16",
+                "crsScore": "0-300",
+                "population": 5547
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "601-1200",
+                "population": 184
+            },
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "501-600",
+                "population": 16968
+            },
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "451-500",
+                "population": 60115
+            },
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "401-450",
+                "population": 52635
+            },
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "351-400",
+                "population": 54597
+            },
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "301-350",
+                "population": 25669
+            },
+            {
+                "drawDate": "2024-07-17",
+                "crsScore": "0-300",
+                "population": 5567
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "601-1200",
+                "population": 184
+            },
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "501-600",
+                "population": 16968
+            },
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "451-500",
+                "population": 60115
+            },
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "401-450",
+                "population": 52635
+            },
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "351-400",
+                "population": 54597
+            },
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "301-350",
+                "population": 25669
+            },
+            {
+                "drawDate": "2024-07-18",
+                "crsScore": "0-300",
+                "population": 5567
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "601-1200",
+                "population": 1000
+            },
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "501-600",
+                "population": 12250
+            },
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "451-500",
+                "population": 60312
+            },
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "401-450",
+                "population": 51793
+            },
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "351-400",
+                "population": 54274
+            },
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "301-350",
+                "population": 25481
+            },
+            {
+                "drawDate": "2024-07-30",
+                "crsScore": "0-300",
+                "population": 5594
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "601-1200",
+                "population": 105
+            },
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "501-600",
+                "population": 12455
+            },
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "451-500",
+                "population": 60511
+            },
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "401-450",
+                "population": 51969
+            },
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "351-400",
+                "population": 54320
+            },
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "301-350",
+                "population": 25553
+            },
+            {
+                "drawDate": "2024-07-31",
+                "crsScore": "0-300",
+                "population": 5608
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "601-1200",
+                "population": 713
+            },
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "501-600",
+                "population": 10502
+            },
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "451-500",
+                "population": 60902
+            },
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "401-450",
+                "population": 51992
+            },
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "351-400",
+                "population": 53052
+            },
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "301-350",
+                "population": 24695
+            },
+            {
+                "drawDate": "2024-08-13",
+                "crsScore": "0-300",
+                "population": 5463
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "601-1200",
+                "population": 125
+            },
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "501-600",
+                "population": 11055
+            },
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "451-500",
+                "population": 61210
+            },
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "401-450",
+                "population": 52261
+            },
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "351-400",
+                "population": 53137
+            },
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "301-350",
+                "population": 24690
+            },
+            {
+                "drawDate": "2024-08-14",
+                "crsScore": "0-300",
+                "population": 5482
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "601-1200",
+                "population": 125
+            },
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "501-600",
+                "population": 11055
+            },
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "451-500",
+                "population": 61210
+            },
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "401-450",
+                "population": 52261
+            },
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "351-400",
+                "population": 53137
+            },
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "301-350",
+                "population": 24690
+            },
+            {
+                "drawDate": "2024-08-15",
+                "crsScore": "0-300",
+                "population": 5482
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "601-1200",
+                "population": 1154
+            },
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "501-600",
+                "population": 9447
+            },
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "451-500",
+                "population": 60991
+            },
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "401-450",
+                "population": 51705
+            },
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "351-400",
+                "population": 52302
+            },
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "301-350",
+                "population": 24359
+            },
+            {
+                "drawDate": "2024-08-26",
+                "crsScore": "0-300",
+                "population": 5490
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "601-1200",
+                "population": 127
+            },
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "501-600",
+                "population": 9764
+            },
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "451-500",
+                "population": 61133
+            },
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "401-450",
+                "population": 51863
+            },
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "351-400",
+                "population": 52363
+            },
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "301-350",
+                "population": 24396
+            },
+            {
+                "drawDate": "2024-08-27",
+                "crsScore": "0-300",
+                "population": 5491
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "601-1200",
+                "population": 937
+            },
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "501-600",
+                "population": 9987
+            },
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "451-500",
+                "population": 61797
+            },
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "401-450",
+                "population": 52525
+            },
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "351-400",
+                "population": 51188
+            },
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "301-350",
+                "population": 23708
+            },
+            {
+                "drawDate": "2024-09-09",
+                "crsScore": "0-300",
+                "population": 5427
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "601-1200",
+                "population": 937
+            },
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "501-600",
+                "population": 9987
+            },
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "451-500",
+                "population": 61797
+            },
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "401-450",
+                "population": 52525
+            },
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "351-400",
+                "population": 51188
+            },
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "301-350",
+                "population": 23708
+            },
+            {
+                "drawDate": "2024-09-13",
+                "crsScore": "0-300",
+                "population": 5427
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "601-1200",
+                "population": 764
+            },
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "501-600",
+                "population": 11752
+            },
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "451-500",
+                "population": 61769
+            },
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "401-450",
+                "population": 53270
+            },
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "351-400",
+                "population": 51137
+            },
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "301-350",
+                "population": 23613
+            },
+            {
+                "drawDate": "2024-09-19",
+                "crsScore": "0-300",
+                "population": 5457
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "601-1200",
+                "population": 1656
+            },
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "501-600",
+                "population": 11800
+            },
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "451-500",
+                "population": 62853
+            },
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "401-450",
+                "population": 54313
+            },
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "351-400",
+                "population": 50741
+            },
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "301-350",
+                "population": 23155
+            },
+            {
+                "drawDate": "2024-10-07",
+                "crsScore": "0-300",
+                "population": 5374
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "601-1200",
+                "population": 216
+            },
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "501-600",
+                "population": 12312
+            },
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "451-500",
+                "population": 63026
+            },
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "401-450",
+                "population": 54542
+            },
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "351-400",
+                "population": 50737
+            },
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "301-350",
+                "population": 23082
+            },
+            {
+                "drawDate": "2024-10-09",
+                "crsScore": "0-300",
+                "population": 5402
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "601-1200",
+                "population": 216
+            },
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "501-600",
+                "population": 12312
+            },
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "451-500",
+                "population": 63026
+            },
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "401-450",
+                "population": 54542
+            },
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "351-400",
+                "population": 50737
+            },
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "301-350",
+                "population": 23082
+            },
+            {
+                "drawDate": "2024-10-10",
+                "crsScore": "0-300",
+                "population": 5402
+            }
+        ]
+    ]
+}
