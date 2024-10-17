@@ -1,1 +1,1 @@
-web: concurrently "next start" "node server.js" "python data_taker.py"
+web: concurrently "next start" "node server.js" "python3 data_taker.py"
