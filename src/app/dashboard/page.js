@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Header from '/src/app/components/Header'; // 导入 Header 组件
 import Footer from '/src/app/components/Footer'; // 导入 Footer 组件
 import PieChart from '/src/app/crsScorePieChart/page'; // 导入 Pie chart 组件
+import BarLineChart from '/src/app/crsDistributionBarLineChart/page'; // 导入 Bar line chart 组件
 
 import {
     Chart as ChartJS,
@@ -341,101 +342,12 @@ export default function Dashboard() {
             <Header setLanguage={setLanguage} language={language} /> {/* 传递 setLanguage 和 language */}
             
             <h2 className="text-2xl font-semibold mb-6 text-center text-black">{currentTranslations.crsOverTime}</h2>
-            
-            <div className="mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4" style={{transform: 'scale(0.9)'}}>
-                <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                    <label className="flex items-center">
-                        <span className="mr-2 text-black">{currentTranslations.startDate}:</span>
-                        <input
-                            type="date"
-                            value={startDate.toISOString().slice(0, 10)}
-                            onChange={(e) => setStartDate(new Date(e.target.value))}
-                            className="border rounded px-2 py-1 text-black"
-                        />
-                    </label>
-                    <label className="flex items-center">
-                        <span className="mr-2 text-black">{currentTranslations.endDate}:</span>
-                        <input
-                            type="date"
-                            value={endDate.toISOString().slice(0, 10)}
-                            onChange={(e) => setEndDate(new Date(e.target.value))}
-                            className="border rounded px-2 py-1 text-black"
-                        />
-                    </label>
-                </div>
-                <div className="flex space-x-4">
-                    <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={showInvitations}
-                            onChange={() => setShowInvitations(prev => !prev)}
-                            className="mr-2"
-                        />
-                        <span className="mr-2 text-black"> {currentTranslations.showInvitations}</span>
-                    </label>
-                    <label className="flex items-center">
-                        <input
-                            type="checkbox"
-                            checked={showCrsScores}
-                            onChange={() => setShowCrsScores(prev => !prev)}
-                            className="mr-2"
-                        />
-                        <span className="mr-2 text-black">Show CRS Scores</span>                    </label>
-                </div>
+
+            {/* Bar&Line chart on the right */}
+            <div>
+                <BarLineChart />
             </div>
 
-            <div className="mb-12" style={{transform: 'scale(0.9)'}}>
-                {data.datasets && (
-                    <Bar
-                        data={data}
-                        options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { 
-                                legend: { position: 'top' },
-                                tooltip: {
-                                    mode: 'index',
-                                    intersect: false,
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    reverse: true,
-                                    title: {
-                                        display: true,
-                                        text: 'Date',
-                                    },
-                                    ticks: {
-                                        maxRotation: 45,
-                                        minRotation: 45,
-                                    },
-                                },
-                                'y-invites': {
-                                    type: 'linear',
-                                    position: 'left',
-                                    title: {
-                                        display: true,
-                                        text: 'Invitations',
-                                    },
-                                },
-                                'y-scores': {
-                                    type: 'linear',
-                                    position: 'right',
-                                    title: {
-                                        display: true,
-                                        text: 'CRS Score',
-                                    },
-                                    grid: {
-                                        drawOnChartArea: false,
-                                    },
-                                    beginAtZero: false,
-                                },
-                            },
-                        }}
-                        height={700}
-                    />
-                )}
-            </div>
 
             <h2 className="text-2xl font-semibold mb-6 text-center text-black">{currentTranslations.totalCandidates}</h2>
             <div className="mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto" style={{transform: 'scale(0.9)'}}>
