@@ -338,90 +338,105 @@ export default function Dashboard() {
     const currentTranslations = translations[language]; // 根据当前语言获取翻译
 
     return (
-        <div className="flex flex-col min-h-screen bg-white">
+        <div className="bg-white">
             <Header setLanguage={setLanguage} language={language} /> {/* 传递 setLanguage 和 language */}
+            <div className="relative isolate px-6 pt-14 lg:px-8">
             
-            <h2 className="text-2xl font-semibold mb-6 text-center text-black">{currentTranslations.crsOverTime}</h2>
+                <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mt-40 mb-30 ">{currentTranslations.crsOverTime}</h2>
 
-            {/* Bar&Line chart on the right */}
-            <div>
-                <BarLineChart />
-            </div>
-
-
-            <h2 className="text-2xl font-semibold mb-6 text-center text-black">{currentTranslations.totalCandidates}</h2>
-            <div className="mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto" style={{transform: 'scale(0.9)'}}>
-                <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                    <label className="flex items-center">
-                        <span className="mr-2 text-black">{currentTranslations.startDate}:</span>
-                        <input
-                            type="date"
-                            value={totalStartDate.toISOString().slice(0, 10)}
-                            onChange={(e) => setTotalStartDate(new Date(e.target.value))}
-                            className="border rounded px-2 py-1 text-black"
-                        />
-                    </label>
-                    <label className="flex items-center">
-                        <span className="mr-2 text-black">{currentTranslations.endDate}:</span>
-                        <input
-                            type="date"
-                            value={totalEndDate.toISOString().slice(0, 10)}
-                            onChange={(e) => setTotalEndDate(new Date(e.target.value))}
-                            className="border rounded px-2 py-1 text-black"
-                        />
-                    </label>
+                {/* Bar&Line chart on the right */}
+                <div>
+                    <BarLineChart />
                 </div>
-            </div>
 
-            <div className="flex justify-center items-start mb-12">
-                {/* Line chart on the left */}
-                <div className="w-1/2" style={{ transform: 'scale(1.0)' }}>
-                    {totalCandidatesData.datasets && (
-                        <Line
-                            data={totalCandidatesData}
-                            options={{
-                                responsive: true,
-                                plugins: { legend: { position: 'top' } },
-                                scales: {
-                                    x: {
-                                        reverse: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Date',
+
+                <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mb-3">{currentTranslations.totalCandidates}</h2>
+                <div className="mt-10 mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto" style={{transform: 'scale(0.9)'}}>
+                    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <label className="flex items-center">
+                            <span className="mr-2 text-black">{currentTranslations.startDate}:</span>
+                            <input
+                                type="date"
+                                value={totalStartDate.toISOString().slice(0, 10)}
+                                onChange={(e) => setTotalStartDate(new Date(e.target.value))}
+                                className="border rounded-md px-2 py-1 text-black"
+                            />
+                        </label>
+                        <label className="flex items-center">
+                            <span className="mr-2 text-black">{currentTranslations.endDate}:</span>
+                            <input
+                                type="date"
+                                value={totalEndDate.toISOString().slice(0, 10)}
+                                onChange={(e) => setTotalEndDate(new Date(e.target.value))}
+                                className="border rounded-md px-2 py-1 text-black"
+                            />
+                        </label>
+                    </div>
+                </div>
+
+                <div className="flex justify-center items-start mb-12 mt-12">
+                    {/* Line chart on the left */}
+                    <div className="w-1/2" style={{ transform: 'scale(1.0)' }}>
+                        {totalCandidatesData.datasets && (
+                            <Line
+                                data={totalCandidatesData}
+                                options={{
+                                    responsive: true,
+                                    plugins: { legend: { position: 'top' } },
+                                    scales: {
+                                        x: {
+                                            reverse: true,
+                                            title: {
+                                                display: true,
+                                                text: 'Date',
+                                            },
+                                        },
+                                        y: {
+                                            title: {
+                                                display: true,
+                                                text: 'Total Number of Candidates',
+                                            },
+                                            beginAtZero: false,
                                         },
                                     },
-                                    y: {
-                                        title: {
-                                            display: true,
-                                            text: 'Total Number of Candidates',
-                                        },
-                                        beginAtZero: false,
-                                    },
-                                },
-                            }}
-                            height={200}
-                        />
-                    )}
+                                }}
+                                height={200}
+                            />
+                        )}
+                    </div>
+
+                    {/* Pie chart on the right */}
+                    <div className="w-1/2">
+                        <PieChart />
+                    </div>
+
+                </div>
+                
+
+                <div className="mt-8 text-center mb-8 mx-auto" >
+                    <a
+                        href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300"
+                    >
+                        Calculate Your CRS Score
+                    </a>
                 </div>
 
-                {/* Pie chart on the right */}
-                <div className="w-1/2">
-                    <PieChart />
-                </div>
-            </div>
-
-            
-            
-
-            <div className="mt-8 text-center mb-8 mx-auto" >
-                <a
-                    href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300"
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
                 >
-                    Calculate Your CRS Score
-                </a>
+                    <div
+                        style={{
+                            clipPath:
+                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+                        }}
+                        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+                    />
+                </div>
+
             </div>
             <Footer language={language} /> {/* 传递当前语言 */}
         </div>

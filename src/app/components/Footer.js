@@ -4,16 +4,16 @@ import React from 'react';
 // 语言翻译对象
 const translations = {
     en: {
-        footerText: "© 2023 ImmiGo. All rights reserved.",
+        footerText: "© 2024 ImmiGo. All rights reserved. v.2.0.0",
     },
     fr: {
-        footerText: "© 2023 ImmiGo. Tous droits réservés.",
+        footerText: "© 2024 ImmiGo. Tous droits réservés. v.2.0.0",
     },
     zh: {
-        footerText: "© 2023 ImmiGo。保留所有权利。",
+        footerText: "© 2024 ImmiGo。保留所有权利。v.2.0.0",
     },
     hi: {
-        footerText: "© 2023 ImmiGo。 सर्वाधिकार सुरक्षित।",
+        footerText: "© 2024 ImmiGo。 सर्वाधिकार सुरक्षित। v.2.0.0",
     },
 };
 

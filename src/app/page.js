@@ -1,137 +1,118 @@
-"use client";
-import Link from 'next/link';
-import Header from '/src/app/components/Header';
-import Footer from '/src/app/components/Footer';
-import Confetti from '/src/app/components/Confetti';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // 导入 axios
+// home page file
+'use client';
 
-// 语言翻译对象
+import { useState, useEffect } from 'react';
+import { CalendarDaysIcon, HandRaisedIcon } from '@heroicons/react/24/outline';
+import Header from '/src/app/components/Header'; // 导入 Header 组件
+import Footer from '/src/app/components/Footer'; // 导入 Footer 组件
+
+
+
+const stats = [
+    { name: 'Update', value: 'REAL-TIME' },
+    { name: 'Visualization', value: 'DATA' },
+    { name: 'Tracking', value: 'PERSONALIZED' },
+    { name: 'Service', value: 'FREE' },
+]
+
+
 const translations = {
-  en: {
-    welcome: "Welcome to ImmiGo",
-    description: "Real-time tracking tool for Canada's Express Entry immigration system",
-    about: "About ImmiGo",
-    aboutContent: "ImmiGo is a platform dedicated to providing information on Canadian immigration, helping users understand the immigration process and the latest updates.",
-    expressEntry: "Express Entry Overview",
-    latestDraw: "Latest Draw",
-    minimumScore: "Minimum Score:",
-    numberOfInvitations: "Number of Invitations:",
-    date: "Date:",
-    subscribe: "Subscribe for Updates",
-    subscribeContent:"We will provide immediate updates whenever a new draw is made from the EE System.",
-    subscribeButton: "Subscribe",
-    whyChoose: "Why Choose ImmiGo?",
-    realTimeUpdates: "Real-time Updates",
-    dataVisualization: "Data Visualization",
-    freeService: "Free Service",
-    enterEmail: "Enter your email",
-    programName: "Program Name:",
-    historicalTrends: "Historical Trends",
-    ChartsWillBeDisplayedHere: "Charts will be displayed here",
-    enterYourName: "Enter your name",
-    selectProgramsToFollow: "Select Programs to Follow:",
-    areYouCurrentlyInThePool: "Are you currently in the pool?",
-    enterYourScore: "Enter Your Score:",
-    selectYourCurrentProgram: "Select Your Current Program:",
-    starMessage: "More than 2,002 applicants saved time effortlessly",
-    realTimeMsg: "Get the latest Express Entry draw information and score changes.",
-    dataMsg: "Understand historical trends and data analysis through intuitive charts.",
-    freeMsg: "All core features are completely free to help you achieve your immigration dreams.",
-  },
-  fr: {
-    welcome: "Bienvenue à ImmiGO",
-    description: "Outil de suivi en temps réel pour le système d'immigration Express Entry du Canada",
-    about: "À propos d'ImmiGo",
-    aboutContent: "ImmiGo est une plateforme dédiée à fournir des informations sur l'immigration canadienne, aidant les utilisateurs à comprendre le processus d'immigration et les dernières mises à jour.",
-    expressEntry: "Aperçu de l'Entrée Express",
-    latestDraw: "Dernier Tirage",
-    minimumScore: "Score Minimum:",
-    numberOfInvitations: "Nombre d'Invitations:",
-    date: "Date:",
-    subscribe: "S'abonner aux mises à jour",
-    subscribeContent:"Nous fournirons des mises à jour immédiates dès qu'un nouveau tirage sera effectué depuis le système EE.",
-    subscribeButton: "S'abonner",
-    whyChoose: "Pourquoi choisir ImmiGo?",
-    realTimeUpdates: "Mises à jour en temps réel",
-    dataVisualization: "Visualisation des données",
-    freeService: "Service gratuit",
-    enterEmail: "Entrez votre email",
-    programName: "Nom du programme:",
-    historicalTrends: "Tendances historiques",
-    ChartsWillBeDisplayedHere: "Les graphiques seront affichés ici",
-    enterYourName: "Entrez votre nom",
-    selectProgramsToFollow: "Sélectionnez les programmes à suivre:",
-    enterYourScore: "Entrez votre score:",
-    selectYourCurrentProgram: "Sélectionnez votre programme actuel:",
-    areYouCurrentlyInThePool: "Êtes-vous actuellement dans le bassin?",
-    starMessage: "Plus de 2 002 candidats ont économisé du temps sans effort",
-    realTimeMsg: "Obtenez les dernières informations sur le tirage Express Entry et les changements de score.",
-    dataMsg: "Comprenez les tendances historiques et l'analyse des données à travers des graphiques intuitifs.",
-    freeMsg: "Toutes les fonctionnalités de base sont entièrement gratuites pour vous aider à réaliser vos rêves d'immigration.",
-  },
-  zh: {
-    welcome: "欢迎来到 ImmiGO",
-    description: "加拿大快速通道移民系统的实时跟踪工具",
-    about: "关于 ImmiGo",
-    aboutContent: "ImmiGo是一个致力于提供关加拿大移民信息的平台，帮助用户了解移民过程和最新动态。",
-    expressEntry: "快速通道概述",
-    latestDraw: "最新抽签",
-    minimumScore: "最低分数:",
-    numberOfInvitations: "邀请人数:",
-    date: "日期:",
-    subscribe: "订阅更新",
-    subscribeContent: "每当EE系统有新的抽签时，我们将提供即时更新",
-    subscribeButton: "订阅",
-    whyChoose: "为什么选择 ImmiGo?",
-    realTimeUpdates: "实时更新",
-    dataVisualization: "数据可视化",
-    freeService: "免费服务",
-    enterEmail: "输入您的电子邮件",
-    programName: "项目名称:",
-    historicalTrends: "历史趋势",
-    ChartsWillBeDisplayedHere: "图表将在这里显示",
-    enterYourName: "输入您的姓名",
-    selectProgramsToFollow: "选择要关注的项目:",
-    enterYourScore: "输入您的分数:",
-    selectYourCurrentProgram: "选择您的当前项目:",
-    areYouCurrentlyInThePool: "您目前是否在池中?",
-    starMessage: "超过2,002名申请人轻松节省时间",
-    realTimeMsg: "获取最新的Express Entry抽签信息和分数变化。",
-    dataMsg: "通过直观的图表了解历史趋势和数据分析。",
-    freeMsg: "所有核心功能都是完全免费的，以帮助您实现移民梦想。",
-  },
-  hi: {
-    welcome: "ImmiGO में आपका स्वागत है",
-    description: "कनाडा के एक्सप्रेस एंट्री इमिग्रेशन सिस्टम के लिए वास्तविक समय ट्रैकिंग टूल",
-    about: "ImmiGo के बारे में",
-    aboutContent: "ImmiGo एक ऐसा प्लेटफार्म है जो कनाडाई इमिग्रेशन पर जानकारी प्रदान करने के लिए समर्पित है, उपयोगकर्ताओं को इमिग्रेशन प्क्िया और नवीनतम अपडेट को समझने में मदद करता है।",
-    expressEntry: "एक्सप्रेस एंट्री अवलोकन",
-    latestDraw: "नवीनतम ड्रॉ",
-    minimumScore: "न्यूनतम स्कोर:",
-    numberOfInvitations: "आमंत्रणों की संख्या:",
-    date: "तारीख:",
-    subscribe: "अपडेट के लिए सब्सक्राइब करें",
-    subscribeContent: "हम EE सिस्टम से एक नया ड्रॉ होने पर तुरंत अपडेट प्रदान करेंगे।",
-    subscribeButton: "सब्सक्राइब करें",
-    whyChoose: "ImmiGo को क्यों चुनें?",
-    realTimeUpdates: "वास्तविक समय अपडेट",
-    dataVisualization: "डेटा विज़ुअइज़ेशन",
-    freeService: "मुफ्त सेवा",
-    enterEmail: "अपना ईमेल दर्ज करें",
-    programName: "कार्यक्रम का नाम:",
-    historicalTrends: "ऐतिहासिक प्रवृत्तियाँ",
-    ChartsWillBeDisplayedHere: "यहाँ चार्ट्स प्रदर्शित किए जाएंगे",
-    enterYourName: "अपना नाम दर्ज करें",
-    selectProgramsToFollow: "फॉलो करने के लिए कार्यक्रम चुनें:",
-    enterYourScore: "अपना स्कोर दर्ज करें:",
-    selectYourCurrentProgram: "अपना वर्तमान कार्यक्रम चुनें:",
-    areYouCurrentlyInThePool: "क्या आप वर्तमान में पूल में हैं?",
-    starMessage: "2,002 से अधिक आवेदकों ने समय आसानी से बचाया",
-    realTimeMsg: "नवीनतम एक्सप्रेस एंट्री ड्रा जानकारी और स्कोर परिवर्तन प्राप्त करें।",
-    dataMsg: "समझें इतिहासिक प्रवृत्तियाँ और डेटा विश्लेषण को सरल चार्ट्स के माध्यम से।",
-    freeMsg: "आपकी इमिग्रेशन सपनों को पूरा करने में मदद करने के लिए सभी मूल विशेषताएँ पूरी तरह से मुफ्त हैं।",
-  },
+    en: {
+        description: "Real-time tracker for Canada's Express Entry immigration system",
+        aboutContent: "ImmiGo is a platform dedicated to providing information on Canadian immigration, helping users understand the immigration process and the latest updates.",
+        latestDraw: "Latest Draw",
+        minimumScore: "Minimum Score:",
+        numberOfInvitations: "Number of Invitations:",
+        getStarted: "Get started",
+        learnMore: "Learn more",
+        date: "Date:",
+        subscribe: "Subscribe for Updates",
+        subscribeContent: "We will provide immediate updates whenever a new draw is made from the EE System.",
+        subscribeButton: "Subscribe",
+        enterEmail: "Enter your email",
+        programName: "Program Name:",
+        enterYourName: "Enter your name",
+        selectProgramsToFollow: "Select Programs to Follow:",
+        areYouCurrentlyInThePool: "Are you currently in the pool?",
+        enterYourScore: "Enter Your Score:",
+        selectYourCurrentProgram: "Select Your Current Program:",
+        instantNotification: "Instant notification",
+        instantNotificationMsg: "Get instant updates and never miss out on important news—delivered straight to your inbox!",
+        noSpam: "No spam",
+        noSpamMsg: "Promise not to send any spam, and your information will be kept secure and confidential."
+    },
+    fr: {
+        description: "Outil de suivi en temps réel pour le système d'immigration Express Entry du Canada",
+        aboutContent: "ImmiGo est une plateforme dédiée à fournir des informations sur l'immigration canadienne, aidant les utilisateurs à comprendre le processus d'immigration et les dernières mises à jour.",
+        latestDraw: "Dernier Tirage",
+        minimumScore: "Score Minimum:",
+        numberOfInvitations: "Nombre d'Invitations:",
+        getStarted: "Commencer",
+        learnMore: "En savoir plus",
+        date: "Date:",
+        subscribe: "S'abonner aux mises à jour",
+        subscribeContent: "Nous fournirons des mises à jour immédiates dès qu'un nouveau tirage sera effectué depuis le système EE.",
+        subscribeButton: "S'abonner",
+        enterEmail: "Entrez votre email",
+        programName: "Nom du programme:",
+        enterYourName: "Entrez votre nom",
+        selectProgramsToFollow: "Sélectionnez les programmes à suivre:",
+        areYouCurrentlyInThePool: "Êtes-vous actuellement dans le bassin?",
+        enterYourScore: "Entrez votre score:",
+        selectYourCurrentProgram: "Sélectionnez votre programme actuel:",
+        instantNotification: "Notification instantanée",
+        instantNotificationMsg: "Recevez des mises à jour instantanées et ne manquez jamais d'informations importantes—livrées directement dans votre boîte de réception!",
+        noSpam: "Pas de spam",
+        noSpamMsg: "Promesse de ne pas envoyer de spam, et vos informations seront gardées sécurisées et confidentielles."
+    },
+    zh: {
+        description: "加拿大快速通道移民系统的实时跟踪工具",
+        aboutContent: "ImmiGo是一个致力于提供关加拿大移民信息的平台，帮助用户了解移民过程和最新动态。",
+        latestDraw: "最新抽签",
+        minimumScore: "最低分数:",
+        numberOfInvitations: "邀请人数:",
+        getStarted: "开始使用",
+        learnMore: "了解更多",
+        date: "日期:",
+        subscribe: "订阅更新",
+        subscribeContent: "每当EE系统有新的抽签时，我们将提供即时更新。",
+        subscribeButton: "订阅",
+        enterEmail: "输入您的电子邮件",
+        programName: "项目名称:",
+        enterYourName: "输入您的姓名",
+        selectProgramsToFollow: "选择要关注的项目:",
+        areYouCurrentlyInThePool: "您目前是否在池中?",
+        enterYourScore: "输入您的分数:",
+        selectYourCurrentProgram: "选择您的当前项目:",
+        instantNotification: "即时通知",
+        instantNotificationMsg: "获取即时更新，绝不错过重要消息—直接送到您的收件箱！",
+        noSpam: "无垃圾邮件",
+        noSpamMsg: "承诺不发送任何垃圾邮件，您的信息将被安全和保密地保存。"
+    },
+    hi: {
+        description: "कनाडा के एक्सप्रेस एंट्री इमिग्रेशन सिस्टम के लिए वास्तविक समय ट्रैकिंग टूल",
+        aboutContent: "ImmiGo एक ऐसा प्लेटफार्म है जो कनाडाई इमिग्रेशन पर जानकारी प्रदान करने के लिए समर्पित है, उपयोगकर्ताओं को इमिग्रेशन प्रक्रिया और नवीनतम अपडेट को समझने में मदद करता है।",
+        latestDraw: "नवीनतम ड्रॉ",
+        minimumScore: "न्यूनतम स्कोर:",
+        numberOfInvitations: "आमंत्रणों की संख्या:",
+        getStarted: "शुरू करें",
+        learnMore: "और जानें",
+        date: "तारीख:",
+        subscribe: "अपडेट के लिए सब्सक्राइब करें",
+        subscribeContent: "हम EE सिस्टम से एक नया ड्रॉ होने पर तुरंत अपडेट प्रदान करेंगे।",
+        subscribeButton: "सब्सक्राइब करें",
+        enterEmail: "अपना ईमेल दर्ज करें",
+        programName: "कार्यक्रम का नाम:",
+        enterYourName: "अपना नाम दर्ज करें",
+        selectProgramsToFollow: "फॉलो करने के लिए कार्यक्रम चुनें:",
+        areYouCurrentlyInThePool: "क्या आप वर्तमान में पूल में हैं?",
+        enterYourScore: "अपना स्कोर दर्ज करें:",
+        selectYourCurrentProgram: "अपना वर्तमान कार्यक्रम चुनें:",
+        instantNotification: "तत्काल सूचना",
+        instantNotificationMsg: "तत्काल अपडेट प्राप्त करें और महत्वपूर्ण समाचारों को कभी न चूकें—सीधे आपके इनबॉक्स में!",
+        noSpam: "कोई स्पैम नहीं",
+        noSpamMsg: "स्पैम न भेजने का वादा, और आपकी जानकारी सुरक्षित और गोपनीय रखी जाएगी।"
+    },
 };
 
 const programs = [
@@ -145,28 +126,19 @@ const programs = [
     'Agriculture and agri-food occupations',
     'Transport occupations',
     'Trade occupations',
-    'No Program Specified',
-    'None'
+    'No Program Specified'
 ];
 
-const InfoCard = ({ title, content, link }) => (
-    <div className="bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+const InfoCardForLatestDraw = ({ title, content }) => (
+    <div className="bg-blue-50 p-8 rounded-lg shadow-md w-full lg:h-2/5 mx-auto text-center">
         <h3 className="text-2xl font-semibold mb-4 text-black">{title}</h3>
         <div className="space-y-2">{content}</div>
-        {link && (
-            <Link href={link} className="mt-4 inline-block text-blue-600 hover:underline">
-                View More Details →
-            </Link>
-        )}
     </div>
 );
 
-const InfoCardForLatestDraw = ({ title, content, link }) => (
-  <div className="bg-white p-6 rounded-lg shadow-md">
-    <h3 className="text-2xl font-semibold mb-4 text-black">{title}</h3>
-    <div className="space-y-2">{content}</div>
-  </div>
-);
+
+
+
 
 export default function Home() {
     const [language, setLanguage] = useState('en'); // 默认语言为英语
@@ -180,75 +152,73 @@ export default function Home() {
     const [showConfetti, setShowConfetti] = useState(false); // 控制撒花效果
 
 
-
     const [latestDraw, setLatestDraw] = useState({});
 
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch('https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json');
-          const data = await response.json();
-          const rounds = data.rounds || [];
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json');
+                const data = await response.json();
+                const rounds = data.rounds || [];
 
-          // 假设你只想获取最新一轮的抽签数据
-          const latestRound = rounds[0];
-          const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version 1\)/g, '').trim();
+                // 假设你只想获取最新一轮的抽签数据
+                const latestRound = rounds[0];
+                const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version 1\)/g, '').trim();
 
-          setLatestDraw({
-            drawName: type,
-            drawCRS: latestRound.drawCRS,
-            drawSize: latestRound.drawSize,
-            drawDate: latestRound.drawDateFull,
-          });
-        } catch (error) {
-          console.error('Error fetching draw data:', error);
-        }
-      };
+                setLatestDraw({
+                    drawName: type,
+                    drawCRS: latestRound.drawCRS,
+                    drawSize: latestRound.drawSize,
+                    drawDate: latestRound.drawDateFull,
+                });
+            } catch (error) {
+                console.error('Error fetching draw data:', error);
+            }
+        };
 
-      fetchData();
+        fetchData();
     }, []);
 
 
 
-
     const handleSubscribe = async (e) => {
-      e.preventDefault();
+        e.preventDefault();
 
-      if (!email || !name) {
-        setMessage('Please fill in all fields correctly.');
-        return;
-      }
+        if (!email || !name) {
+            setMessage('Please fill in all fields correctly.');
+            return;
+        }
 
-      try {
-        // 发送订阅请求到后端
-        const response = await fetch('/api/subscribe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            score,
-            selectedPrograms,
-            currentProgram,
-          }),
-        });
-        console.log(response);
+        try {
+            // 发送订阅请求到后端
+            const response = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    score,
+                    selectedPrograms,
+                    currentProgram,
+                }),
+            });
+            console.log(response);
 
-        const result = await response.json();
-        console.log(result);
-        if (result.success) {
-          // 发送订阅确认邮件
-          const responseSubscribeEmail = await fetch('/api/sendEmail', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email,
-              subject: `Welcome to ImmiGo, ${name}`,
-              message: `
+            const result = await response.json();
+            console.log(result);
+            if (result.success) {
+                // 发送订阅确认邮件
+                const responseSubscribeEmail = await fetch('/api/sendEmail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email,
+                        subject: `Welcome to ImmiGo, ${name}`,
+                        message: `
                       <div style="font-family: Arial, sans-serif; text-align: center;">
                           <h2 style="color: #000;">Welcome to ImmiGo</h2>
                           <p>Congratulations! You've subscribed to ImmiGo, the free service that helps you track Canadian Express Entry updates.</p>
@@ -266,224 +236,279 @@ export default function Home() {
                           <p>ImmiGo, Vancouver, BC, Canada</p>
                       </div>
                       `,
-            }),
-          });
+                    }),
+                });
 
-          const resultSubscribeEmail = await responseSubscribeEmail.json();
+                const resultSubscribeEmail = await responseSubscribeEmail.json();
 
-          if (resultSubscribeEmail.success) {
+                if (resultSubscribeEmail.success) {
 
-            // TODO: There is a Confetti issue needs to be fixed
-            setShowConfetti(true); // 显示撒花效果
-            setTimeout(() => {
-              setShowConfetti(false); // 几秒后隐藏撒花效果
-              }, 3000); // 3秒后隐藏
+                    // TODO: There is a Confetti issue needs to be fixed
+                    setShowConfetti(true); // 显示撒花效果
+                    setTimeout(() => {
+                        setShowConfetti(false); // 几秒后隐藏撒花效果
+                    }, 3000); // 3秒后隐藏
 
 
-            setMessage('Subscription successful! Check your email for updates.');
-          } else {
-            setMessage(resultSubscribeEmail.message || 'Failed to subscribe. Please try again.');
-          }
-        } else {
-          setMessage(result.message || 'Failed to subscribe. Please try again.');
+                    setMessage('Subscription successful! Check your email for updates.');
+                } else {
+                    setMessage(resultSubscribeEmail.message || 'Failed to subscribe. Please try again.');
+                }
+            } else {
+                setMessage(result.message || 'Failed to subscribe. Please try again.');
+            }
+        } catch (error) {
+            setMessage('An error occurred. Please try again later.');
+            console.error('Error:', error);
         }
-      } catch (error) {
-        setMessage('An error occurred. Please try again later.');
-        console.error('Error:', error);
-      }
 
-      // Reset form fields
-      setName('');
-      setScore('');
-      setEmail('');
-      setSelectedPrograms([]);
-      setCurrentProgram('');
+        // Reset form fields
+        setName('');
+        setScore('');
+        setEmail('');
+        setSelectedPrograms([]);
+        setCurrentProgram('');
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="bg-white">
+
+            {/* header*/}
             <Header setLanguage={setLanguage} language={language} />
-            <main className="flex-grow container mx-auto px-4 py-8">
-                <section className="text-center mb-12">
-                    <h1 className="text-5xl font-bold mb-4 text-black">{translations[language].welcome}</h1>
-                    <p className="text-xl text-black mb-8">{translations[language].description}</p>
-                    <div className="mt-4 relative">
-                        {/* 其他内容 */}
+
+            <div className="relative isolate px-6 pt-14 lg:px-8">
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+                >
+                    <div
+                        style={{
+                            clipPath:
+                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+                        }}
+                        className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+                    />
+                </div>
+                <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+                    <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                        <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                            Powered by 🇨🇦 IRCC{' '}
+                        </div>
                     </div>
-                </section>
-
-                <section className="mb-12">
-                    <h2 className="text-3xl font-semibold mb-6 text-center text-black">{translations[language].about}</h2>
-                    <p className="text-black mb-8 text-center">{translations[language].aboutContent}</p>
-                </section>
-
-                <section className="mb-12">
-                    <h2 className="text-3xl font-semibold mb-6 text-center text-black">{translations[language].expressEntry}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <InfoCardForLatestDraw
-                            title={translations[language].latestDraw}
-                            content={
-                                <>
-                                <p className="text-black">
-                                  <span className="font-semibold">{translations[language].programName}</span> {latestDraw.drawName}
-                                </p>
-                                <p className="text-black">
-                                  <span className="font-semibold">{translations[language].minimumScore}</span> {latestDraw.drawCRS}
-                                </p>
-                                <p className="text-black">
-                                  <span className="font-semibold">{translations[language].numberOfInvitations}</span> {latestDraw.drawSize}
-                                </p>
-                                <p className="text-black">
-                                  <span className="font-semibold">{translations[language].date}</span> {latestDraw.drawDate}
-                                </p>
-                                </>
-                            }
-                        />
-                        <InfoCard
-                            title= {translations[language].historicalTrends}
-                            content={<p className="text-black">{translations[language].ChartsWillBeDisplayedHere} </p>}
-                            link="/dashboard"
-                        />
+                    <div className="text-center">
+                        <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+                            {translations[language].description}
+                        </h1>
+                        <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+                            {translations[language].aboutContent}
+                        </p>
+                        <div className="mt-10 flex items-center justify-center gap-x-6">
+                            <a
+                                href="#subscribe"
+                                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                {translations[language].getStarted}
+                            </a>
+                            <a href="/dashboard" className="text-sm font-semibold leading-6 text-gray-900">
+                                {translations[language].learnMore}<span aria-hidden="true">→</span>
+                            </a>
+                        </div>
                     </div>
-                </section>
+                </div>
 
-                <section id="subscribe" className="bg-white p-8 rounded-lg shadow-md mb-12 text-center">
-                    <h2 className="text-3xl font-semibold mb-6 text-black">{translations[language].subscribe}</h2>
-                    <p className="text-black mb-8 text-center">{translations[language].subscribeContent}</p>
-                    <form className="max-w-md mx-auto" onSubmit={handleSubscribe}>
-                        <div className="flex flex-col mb-4">
-                            <input 
-                                type="text" 
-                                placeholder={translations[language].enterYourName}  // 姓名输入框
-                                className="form-input mb-2 text-black border rounded p-2.5 mx-auto w-full" 
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="flex flex-col mb-4">
-                            <input 
-                                type="email" 
-                                placeholder={translations[language].enterEmail} 
-                                className="form-input mb-2 text-black border rounded p-2.5 mx-auto w-full" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block mb-2 text-black font-bold">{translations[language].selectProgramsToFollow} </label> {/* 加粗 */}
-                            {programs.map((program) => (
-                                <label key={program} className="inline-flex items-center mr-4">
-                                    <input 
-                                        type="checkbox" 
-                                        value={program} 
-                                        checked={selectedPrograms.includes(program)} 
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            setSelectedPrograms(prev => 
-                                                prev.includes(value) ? prev.filter(p => p !== value) : [...prev, value]
-                                            );
-                                        }} 
-                                        className="form-checkbox"
+
+
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                    {/* subscribe section */}
+                    <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+                        <div id="subscribe" className="max-w-xl lg:max-w-lg mx-auto p-6 text-center">
+                            <h2 className="text-4xl font-semibold tracking-tight text-black">{translations[language].subscribe}</h2>
+                            <p className="mt-4 text-lg text-gray-500">
+                                {translations[language].subscribeContent}
+                            </p>
+                            <form className="mt-6 max-w-md" onSubmit={handleSubscribe}>
+                                <div className="flex flex-col mb-4">
+                                    <input
+                                        type="text"
+                                        placeholder={translations[language].enterYourName}  // 姓名输入框
+                                        className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
                                     />
-                                    <span className="ml-2 text-black">{program}</span>
-                                </label>
-                            ))}
-                        </div>
-                        <div className="mb-4">
-                            <label className="block mb-2 text-black font-bold">{translations[language].areYouCurrentlyInThePool} </label> {/* 加粗 */}
-                            <div className="flex items-center mb-4 justify-center">
-                                <label className="mr-4 text-black">
-                                    <input 
-                                        type="radio" 
-                                        value="yes" 
-                                        checked={inPool === true} 
-                                        onChange={() => setInPool(true)} 
-                                        className="form-radio text-black"
-                                    />
-                                    <span className="ml-2">Yes</span>
-                                </label>
-                                <label className="text-black">
-                                    <input 
-                                        type="radio" 
-                                        value="no" 
-                                        checked={inPool === false} 
-                                        onChange={() => setInPool(false)} 
-                                        className="form-radio text-black"
-                                    />
-                                    <span className="ml-2">No</span>
-                                </label>
-                            </div>
-                        </div>
-                        {inPool && (
-                            <>
-                                <div className="mb-4">
-                                    <label className="block mb-2 text-black">{translations[language].enterYourScore}</label>
-                                    <input 
-                                        type="number" 
-                                        value={score} 
-                                        onChange={(e) => setScore(e.target.value)} 
-                                        className="form-input mb-2 text-black border rounded p-2 mx-auto" 
-                                        placeholder="Your Score"
+                                </div>
+                                <div className="flex flex-col mb-4">
+                                    <input
+                                        type="email"
+                                        placeholder={translations[language].enterEmail}
+                                        className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
                                     />
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block mb-2 text-black">{translations[language].selectYourCurrentProgram}</label>
-                                    <select 
-                                        value={currentProgram} 
-                                        onChange={(e) => setCurrentProgram(e.target.value)} 
-                                        className="form-select mb-2 text-black border rounded p-2 mx-auto"
-                                    >
-                                        <option value="">Select a Program</option>
-                                        {programs.map((program) => (
-                                            <option key={program} value={program}>{program}</option>
-                                        ))}
-                                    </select>
+                                    <label className="block mb-2 text-black font-bold">{translations[language].selectProgramsToFollow}</label>
+                                    {programs.map((program) => (
+                                        <label key={program} className="inline-flex items-center mr-4">
+                                            <input
+                                                type="checkbox"
+                                                value={program}
+                                                checked={selectedPrograms.includes(program)}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    setSelectedPrograms(prev =>
+                                                        prev.includes(value) ? prev.filter(p => p !== value) : [...prev, value]
+                                                    );
+                                                }}
+                                                className="flex-none rounded-md form-checkbox"
+                                            />
+                                            <span className="mt-1 leading-5 text-black">{program}</span>
+                                        </label>
+                                    ))}
                                 </div>
-                            </>
-                        )}
-                        <button type="submit" className="btn btn-primary text-white bg-blue-600 hover:bg-blue-700 rounded p-2">
-                            {translations[language].subscribeButton}
-                        </button>
-                        {message && <p className="subscribe-message text-red-500 font-bold">{message}</p>}
-                        {/* 触发撒花效果 */}
-                        {showConfetti && <Confetti />}
-                        <div className="testimonial">
-                          <span className="stars">⭐⭐⭐⭐⭐</span>
-                          <span className="text-black"> {translations[language].starMessage}</span>
+                                <div className="mb-4">
+                                    <label className="block mb-2 text-black font-bold">{translations[language].areYouCurrentlyInThePool}</label>
+                                    <div className="flex items-center mb-4 justify-center">
+                                        <label className="mr-4 text-black">
+                                            <input
+                                                type="radio"
+                                                value="yes"
+                                                checked={inPool === true}
+                                                onChange={() => setInPool(true)}
+                                                className="form-radio text-black"
+                                            />
+                                            <span className="ml-2">Yes</span>
+                                        </label>
+                                        <label className="text-black">
+                                            <input
+                                                type="radio"
+                                                value="no"
+                                                checked={inPool === false}
+                                                onChange={() => setInPool(false)}
+                                                className="form-radio text-black"
+                                            />
+                                            <span className="ml-2">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                {inPool && (
+                                    <>
+                                        <div className="mb-4">
+                                            <label className="block mb-2 text-black font-bold">{translations[language].enterYourScore}</label>
+                                            <input
+                                                type="number"
+                                                value={score}
+                                                onChange={(e) => setScore(e.target.value)}
+                                                className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                                placeholder="Your Score"
+                                            />
+                                        </div>
+                                        <div className="mb-4">
+                                            <label className="block mb-2 text-black font-bold">{translations[language].selectYourCurrentProgram}</label>
+                                            <select
+                                                value={currentProgram}
+                                                onChange={(e) => setCurrentProgram(e.target.value)}
+                                                className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                            >
+                                                <option value="">Select a Program</option>
+                                                {programs.map((program) => (
+                                                    <option key={program} value={program}>{program}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </>
+                                )}
+                                <button type="submit" className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                                    {translations[language].subscribeButton}
+                                </button>
+                                {message && <p className="subscribe-message text-red-500 font-bold">{message}</p>}
+                                {/* {showConfetti && <Confetti />} */}
+                            </form>
                         </div>
-                    </form>
-                </section>
 
-                <section className="mt-12">
-                    <h2 className="text-4xl font-semibold mb-6 text-center text-black">{translations[language].whyChoose}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-gradient-to-r from-blue-500 to-blue-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                            <div className="flex items-center mb-6">
-                                <img src="/icons/realtime.png" alt="Real-time Updates" className="w-16 h-16 mr-4 bg-blue-500" />
-                                <h3 className="text-3xl font-semibold text-white">{translations[language].realTimeUpdates}</h3>
-                            </div>
-                            <p className="text-white">{translations[language].realTimeMsg} </p>
-                        </div>
-                        <div className="bg-gradient-to-r from-green-500 to-green-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                            <div className="flex items-center mb-6">
-                                <img src="/icons/data-visualization.png" alt="Data Visualization" className="w-16 h-16 mr-4 bg-green-500" />
-                                <h3 className="text-3xl font-semibold text-white">{translations[language].dataVisualization}</h3>
-                            </div>
-                            <p className="text-white">{translations[language].dataMsg}</p>
-                        </div>
-                        <div className="bg-gradient-to-r from-purple-500 to-purple-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                            <div className="flex items-center mb-6">
-                              <img src="/icons/free-service.png" alt="Free Service" className="w-16 h-16 mr-4 bg-purple-500" />
-                              <h3 className="text-3xl font-extrabold text-white">{translations[language].freeService}</h3>
-                            </div>  
-                            <p className="text-white">{translations[language].freeMsg} </p>
+                        <div className="mt-5">
+                            {/* latest draw info */}
+                            <InfoCardForLatestDraw
+                                title={translations[language].latestDraw}
+                                content={
+                                    <>
+                                        <p className="text-black">
+                                            <span className="font-semibold">{translations[language].programName}</span> {latestDraw.drawName}
+                                        </p>
+                                        <p className="text-black">
+                                            <span className="font-semibold">{translations[language].minimumScore}</span> {latestDraw.drawCRS}
+                                        </p>
+                                        <p className="text-black">
+                                            <span className="font-semibold">{translations[language].numberOfInvitations}</span> {latestDraw.drawSize}
+                                        </p>
+                                        <p className="text-black">
+                                            <span className="font-semibold">{translations[language].date}</span> {latestDraw.drawDate}
+                                        </p>
+                                    </>
+                                }
+                                />
+
+                                {/* feature info */}
+                                <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2 mt-36" >
+
+                                    <div className="flex flex-col items-start">
+                                        <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
+                                            <CalendarDaysIcon aria-hidden="true" className="h-6 w-6 text-black" />
+                                        </div>
+                                        <dt className="mt-4 font-semibold text-black">{translations[language].instantNotification}</dt>
+                                        <dd className="mt-2 leading-7 text-gray-500">
+                                            {translations[language].instantNotificationMsg}
+                                        </dd>
+                                    </div>
+                                    <div className="flex flex-col items-start">
+                                        <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
+                                            <HandRaisedIcon aria-hidden="true" className="h-6 w-6 text-black" />
+                                        </div>
+                                        <dt className="mt-4 font-semibold text-black">{translations[language].noSpam}</dt>
+                                        <dd className="mt-2 leading-7 text-gray-500">
+                                            {translations[language].noSpamMsg}
+                                        </dd>
+                                    </div>
+                                </dl>
                         </div>
                     </div>
-                </section>
-            </main>
+                </div>
+
+
+                {/* why us info */}
+                <div className="mx-auto mt-10 max-w-2xl lg:mx-auto lg:max-w-none">
+                    <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 justify-items-center mb-16">
+                        {stats.map((stat) => (
+                            <div key={stat.name} className="flex flex-col-reverse gap-1 text-center">
+                                <dt className="text-xl text-black">{stat.name}</dt>
+                                <dd className="text-4xl font-semibold tracking-tight text-black">{stat.value}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                </div>
+
+
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+                >
+                    <div
+                        style={{
+                            clipPath:
+                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+                        }}
+                        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+                    />
+                </div>
+
+            </div>
+
+
             <Footer language={language} />
         </div>
-    );
+    )
 }
+
+
+

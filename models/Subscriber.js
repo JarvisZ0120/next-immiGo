@@ -12,4 +12,4 @@ const subscriberSchema = new mongoose.Schema({
     isSubscribed: { type: Boolean, default: true }, // 新增字段，默认设置为已订阅
 });
 
-module.exports = mongoose.model('Subscriber', subscriberSchema);
+module.exports = mongoose.models.Subscriber || mongoose.model('Subscriber', subscriberSchema);

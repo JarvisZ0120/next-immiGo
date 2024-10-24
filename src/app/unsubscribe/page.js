@@ -61,7 +61,7 @@ export default function Unsubscribe() {
                     <input
                         type="email"
                         placeholder={translations[language].enterEmail}
-                        className="form-input mb-2 text-black border rounded p-2.5 mx-auto w-full"
+                        className="form-input mb-2 text-black border rounded-md p-2.5 mx-auto w-full"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -69,7 +69,7 @@ export default function Unsubscribe() {
                 </div>
                 <button
                     type="button"  // 改为 button 类型
-                    className="btn btn-primary text-white bg-blue-600 hover:bg-blue-700 rounded p-2 mx-auto"
+                    className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                     onClick={() => handleUnsubscribe(email)}  // 绑定点击事件
                     disabled={isSubmitting}  // 按钮禁用逻辑
                 >

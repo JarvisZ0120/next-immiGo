@@ -3366,6 +3366,117 @@
                 "crsScore": "0-300",
                 "population": 5402
             }
+        ],
+        [
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "601-1200",
+                "population": 705
+            },
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "501-600",
+                "population": 13209
+            },
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "451-500",
+                "population": 63152
+            },
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "401-450",
+                "population": 55371
+            },
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "351-400",
+                "population": 50989
+            },
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "301-350",
+                "population": 22920
+            },
+            {
+                "drawDate": "2024-10-21",
+                "crsScore": "0-300",
+                "population": 5441
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "601-1200",
+                "population": 124
+            },
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "501-600",
+                "population": 13430
+            },
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "451-500",
+                "population": 63285
+            },
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "401-450",
+                "population": 55503
+            },
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "351-400",
+                "population": 51048
+            },
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "301-350",
+                "population": 22928
+            },
+            {
+                "drawDate": "2024-10-22",
+                "crsScore": "0-300",
+                "population": 5462
+            }
+        ],
+        [
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "601-1200",
+                "population": 124
+            },
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "501-600",
+                "population": 13430
+            },
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "451-500",
+                "population": 63285
+            },
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "401-450",
+                "population": 55503
+            },
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "351-400",
+                "population": 51048
+            },
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "301-350",
+                "population": 22928
+            },
+            {
+                "drawDate": "2024-10-23",
+                "crsScore": "0-300",
+                "population": 5462
+            }
         ]
     ]
 }
