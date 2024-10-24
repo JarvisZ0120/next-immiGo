@@ -57,10 +57,6 @@ This project is licensed under the MIT License. For more details, please see the
 
 
 
-
-
-
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -99,14 +95,6 @@ The easiest way to deploy your Next.js app is to use the [Railway Platform](http
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 
-
-
-
-
-
-
-
-
-TODO：
-- dashboard 'bar' issue on the first chart
-- new 分组叠加图
+## Version Launched:
+   1. v1.0.0 - Sep 30, 2024
+   2. v2.0.0 - Oct 24, 2024
