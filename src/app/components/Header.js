@@ -83,22 +83,17 @@ export default function Header({ setLanguage, language }) {
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
 
-
-                    <li>
-                        <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} className=" rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            {currentTranslations.language}
-                        </button>
-                        {showLanguageMenu && (
-                            <div className="absolute bg-indigo-600 text-white mt-2 rounded shadow-lg">
-                                <button onClick={() => handleLanguageChange('en')} className="block px-4 py-2">English</button>
-                                <button onClick={() => handleLanguageChange('fr')} className="block px-4 py-2">French</button>
-                                <button onClick={() => handleLanguageChange('zh')} className="block px-4 py-2">Chinese</button>
-                                <button onClick={() => handleLanguageChange('hi')} className="block px-4 py-2">Hindi</button>
-                            </div>
-                        )}
-                    </li>
-
-
+                    <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} className=" rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        {currentTranslations.language}
+                    </button>
+                    {showLanguageMenu && (
+                        <div className="absolute bg-indigo-600 text-white mt-2 rounded shadow-lg">
+                            <button onClick={() => handleLanguageChange('en')} className="block px-4 py-2">English</button>
+                            <button onClick={() => handleLanguageChange('fr')} className="block px-4 py-2">French</button>
+                            <button onClick={() => handleLanguageChange('zh')} className="block px-4 py-2">Chinese</button>
+                            <button onClick={() => handleLanguageChange('hi')} className="block px-4 py-2">Hindi</button>
+                        </div>
+                    )}
 
                 </div>
             </nav>
@@ -132,7 +127,7 @@ export default function Header({ setLanguage, language }) {
                                 ))}
                             </div>
                             <div className="py-6">
-                      <li>
+
                         <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} className=" rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                             {currentTranslations.language}
                         </button>
@@ -144,7 +139,7 @@ export default function Header({ setLanguage, language }) {
                                 <button onClick={() => handleLanguageChange('hi')} className="block px-4 py-2">Hindi</button>
                             </div>
                         )}
-                    </li>
+
                             </div>
                         </div>
                     </div>
