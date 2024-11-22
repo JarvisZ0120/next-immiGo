@@ -87,8 +87,9 @@ export default function About() {
 
             {/* Custom Accordion Component */}
             <div className="my-16 mt-0">
-                <div className="rounded-lg max-w-4xl mx-auto text-base font-semibold text-6xl text-gray-900"><h3 className="mb-3 ">Frequently Asked Questions</h3></div>
-                
+                <div className="rounded-lg max-w-4xl mx-auto text-base font-semibold text-gray-900 pl-3">
+                    <h3 className="mb-3 text-3xl sm:text-3xl md:text-3xl lg:text-3xl">Frequently Asked Questions</h3>
+                </div>
                 <CustomAccordion />
             </div>
 
