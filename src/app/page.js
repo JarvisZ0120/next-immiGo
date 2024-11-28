@@ -271,7 +271,7 @@ export default function Home() {
     };
 
     return (
-        <div className="bg-white">
+        <div className="bg-white flex flex-col">
 
             {/* header*/}
             <Header setLanguage={setLanguage} language={language} />
@@ -447,30 +447,30 @@ export default function Home() {
                                         </p>
                                     </>
                                 }
-                                />
+                            />
 
-                                {/* feature info */}
-                                <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2 mt-36" >
+                            {/* feature info */}
+                            <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2 mt-36" >
 
-                                    <div className="flex flex-col items-start">
-                                        <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
-                                            <CalendarDaysIcon aria-hidden="true" className="h-6 w-6 text-black" />
-                                        </div>
-                                        <dt className="mt-4 font-semibold text-black">{translations[language].instantNotification}</dt>
-                                        <dd className="mt-2 leading-7 text-gray-500">
-                                            {translations[language].instantNotificationMsg}
-                                        </dd>
+                                <div className="flex flex-col items-start">
+                                    <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
+                                        <CalendarDaysIcon aria-hidden="true" className="h-6 w-6 text-black" />
                                     </div>
-                                    <div className="flex flex-col items-start">
-                                        <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
-                                            <HandRaisedIcon aria-hidden="true" className="h-6 w-6 text-black" />
-                                        </div>
-                                        <dt className="mt-4 font-semibold text-black">{translations[language].noSpam}</dt>
-                                        <dd className="mt-2 leading-7 text-gray-500">
-                                            {translations[language].noSpamMsg}
-                                        </dd>
+                                    <dt className="mt-4 font-semibold text-black">{translations[language].instantNotification}</dt>
+                                    <dd className="mt-2 leading-7 text-gray-500">
+                                        {translations[language].instantNotificationMsg}
+                                    </dd>
+                                </div>
+                                <div className="flex flex-col items-start">
+                                    <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
+                                        <HandRaisedIcon aria-hidden="true" className="h-6 w-6 text-black" />
                                     </div>
-                                </dl>
+                                    <dt className="mt-4 font-semibold text-black">{translations[language].noSpam}</dt>
+                                    <dd className="mt-2 leading-7 text-gray-500">
+                                        {translations[language].noSpamMsg}
+                                    </dd>
+                                </div>
+                            </dl>
                         </div>
                     </div>
                 </div>
@@ -505,6 +505,7 @@ export default function Home() {
             </div>
 
 
+            <div className="my-16 mt-20"></div>
             <Footer language={language} />
         </div>
     )
