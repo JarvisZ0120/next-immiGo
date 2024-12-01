@@ -475,20 +475,6 @@ export default function Home() {
                     </div>
                 </div>
 
-
-                {/* why us info */}
-                <div className="mx-auto mt-10 max-w-2xl lg:mx-auto lg:max-w-none">
-                    <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 justify-items-center mb-16">
-                        {stats.map((stat) => (
-                            <div key={stat.name} className="flex flex-col-reverse gap-1 text-center">
-                                <dt className="text-xl text-black">{stat.name}</dt>
-                                <dd className="text-4xl font-semibold tracking-tight text-black">{stat.value}</dd>
-                            </div>
-                        ))}
-                    </dl>
-                </div>
-
-
                 <div
                     aria-hidden="true"
                     className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
@@ -504,8 +490,17 @@ export default function Home() {
 
             </div>
 
-
-            <div className="my-16 mt-20"></div>
+            {/* why us info */}
+            <div className="mx-auto max-w-2xl lg:mx-auto lg:max-w-none">
+                <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 justify-items-center mb-16">
+                    {stats.map((stat) => (
+                        <div key={stat.name} className="flex flex-col-reverse gap-1 text-center">
+                            <dt className="text-xl text-black">{stat.name}</dt>
+                            <dd className="text-4xl font-semibold tracking-tight text-black">{stat.value}</dd>
+                        </div>
+                    ))}
+                </dl>
+            </div>
             <Footer language={language} />
         </div>
     )
