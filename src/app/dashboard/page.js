@@ -199,7 +199,7 @@ export default function Dashboard() {
                             tension: 0.4,
                             yAxisID: 'y-scores',
                             datalabels: {
-                                display: function (context) {
+                                display: function(context) {
                                     return context.dataset.data[context.dataIndex] !== null; // bar和点的null不显示
                                 }
                             }
@@ -342,93 +342,93 @@ export default function Dashboard() {
             <Header setLanguage={setLanguage} language={language} /> {/* 传递 setLanguage 和 language */}
 
             <main className="flex-grow min-h-full relative">
+            
+
+            <div className="relative isolate flex-grow px-6 pt-14 lg:px-14 ">
+            
+                <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mt-40 mb-30 ">{currentTranslations.crsOverTime}</h2>
+
+                {/* Bar&Line chart on the right */}
+                <div>
+                    <BarLineChart />
+                </div>
 
 
-                <div className="relative isolate flex-grow px-6 pt-14 lg:px-8 ">
-
-                    <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mt-40 mb-30 ">{currentTranslations.crsOverTime}</h2>
-
-                    {/* Bar&Line chart on the right */}
-                    <div>
-                        <BarLineChart />
+                <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mb-3">{currentTranslations.totalCandidates}</h2>
+                <div className="mt-10 mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto" style={{transform: 'scale(0.9)'}}>
+                    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                        <label className="flex items-center">
+                            <span className="mr-2 text-black">{currentTranslations.startDate}:</span>
+                            <input
+                                type="date"
+                                value={totalStartDate.toISOString().slice(0, 10)}
+                                onChange={(e) => setTotalStartDate(new Date(e.target.value))}
+                                className="border rounded-md px-2 py-1 text-black"
+                            />
+                        </label>
+                        <label className="flex items-center">
+                            <span className="mr-2 text-black">{currentTranslations.endDate}:</span>
+                            <input
+                                type="date"
+                                value={totalEndDate.toISOString().slice(0, 10)}
+                                onChange={(e) => setTotalEndDate(new Date(e.target.value))}
+                                className="border rounded-md px-2 py-1 text-black"
+                            />
+                        </label>
                     </div>
+                </div>
 
-
-                    <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mb-3">{currentTranslations.totalCandidates}</h2>
-                    <div className="mt-10 mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto" style={{ transform: 'scale(0.9)' }}>
-                        <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                            <label className="flex items-center">
-                                <span className="mr-2 text-black">{currentTranslations.startDate}:</span>
-                                <input
-                                    type="date"
-                                    value={totalStartDate.toISOString().slice(0, 10)}
-                                    onChange={(e) => setTotalStartDate(new Date(e.target.value))}
-                                    className="border rounded-md px-2 py-1 text-black"
-                                />
-                            </label>
-                            <label className="flex items-center">
-                                <span className="mr-2 text-black">{currentTranslations.endDate}:</span>
-                                <input
-                                    type="date"
-                                    value={totalEndDate.toISOString().slice(0, 10)}
-                                    onChange={(e) => setTotalEndDate(new Date(e.target.value))}
-                                    className="border rounded-md px-2 py-1 text-black"
-                                />
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-center items-start mb-12 mt-12">
-                        {/* Line chart on the left */}
-                        <div className="w-1/2" style={{ transform: 'scale(1.0)' }}>
-                            {totalCandidatesData.datasets && (
-                                <Line
-                                    data={totalCandidatesData}
-                                    options={{
-                                        responsive: true,
-                                        plugins: { legend: { position: 'top' } },
-                                        scales: {
-                                            x: {
-                                                reverse: true,
-                                                title: {
-                                                    display: true,
-                                                    text: 'Date',
-                                                },
-                                            },
-                                            y: {
-                                                title: {
-                                                    display: true,
-                                                    text: 'Total Number of Candidates',
-                                                },
-                                                beginAtZero: false,
+                <div className="flex justify-center items-start mb-12 mt-12">
+                    {/* Line chart on the left */}
+                    <div className="w-1/2" style={{ transform: 'scale(1.0)' }}>
+                        {totalCandidatesData.datasets && (
+                            <Line
+                                data={totalCandidatesData}
+                                options={{
+                                    responsive: true,
+                                    plugins: { legend: { position: 'top' } },
+                                    scales: {
+                                        x: {
+                                            reverse: true,
+                                            title: {
+                                                display: true,
+                                                text: 'Date',
                                             },
                                         },
-                                    }}
-                                    height={200}
-                                />
-                            )}
-                        </div>
-
-                        {/* Pie chart on the right */}
-                        <div className="w-1/2">
-                            <PieChart />
-                        </div>
-
+                                        y: {
+                                            title: {
+                                                display: true,
+                                                text: 'Total Number of Candidates',
+                                            },
+                                            beginAtZero: false,
+                                        },
+                                    },
+                                }}
+                                height={200}
+                            />
+                        )}
                     </div>
 
-
-                    <div className="mt-8 text-center mb-8 mx-auto" >
-                        <a
-                            href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300"
-                        >
-                            Calculate Your CRS Score
-                        </a>
+                    {/* Pie chart on the right */}
+                    <div className="w-1/2">
+                        <PieChart />
                     </div>
 
-                    <div
+                </div>
+                
+
+                <div className="mt-8 text-center mb-8 mx-auto" >
+                    <a
+                        href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300"
+                    >
+                        Calculate Your CRS Score
+                    </a>
+                </div>
+
+                <div
                     aria-hidden="true"
                     className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
                 >
@@ -441,7 +441,7 @@ export default function Dashboard() {
                     />
                 </div>
 
-                </div>
+            </div>
 
             </main>
             <div className="my-16 mt-10"></div>

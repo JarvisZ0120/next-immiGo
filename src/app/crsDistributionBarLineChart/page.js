@@ -8,7 +8,7 @@ const translations = {
         endDate: "End Date",
         showInvitations: "Show Invitations(Bar)",
         showCRS: "Show CRS Scores(Line)",
-        language:"Choose Language for This Chart:"
+        language: "Choose Language for This Chart:"
     },
     zh: {
         startDate: "开始日期",
@@ -31,7 +31,7 @@ const translations = {
         showInvitations: "आमंत्रण दिखाएं",
         showCRS: "CRS स्कोर दिखाएं",
         language: "इस चार्ट के लिए भाषा चुनें:"
-        
+
     }
 };
 
@@ -121,14 +121,22 @@ const ChartPage = () => {
                     orient: 'left',
                     seriesIndex: [0],
                     label: { style: { fill: '#000' } },
-                    type: 'linear'
+                    type: 'linear',
+                    title: {
+                        visible: true,
+                        text: 'Invitation'
+                    }
                 }, // 控制 bar 图的 y 轴
                 {
                     orient: 'right',
                     seriesId: ['line'],
                     grid: { visible: false },
                     label: { style: { fill: '#000' } },
-                    min: 70
+                    min: 70,
+                    title: {
+                        visible: true,
+                        text: 'Score'
+                    }
                 }, // 控制 line 图的 y 轴
                 {
                     orient: 'bottom',
@@ -256,7 +264,7 @@ const ChartPage = () => {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', width: '100%' }}>
                     <div ref={chartContainerRef} style={{ width: '80%', height: '100%' }}></div>
                 </div>
-                </div>
+            </div>
 
 
             <div
