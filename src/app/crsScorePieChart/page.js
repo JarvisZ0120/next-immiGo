@@ -49,27 +49,50 @@ const ChartPage = () => {
                     {
                         type: 'pie',
                         data: specs[0].data,
-                        dataKey: 'crsScore',  // 假设JSON中的键名
-                        outerRadius: 0.81,
-                        // innerRadius: 0.5,
+                        dataKey: 'crsScore',
+                        outerRadius: 0.6, // 减小外半径，为标签留出更多空间
+                        innerRadius: 0.2, // 添加内半径，创建环形图
                         label: {
                             visible: true,
                             position: 'outside',
                             line: {
-                                visible: true
+                                visible: true,
+                                length: 20,
+                                length2: 10
+                            },
+                            style: {
+                                fontSize: 12,
+                                fill: '#333',
+                                maxWidth: 80, // 限制标签最大宽度
+                                wordWrap: true
                             }
                         },
-                        valueField: 'population',  // 假设每个对象中有"value"键
-                        seriesField: 'crsScore' // 假设每个对象中有"browserName"键
+                        valueField: 'population',
+                        seriesField: 'crsScore'
                     }
                 ],
+                legends: {
+                    visible: true,
+                    orient: 'bottom',
+                    position: 'middle',
+                    item: {
+                        label: {
+                            style: {
+                                fontSize: 12,
+                                fill: '#333',
+                                maxWidth: 100,
+                                wordWrap: true
+                            }
+                        }
+                    }
+                },
                 customMark: [
                     {
                         type: 'text',
-                        position: ['50%', '50%'], // 定位到饼图的中心
-                        content: chartData[0].drawDate, // 假设第一个数据有日期
+                        position: ['50%', '50%'],
+                        content: chartData[0].drawDate,
                         style: {
-                            fontSize: 24,
+                            fontSize: 16,
                             fontWeight: 'bold',
                             fill: '#000',
                             textAlign: 'center',
@@ -92,7 +115,7 @@ const ChartPage = () => {
     }, [chartData]);
 
     return (
-        <div className="bg-gray-100" style={{ width: '100%', height: '400px' }} ref={chartContainerRef} />
+        <div className="bg-gray-100 relative" style={{ width: '100%', height: '400px', minHeight: '300px' }} ref={chartContainerRef} />
     );
 };
 

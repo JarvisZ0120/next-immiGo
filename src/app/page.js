@@ -163,7 +163,7 @@ export default function Home() {
 
                 // 假设你只想获取最新一轮的抽签数据
                 const latestRound = rounds[0];
-                const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version 1\)/g, '').trim();
+                const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version \d+\)/g, '').trim();
 
                 setLatestDraw({
                     drawName: type,

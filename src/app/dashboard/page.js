@@ -132,7 +132,7 @@ export default function Dashboard() {
                 // Group data by round type
                 const groupedData = {};
                 filteredData.forEach((round) => {
-                    const type = (round.drawName || 'No Program Specified').replace(/\(Version 1\)/g, '').trim();
+                    const type = (round.drawName || 'No Program Specified').replace(/\(Version \d+\)/g, '').trim();
                     if (!groupedData[type]) {
                         groupedData[type] = { invitations: [], crsScores: [], dates: [] };
                     }
@@ -346,83 +346,106 @@ export default function Dashboard() {
 
             <div className="relative isolate flex-grow px-6 pt-14 lg:px-14 ">
             
-                <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mt-40 mb-30 ">{currentTranslations.crsOverTime}</h2>
+                <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-gray-900 mt-20 sm:mt-32 lg:mt-40 mb-8 px-4">{currentTranslations.crsOverTime}</h2>
 
                 {/* Bar&Line chart on the right */}
                 <div>
-                    <BarLineChart />
+                    <BarLineChart pageLanguage={language} />
                 </div>
 
 
-                <h2 className="text-center text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl mb-3">{currentTranslations.totalCandidates}</h2>
-                <div className="mt-10 mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto" style={{transform: 'scale(0.9)'}}>
-                    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                        <label className="flex items-center">
-                            <span className="mr-2 text-black">{currentTranslations.startDate}:</span>
+                <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-gray-900 mb-6 px-4">{currentTranslations.totalCandidates}</h2>
+                <div className="mt-10 mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4 justify-center mx-auto px-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                        <label className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
+                            <span className="text-sm sm:text-base text-black font-medium">{currentTranslations.startDate}:</span>
                             <input
                                 type="date"
                                 value={totalStartDate.toISOString().slice(0, 10)}
                                 onChange={(e) => setTotalStartDate(new Date(e.target.value))}
-                                className="border rounded-md px-2 py-1 text-black"
+                                className="border rounded-md px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px]"
                             />
                         </label>
-                        <label className="flex items-center">
-                            <span className="mr-2 text-black">{currentTranslations.endDate}:</span>
+                        <label className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
+                            <span className="text-sm sm:text-base text-black font-medium">{currentTranslations.endDate}:</span>
                             <input
                                 type="date"
                                 value={totalEndDate.toISOString().slice(0, 10)}
                                 onChange={(e) => setTotalEndDate(new Date(e.target.value))}
-                                className="border rounded-md px-2 py-1 text-black"
+                                className="border rounded-md px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px]"
                             />
                         </label>
                     </div>
                 </div>
 
-                <div className="flex justify-center items-start mb-12 mt-12">
+                <div className="flex flex-col lg:flex-row justify-center items-start mb-12 mt-12 gap-8">
                     {/* Line chart on the left */}
-                    <div className="w-1/2" style={{ transform: 'scale(1.0)' }}>
+                    <div className="w-full lg:w-1/2" style={{ transform: 'scale(1.0)' }}>
                         {totalCandidatesData.datasets && (
                             <Line
                                 data={totalCandidatesData}
                                 options={{
                                     responsive: true,
-                                    plugins: { legend: { position: 'top' } },
+                                    maintainAspectRatio: false,
+                                    plugins: { 
+                                        legend: { 
+                                            position: 'top',
+                                            labels: {
+                                                boxWidth: 12,
+                                                fontSize: 12
+                                            }
+                                        } 
+                                    },
                                     scales: {
                                         x: {
                                             reverse: true,
                                             title: {
                                                 display: true,
                                                 text: 'Date',
+                                                font: {
+                                                    size: 12
+                                                }
                                             },
+                                            ticks: {
+                                                maxRotation: 45,
+                                                minRotation: 45,
+                                                fontSize: 10
+                                            }
                                         },
                                         y: {
                                             title: {
                                                 display: true,
                                                 text: 'Total Number of Candidates',
+                                                font: {
+                                                    size: 12
+                                                }
                                             },
                                             beginAtZero: false,
+                                            ticks: {
+                                                fontSize: 10
+                                            }
                                         },
                                     },
                                 }}
-                                height={200}
+                                height={300}
                             />
                         )}
                     </div>
 
                     {/* Pie chart on the right */}
-                    <div className="w-1/2">
+                    <div className="w-full lg:w-1/2">
                         <PieChart />
                     </div>
 
                 </div>
                 
 
-                <div className="mt-8 text-center mb-8 mx-auto" >
+                <div className="mt-8 text-center mb-8 mx-auto px-4" >
                     <a
                         href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300"
+                        className="bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300 text-sm sm:text-base inline-block"
                     >
                         Calculate Your CRS Score
                     </a>
