@@ -71,3 +71,90 @@ body {
 .text-black {
   font-family: 'Arial', sans-serif; /* 其他文本使用默认字体 */
 }
+
+/* 移动端横屏适配 */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .mobile-landscape-container {
+    padding: 0.5rem !important;
+    margin: 0 !important;
+  }
+  
+  .mobile-landscape-chart {
+    height: 200px !important;
+    min-height: 200px !important;
+  }
+  
+  .mobile-landscape-header {
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .mobile-landscape-controls {
+    margin-bottom: 0.5rem !important;
+    padding: 0.25rem !important;
+  }
+  
+  .mobile-landscape-text {
+    font-size: 0.875rem !important;
+  }
+  
+  /* 移动端横屏时调整图表位置 */
+  .lg\:ml-4 {
+    margin-left: 0 !important;
+  }
+  
+  .lg\:ml-8 {
+    margin-left: 0 !important;
+  }
+}
+
+/* 移动端竖屏适配 */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .mobile-portrait-container {
+    padding: 1rem;
+  }
+  
+  .mobile-portrait-chart {
+    height: 400px;
+    min-height: 400px;
+  }
+  
+  /* 移动端竖屏时调整图表位置 */
+  .lg\:ml-4 {
+    margin-left: 0 !important;
+  }
+  
+  .lg\:ml-8 {
+    margin-left: 0 !important;
+  }
+}
+
+/* 垂直布局优化 */
+.vertical-layout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* 移动端横屏时的垂直布局优化 */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .vertical-layout-container {
+    gap: 1rem;
+  }
+  
+  .chart-container-vertical {
+    max-height: 40vh;
+  }
+}
+
+/* 移动端竖屏时的垂直布局优化 */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .vertical-layout-container {
+    gap: 2rem;
+  }
+  
+  .chart-container-vertical {
+    max-height: 60vh;
+  }
+}

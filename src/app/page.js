@@ -144,7 +144,7 @@ export default function Home() {
     const [language, setLanguage] = useState('en'); // 默认语言为英语
     const [name, setName] = useState(''); // 新增姓名状态
     const [email, setEmail] = useState('');
-    const [selectedPrograms, setSelectedPrograms] = useState([]);
+    const [selectedPrograms, setSelectedPrograms] = useState(programs); // 默认选择所有项目
     const [score, setScore] = useState('');
     const [currentProgram, setCurrentProgram] = useState('');
     const [inPool, setInPool] = useState(false); // 新增状态

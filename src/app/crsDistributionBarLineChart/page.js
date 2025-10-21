@@ -63,18 +63,22 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
 
             // 保持所有数据点，不进行采样
 
-            // 提取并反转数据顺序
-            const id0 = filteredRounds.map(round => ({
-                x: round.drawDate,
-                type: round.drawName.replace(/\(Version \d+\)/g, '').trim(), // 移除所有版本号
-                y: round.drawSize.replace(',', '')
-            })).reverse(); // reverse data order for id0
+            // 提取数据并按时间顺序排列（从旧到新）
+            const id0 = filteredRounds
+                .map(round => ({
+                    x: round.drawDate,
+                    type: round.drawName.replace(/\(Version \d+\)/g, '').trim(), // 移除所有版本号
+                    y: round.drawSize.replace(',', '')
+                }))
+                .sort((a, b) => new Date(a.x) - new Date(b.x)); // 按时间顺序排序
 
-            const id1 = filteredRounds.map(round => ({
-                x: round.drawDate,
-                type: round.drawName.replace(/\(Version \d+\)/g, '').trim(), // 移除所有版本号
-                y: round.drawCRS.replace(',', '')
-            })).reverse(); // reverse data order for id1
+            const id1 = filteredRounds
+                .map(round => ({
+                    x: round.drawDate,
+                    type: round.drawName.replace(/\(Version \d+\)/g, '').trim(), // 移除所有版本号
+                    y: round.drawCRS.replace(',', '')
+                }))
+                .sort((a, b) => new Date(a.x) - new Date(b.x)); // 按时间顺序排序
 
             setChartData({ id0, id1 });
         };
@@ -104,15 +108,16 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
         const { width: windowWidth, height: windowHeight } = getWindowDimensions();
         const isMobile = windowWidth < 768;
         const isLandscape = windowWidth > windowHeight; // 横屏检测
+        const isMobileLandscape = isMobile && isLandscape && windowHeight < 500; // 移动端横屏且高度小于500px
         
-        const spec = {
-            type: 'common',
-            seriesField: 'color',
-            // 响应式配置，更好地利用屏幕空间
-            width: isMobile ? windowWidth - 10 : windowWidth * 0.9,
-            height: isMobile ? (isLandscape ? 250 : 500) : 400, // 横屏时大幅减少高度
-            // 图表边距配置，减少空白区域
-            padding: isMobile ? (isLandscape ? [10, 5, 20, 5] : [20, 5, 40, 5]) : [20, 10, 40, 20], // 横屏时大幅减少上下边距
+            const spec = {
+                type: 'common',
+                seriesField: 'color',
+                // 响应式配置，更好地利用屏幕空间
+                width: isMobile ? (isMobileLandscape ? windowWidth - 10 : windowWidth - 20) : Math.min(windowWidth * 0.9, 1200), // 移动端优化宽度
+                height: isMobileLandscape ? 200 : (isMobile ? (isLandscape ? 300 : 400) : 400), // 恢复高度
+                // 图表边距配置，增加空白区域以显示完整文字
+                padding: isMobileLandscape ? [10, 10, 20, 10] : (isMobile ? (isLandscape ? [15, 10, 30, 10] : [20, 10, 40, 20]) : [25, 15, 50, 25]), // 调整padding
             // 确保图表居中
             autoFit: true,
             data: [
@@ -135,12 +140,12 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                     yField: 'y',
                     bar: {
                         style: {
-                            maxWidth: isMobile ? 12 : 20, // 根据屏幕大小调整宽度
+                            maxWidth: isMobileLandscape ? 8 : (isMobile ? 12 : 20), // 移动端横屏时进一步减少宽度
                             minWidth: 2   // 设置最小宽度
                         }
                     },
-                    barWidth: isMobile ? 6 : 10, // 根据屏幕大小调整柱状图宽度
-                    barGap: 0.05, // 减少柱子之间的间隙
+                    barWidth: isMobileLandscape ? 4 : (isMobile ? 6 : 10), // 移动端横屏时进一步减少柱状图宽度
+                    barGap: 0.02, // 进一步减少柱子之间的间隙
                 },
                 {
                     type: 'line',
@@ -162,22 +167,62 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                 {
                     orient: 'left',
                     seriesIndex: [0],
-                    label: { style: { fill: '#000' } },
+                    label: { 
+                        visible: true, // 确保标签可见
+                        style: { 
+                            fill: '#000',
+                            fontSize: isMobileLandscape ? 10 : (isMobile ? 12 : 14) // 增加字体大小
+                        } 
+                    },
                     type: 'linear',
                     title: {
                         visible: true,
-                        text: 'Invitation'
+                        text: 'Invitation',
+                        style: {
+                            fontSize: isMobileLandscape ? 12 : (isMobile ? 14 : 16), // 增加标题字体大小
+                            fill: '#000'
+                        }
                     }
                 }, // 控制 bar 图的 y 轴
                 {
                     orient: 'right',
                     seriesId: ['line'],
                     grid: { visible: false },
-                    label: { style: { fill: '#000' } },
-                    min: 70,
+                    label: { 
+                        visible: true, // 确保标签可见
+                        style: { 
+                            fill: '#000',
+                            fontSize: isMobileLandscape ? 10 : (isMobile ? 12 : 14) // 增加字体大小
+                        } 
+                    },
+                    // 动态调整Y轴范围，让CRS分数波动更明显
+                    min: (() => {
+                        const lineData = chartData.id1 || [];
+                        if (lineData.length === 0) return 70;
+                        const values = lineData.map(item => parseInt(item.y));
+                        const minValue = Math.min(...values);
+                        const maxValue = Math.max(...values);
+                        const range = maxValue - minValue;
+                        // 设置最小值为数据最小值减去15%的范围，但不少于70，让波动更明显
+                        return Math.max(70, minValue - range * 0.15);
+                    })(),
+                    max: (() => {
+                        const lineData = chartData.id1 || [];
+                        if (lineData.length === 0) return 1200;
+                        const values = lineData.map(item => parseInt(item.y));
+                        const minValue = Math.min(...values);
+                        const maxValue = Math.max(...values);
+                        const range = maxValue - minValue;
+                        // 设置最大值为数据最大值加上15%的范围，让波动更明显
+                        return maxValue + range * 0.15;
+                    })(),
                     title: {
                         visible: true,
-                        text: 'Score'
+                        text: 'Score',
+                        style: {
+                            fontSize: isMobileLandscape ? 12 : (isMobile ? 14 : 16), // 增加标题字体大小
+                            fill: '#000'
+                        }
                     }
                 }, // 控制 line 图的 y 轴
                 {
@@ -186,14 +231,21 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                         visible: true, 
                         style: { 
                             fill: '#000',
-                            fontSize: isMobile ? (isLandscape ? 8 : 9) : 9,
+                            fontSize: isMobileLandscape ? 9 : (isMobile ? (isLandscape ? 10 : 11) : 12), // 增加字体大小
                             angle: -45, // 旋转标签以避免截断
                             textAlign: 'end'
                         },
                         formatMethod: (text) => {
-                            // 格式化日期显示，只显示月-日
+                            // 格式化日期显示，显示年-月-日
                             if (text && text.length > 10) {
-                                return text.substring(5, 10); // 显示 MM-DD
+                                const date = new Date(text);
+                                if (!isNaN(date.getTime())) {
+                                    const year = date.getFullYear();
+                                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                                    const day = date.getDate().toString().padStart(2, '0');
+                                    return `${year}-${month}-${day}`;
+                                }
+                                return text.substring(0, 10); // 备用方案
                             }
                             return text;
                         }
@@ -207,7 +259,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                         }
                     },
                     // 根据屏幕大小调整标签数量
-                    tickCount: isMobile ? 6 : 10
+                    tickCount: isMobileLandscape ? 3 : (isMobile ? 4 : 6) // 减少标签数量以避免重叠
                 } // x 轴
             ],
             legends: {
@@ -218,15 +270,15 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                     label: { 
                         style: { 
                             fill: '#000',
-                            fontSize: isMobile ? (isLandscape ? 8 : 10) : 12
+                            fontSize: isMobileLandscape ? 9 : (isMobile ? (isLandscape ? 10 : 12) : 14) // 增加字体大小
                         } 
                     },
                     shape: {
-                        size: isMobile ? (isLandscape ? 6 : 8) : 10
+                        size: isMobileLandscape ? 6 : (isMobile ? (isLandscape ? 8 : 10) : 12) // 增加形状大小
                     }
                 },
                 // 移动端优化：减少图例间距
-                padding: isMobile ? (isLandscape ? 3 : 5) : 10
+                padding: isMobileLandscape ? 2 : (isMobile ? (isLandscape ? 3 : 5) : 10) // 移动端横屏时最小间距
             }
         };
 
@@ -260,7 +312,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
 
     return (
         <div className="flex flex-col min-h-screen bg-white px-1 sm:px-4">
-            <div className="relative isolate px-1 sm:px-6 pt-14 lg:px-8 w-full max-w-full mx-auto">
+            <div className="relative isolate px-1 sm:px-6 pt-14 lg:px-8 w-full max-w-full mx-auto lg:ml-4">
                 <div
                     aria-hidden="true"
                     className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -279,10 +331,10 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
 
 
                 {/* 日期选择器 */}
-                <div className="text-center mb-4 px-1 sm:px-4 w-full">
+                <div className="text-center mb-2 px-1 sm:px-4 w-full mobile-landscape-controls">
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-full mx-auto">
                         <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                            <label htmlFor="startDate" className="text-black text-sm sm:text-base font-medium">{t.startDate}：</label>
+                            <label htmlFor="startDate" className="text-black text-sm sm:text-base font-medium mobile-landscape-text">{t.startDate}：</label>
                             <input
                                 type="date"
                                 id="startDate"
@@ -293,7 +345,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                             />
                         </div>
                         <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                            <label htmlFor="endDate" className="text-black text-sm sm:text-base font-medium">{t.endDate}：</label>
+                            <label htmlFor="endDate" className="text-black text-sm sm:text-base font-medium mobile-landscape-text">{t.endDate}：</label>
                             <input
                                 type="date"
                                 id="endDate"
@@ -307,9 +359,9 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                 </div>
 
                 {/* 显示选项复选框 */}
-                <div className="text-center mb-5 px-1 sm:px-4 w-full">
+                <div className="text-center mb-2 px-1 sm:px-4 w-full mobile-landscape-controls">
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 max-w-full mx-auto">
-                        <label className="text-black text-sm sm:text-base flex items-center gap-2">
+                        <label className="text-black text-sm sm:text-base flex items-center gap-2 mobile-landscape-text">
                             <input
                                 type="checkbox"
                                 name="invitations"
@@ -319,7 +371,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                             /> 
                             <span className="whitespace-nowrap">{t.showInvitations}</span>
                         </label>
-                        <label className="text-black text-sm sm:text-base flex items-center gap-2">
+                        <label className="text-black text-sm sm:text-base flex items-center gap-2 mobile-landscape-text">
                             <input
                                 type="checkbox"
                                 name="crsScores"
@@ -333,21 +385,22 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                 </div>
 
                 {/* 图表容器 */}
-                <div className="w-full flex justify-center items-center px-0" style={{ 
-                    height: typeof window !== 'undefined' && window.innerWidth > window.innerHeight ? '40vh' : '80vh' 
+                <div className="w-full flex justify-center items-center px-0 mobile-landscape-container" style={{ 
+                    height: typeof window !== 'undefined' && window.innerWidth > window.innerHeight && window.innerHeight < 500 ? '25vh' : 
+                           (typeof window !== 'undefined' && window.innerWidth > window.innerHeight ? '35vh' : '50vh')
                 }}>
                     <div 
                         ref={chartContainerRef} 
-                        className="w-full h-full"
+                        className="w-full h-full mobile-landscape-chart"
                         style={{ 
-                            minHeight: typeof window !== 'undefined' && window.innerWidth > window.innerHeight ? '200px' : '500px',
+                            minHeight: typeof window !== 'undefined' && window.innerWidth > window.innerHeight && window.innerHeight < 500 ? '120px' :
+                                       (typeof window !== 'undefined' && window.innerWidth > window.innerHeight ? '200px' : '300px'),
                             maxWidth: '100%',
                             margin: '0'
                         }}
                     ></div>
                 </div>
             </div>
-
 
             <div
                 aria-hidden="true"

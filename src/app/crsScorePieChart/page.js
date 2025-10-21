@@ -50,20 +50,20 @@ const ChartPage = () => {
                         type: 'pie',
                         data: specs[0].data,
                         dataKey: 'crsScore',
-                        outerRadius: 0.6, // 减小外半径，为标签留出更多空间
-                        innerRadius: 0.2, // 添加内半径，创建环形图
+                        outerRadius: 0.75, // 增加外半径，让饼图更大
+                        innerRadius: 0.2, // 保持内半径，创建环形图
                         label: {
                             visible: true,
                             position: 'outside',
                             line: {
                                 visible: true,
-                                length: 20,
-                                length2: 10
+                                length: 25, // 增加标签线长度
+                                length2: 15 // 增加标签线长度
                             },
                             style: {
-                                fontSize: 12,
+                                fontSize: 13, // 稍微增加字体大小
                                 fill: '#333',
-                                maxWidth: 80, // 限制标签最大宽度
+                                maxWidth: 90, // 稍微增加标签最大宽度
                                 wordWrap: true
                             }
                         },
@@ -78,9 +78,9 @@ const ChartPage = () => {
                     item: {
                         label: {
                             style: {
-                                fontSize: 12,
+                                fontSize: 13, // 稍微增加字体大小
                                 fill: '#333',
-                                maxWidth: 100,
+                                maxWidth: 110, // 稍微增加标签最大宽度
                                 wordWrap: true
                             }
                         }
