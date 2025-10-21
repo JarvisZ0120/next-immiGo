@@ -72,6 +72,54 @@ body {
   font-family: 'Arial', sans-serif; /* 其他文本使用默认字体 */
 }
 
+/* 美化日期选择器 */
+input[type="date"] {
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(220deg);
+  transition: opacity 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  filter: invert(0.4) sepia(1) saturate(6) hue-rotate(220deg);
+}
+
+/* Webkit浏览器日期选择器样式 */
+input[type="date"]::-webkit-datetime-edit {
+  padding: 0.25rem;
+}
+
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0.25rem;
+}
+
+input[type="date"]::-webkit-datetime-edit-text {
+  color: #4b5563;
+  padding: 0 0.25rem;
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field:focus,
+input[type="date"]::-webkit-datetime-edit-day-field:focus,
+input[type="date"]::-webkit-datetime-edit-year-field:focus {
+  background-color: #e0e7ff;
+  color: #4338ca;
+  border-radius: 0.25rem;
+  outline: none;
+}
+
 /* 移动端横屏适配 */
 @media screen and (orientation: landscape) and (max-height: 500px) {
   .mobile-landscape-container {

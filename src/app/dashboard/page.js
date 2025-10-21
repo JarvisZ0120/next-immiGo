@@ -67,7 +67,7 @@ export default function Dashboard() {
                 <div className="relative isolate flex-grow px-4 sm:px-6 pt-8 sm:pt-14 lg:px-14 lg:ml-8">
                     {/* 第一个图表：CRS Score Distribution */}
                     <div className="mb-4 sm:mb-8">
-                        <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-gray-900 mt-4 sm:mt-8 lg:mt-12 mb-4 px-4">
+                        <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-gray-900 mt-8 sm:mt-12 lg:mt-16 mb-4 sm:mb-6 lg:mb-8 px-4">
                             {currentTranslations.crsOverTime}
                         </h2>
                     <BarLineChart pageLanguage={language} />

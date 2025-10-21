@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import VChart from '@visactor/vchart';
+import CustomDatePicker from '../components/CustomDatePicker';
 
 const translations = {
     en: {
@@ -248,40 +249,24 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
                 </h2>
 
                 {/* 日期选择器 */}
-                <div className="text-center mb-4 px-2 sm:px-4 w-full mobile-landscape-controls">
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 inline-block">
-                        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
-                            <div className="flex flex-col sm:flex-row items-center gap-2">
-                                <label htmlFor="startDate" className="text-black text-sm sm:text-base font-semibold mobile-landscape-text flex items-center">
-                                    <svg className="w-4 h-4 mr-1 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    {t.startDate}
-                                </label>
-                                <input
-                                    type="date"
-                                    id="startDate"
-                                    name="startDate"
+                <div className="text-center mb-3 sm:mb-6 lg:mb-8 px-2 sm:px-4 w-full mobile-landscape-controls">
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-5 lg:p-6 inline-block w-full max-w-3xl">
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-8 lg:gap-12">
+                            <div className="w-full sm:w-auto">
+                                <CustomDatePicker
+                                    label={t.startDate}
                                     value={timeRange.startDate}
-                                    onChange={handleDateChange}
-                                    className="border-2 border-gray-300 rounded-lg px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                                    onChange={(date) => handleDateChange({ target: { name: 'startDate', value: date } })}
+                                    className="w-full sm:min-w-[200px] lg:min-w-[220px]"
                                 />
                             </div>
-                            <div className="hidden sm:block text-gray-400">→</div>
-                            <div className="flex flex-col sm:flex-row items-center gap-2">
-                                <label htmlFor="endDate" className="text-black text-sm sm:text-base font-semibold mobile-landscape-text flex items-center">
-                                    <svg className="w-4 h-4 mr-1 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    {t.endDate}
-                                </label>
-                                <input
-                                    type="date"
-                                    id="endDate"
-                                    name="endDate"
+                            <div className="hidden sm:block text-gray-400 text-lg lg:text-xl">→</div>
+                            <div className="w-full sm:w-auto">
+                                <CustomDatePicker
+                                    label={t.endDate}
                                     value={timeRange.endDate}
-                                    onChange={handleDateChange}
-                                    className="border-2 border-gray-300 rounded-lg px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                                    onChange={(date) => handleDateChange({ target: { name: 'endDate', value: date } })}
+                                    className="w-full sm:min-w-[200px] lg:min-w-[220px]"
                                 />
                             </div>
                         </div>
