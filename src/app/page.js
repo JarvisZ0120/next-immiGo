@@ -283,7 +283,13 @@ export default function Home() {
             console.log(response);
 
             const result = await response.json();
-            console.log(result);
+            console.log('Subscribe API response:', result);
+            
+            if (!response.ok) {
+                setMessage(result.message || `Failed to subscribe: ${response.status}`);
+                return;
+            }
+            
             if (result.success) {
                 // 发送订阅确认邮件
                 const responseSubscribeEmail = await fetch('/api/sendEmail', {
@@ -316,26 +322,32 @@ export default function Home() {
                 });
 
                 const resultSubscribeEmail = await responseSubscribeEmail.json();
+                console.log('Send email API response:', resultSubscribeEmail);
 
                 if (resultSubscribeEmail.success) {
-
                     // TODO: There is a Confetti issue needs to be fixed
                     setShowConfetti(true); // 显示撒花效果
                     setTimeout(() => {
                         setShowConfetti(false); // 几秒后隐藏撒花效果
                     }, 3000); // 3秒后隐藏
 
-
                     setMessage('Subscription successful! Check your email for updates.');
                 } else {
-                    setMessage(resultSubscribeEmail.message || 'Failed to subscribe. Please try again.');
+                    // 即使邮件发送失败，订阅也已经成功了
+                    setMessage('Subscription successful! (Email notification may be delayed)');
+                    console.warn('Email sending failed but subscription was saved:', resultSubscribeEmail);
                 }
             } else {
                 setMessage(result.message || 'Failed to subscribe. Please try again.');
             }
         } catch (error) {
             setMessage('An error occurred. Please try again later.');
-            console.error('Error:', error);
+            console.error('Subscription error:', error);
+            console.error('Error details:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
         }
 
         // Reset form fields
@@ -524,10 +536,24 @@ export default function Home() {
                                         </div>
                                     </>
                                 )}
-                                <button type="submit" className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                                <button type="submit" className="w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200">
                                     {translations[language].subscribeButton}
                                 </button>
-                                {message && <p className="subscribe-message text-red-500 font-bold">{message}</p>}
+                                {message && (
+                                    <div className={`mt-4 p-4 rounded-lg ${
+                                        message.includes('successful') || message.includes('成功') 
+                                            ? 'bg-green-100 border-2 border-green-500' 
+                                            : 'bg-red-100 border-2 border-red-500'
+                                    }`}>
+                                        <p className={`text-center font-semibold ${
+                                            message.includes('successful') || message.includes('成功')
+                                                ? 'text-green-700' 
+                                                : 'text-red-700'
+                                        }`}>
+                                            {message}
+                                        </p>
+                                    </div>
+                                )}
                                 {/* {showConfetti && <Confetti />} */}
                             </form>
                         </div>

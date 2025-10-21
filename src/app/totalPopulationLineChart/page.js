@@ -248,33 +248,42 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
                 </h2>
 
                 {/* 日期选择器 */}
-                <div className="text-center mb-2 px-1 sm:px-4 w-full mobile-landscape-controls">
-                    <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-full mx-auto">
-                        <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                            <label htmlFor="startDate" className="text-black text-sm sm:text-base font-medium mobile-landscape-text">
-                                {t.startDate}：
-                            </label>
-                            <input
-                                type="date"
-                                id="startDate"
-                                name="startDate"
-                                value={timeRange.startDate}
-                                onChange={handleDateChange}
-                                className="border rounded-md px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px]"
-                            />
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                            <label htmlFor="endDate" className="text-black text-sm sm:text-base font-medium mobile-landscape-text">
-                                {t.endDate}：
-                            </label>
-                            <input
-                                type="date"
-                                id="endDate"
-                                name="endDate"
-                                value={timeRange.endDate}
-                                onChange={handleDateChange}
-                                className="border rounded-md px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px]"
-                            />
+                <div className="text-center mb-4 px-2 sm:px-4 w-full mobile-landscape-controls">
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 inline-block">
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
+                            <div className="flex flex-col sm:flex-row items-center gap-2">
+                                <label htmlFor="startDate" className="text-black text-sm sm:text-base font-semibold mobile-landscape-text flex items-center">
+                                    <svg className="w-4 h-4 mr-1 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    {t.startDate}
+                                </label>
+                                <input
+                                    type="date"
+                                    id="startDate"
+                                    name="startDate"
+                                    value={timeRange.startDate}
+                                    onChange={handleDateChange}
+                                    className="border-2 border-gray-300 rounded-lg px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                                />
+                            </div>
+                            <div className="hidden sm:block text-gray-400">→</div>
+                            <div className="flex flex-col sm:flex-row items-center gap-2">
+                                <label htmlFor="endDate" className="text-black text-sm sm:text-base font-semibold mobile-landscape-text flex items-center">
+                                    <svg className="w-4 h-4 mr-1 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    {t.endDate}
+                                </label>
+                                <input
+                                    type="date"
+                                    id="endDate"
+                                    name="endDate"
+                                    value={timeRange.endDate}
+                                    onChange={handleDateChange}
+                                    className="border-2 border-gray-300 rounded-lg px-3 py-2 text-black text-sm sm:text-base min-w-0 sm:min-w-[150px] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
