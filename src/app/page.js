@@ -144,7 +144,7 @@ export default function Home() {
     const [language, setLanguage] = useState('en'); // 默认语言为英语
     const [name, setName] = useState(''); // 新增姓名状态
     const [email, setEmail] = useState('');
-    const [selectedPrograms, setSelectedPrograms] = useState(programs); // 默认选择所有项目
+    const [selectedPrograms, setSelectedPrograms] = useState([]); // 默认不选择任何项目
     const [score, setScore] = useState('');
     const [currentProgram, setCurrentProgram] = useState('');
     const [inPool, setInPool] = useState(false); // 新增状态
@@ -153,6 +153,17 @@ export default function Home() {
 
 
     const [latestDraw, setLatestDraw] = useState({});
+    const [drawStats, setDrawStats] = useState({
+        totalDraws: 0,
+        averageScore: 0,
+        scoreRange: { min: 0, max: 0 },
+        lastDrawDate: null
+    });
+    const [aiPrediction, setAiPrediction] = useState({
+        nextDrawDate: null,
+        predictedScoreRange: { min: 0, max: 0 },
+        confidence: 0
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -161,7 +172,7 @@ export default function Home() {
                 const data = await response.json();
                 const rounds = data.rounds || [];
 
-                // 假设你只想获取最新一轮的抽签数据
+                // 获取最新一轮的抽签数据
                 const latestRound = rounds[0];
                 const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version \d+\)/g, '').trim();
 
@@ -171,6 +182,71 @@ export default function Home() {
                     drawSize: latestRound.drawSize,
                     drawDate: latestRound.drawDateFull,
                 });
+
+                // 计算动态统计数据
+                const currentYear = new Date().getFullYear();
+                const currentYearRounds = rounds.filter(round => {
+                    const drawDate = new Date(round.drawDateFull);
+                    return drawDate.getFullYear() === currentYear;
+                });
+
+                if (currentYearRounds.length > 0) {
+                    const scores = currentYearRounds.map(round => parseInt(round.drawCRS)).filter(score => score > 0 && score < 1000);
+                    const totalDraws = currentYearRounds.length;
+                    const averageScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+                    const minScore = scores.length > 0 ? Math.min(...scores) : 0;
+                    const maxScore = scores.length > 0 ? Math.max(...scores) : 0;
+
+                    setDrawStats({
+                        totalDraws,
+                        averageScore,
+                        scoreRange: { min: minScore, max: maxScore },
+                        lastDrawDate: latestRound.drawDateFull
+                    });
+
+                    // AI预测逻辑
+                    const lastDrawDate = new Date(latestRound.drawDateFull);
+                    const daysSinceLastDraw = Math.floor((new Date() - lastDrawDate) / (1000 * 60 * 60 * 24));
+                    
+                    // 基于历史数据的简单AI预测
+                    const recentRounds = rounds.slice(0, 6); // 最近6次抽签
+                    const recentScores = recentRounds.map(round => parseInt(round.drawCRS)).filter(score => score > 0 && score < 1000);
+                    
+                    if (recentScores.length >= 3) {
+                        const recentAvg = recentScores.reduce((a, b) => a + b, 0) / recentScores.length;
+                        
+                        // 预测下次抽签日期（通常每2周一次）
+                        const nextDrawDate = new Date(lastDrawDate);
+                        nextDrawDate.setDate(nextDrawDate.getDate() + 14);
+                        
+                        // 更合理的预测分数范围
+                        const recentMin = Math.min(...recentScores);
+                        const recentMax = Math.max(...recentScores);
+                        const recentRange = recentMax - recentMin;
+                        
+                        // 基于最近3次抽签的趋势
+                        const lastThreeScores = recentScores.slice(0, 3);
+                        const trend = lastThreeScores.length >= 2 ? 
+                            (lastThreeScores[0] - lastThreeScores[lastThreeScores.length - 1]) / lastThreeScores.length : 0;
+                        
+                        // 预测范围：基于最近平均值，考虑趋势，但限制在合理范围内
+                        const basePrediction = Math.round(recentAvg + trend * 2);
+                        const rangeBuffer = Math.min(30, Math.max(15, recentRange / 2)); // 动态范围缓冲
+                        
+                        const predictedMin = Math.max(400, Math.min(550, basePrediction - rangeBuffer));
+                        const predictedMax = Math.min(600, Math.max(450, basePrediction + rangeBuffer));
+                        
+                        // 计算置信度（基于数据一致性）
+                        const scoreVariance = recentScores.reduce((acc, score) => acc + Math.pow(score - recentAvg, 2), 0) / recentScores.length;
+                        const confidence = Math.max(65, Math.min(90, 100 - Math.sqrt(scoreVariance) / 8));
+
+                        setAiPrediction({
+                            nextDrawDate: nextDrawDate.toISOString().split('T')[0],
+                            predictedScoreRange: { min: predictedMin, max: predictedMax },
+                            confidence: Math.round(confidence)
+                        });
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching draw data:', error);
             }
@@ -347,25 +423,54 @@ export default function Home() {
                                         required
                                     />
                                 </div>
-                                <div className="mb-4">
-                                    <label className="block mb-2 text-black font-bold">{translations[language].selectProgramsToFollow}</label>
-                                    {programs.map((program) => (
-                                        <label key={program} className="inline-flex items-center mr-4">
-                                            <input
-                                                type="checkbox"
-                                                value={program}
-                                                checked={selectedPrograms.includes(program)}
-                                                onChange={(e) => {
-                                                    const value = e.target.value;
-                                                    setSelectedPrograms(prev =>
-                                                        prev.includes(value) ? prev.filter(p => p !== value) : [...prev, value]
-                                                    );
-                                                }}
-                                                className="flex-none rounded-md form-checkbox"
-                                            />
-                                            <span className="mt-1 leading-5 text-black">{program}</span>
-                                        </label>
-                                    ))}
+                                <div className="mb-6">
+                                    <label className="block mb-4 text-black font-bold text-lg">{translations[language].selectProgramsToFollow}</label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        {programs.map((program) => (
+                                            <label 
+                                                key={program} 
+                                                className={`flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-white hover:shadow-sm ${
+                                                    selectedPrograms.includes(program) 
+                                                        ? 'bg-indigo-100 border-2 border-indigo-300' 
+                                                        : 'bg-white border-2 border-gray-200'
+                                                }`}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    value={program}
+                                                    checked={selectedPrograms.includes(program)}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value;
+                                                        if (value === 'No Program Specified') {
+                                                            // 如果选择"No Program Specified"，则只选择这个选项，取消其他所有选项
+                                                            setSelectedPrograms(selectedPrograms.includes(value) ? [] : ['No Program Specified']);
+                                                        } else {
+                                                            // 如果选择其他选项，则取消"No Program Specified"选项
+                                                            setSelectedPrograms(prev => {
+                                                                const filtered = prev.filter(p => p !== 'No Program Specified');
+                                                                return filtered.includes(value) 
+                                                                    ? filtered.filter(p => p !== value) 
+                                                                    : [...filtered, value];
+                                                            });
+                                                        }
+                                                    }}
+                                                    className="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
+                                                />
+                                                <span className={`ml-3 text-sm font-medium ${
+                                                    selectedPrograms.includes(program) ? 'text-indigo-900' : 'text-gray-700'
+                                                }`}>
+                                                    {program}
+                                                </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <p className="mt-2 text-xs text-gray-500">
+                                        {language === 'en' ? 'Select one or more programs to follow for updates' :
+                                         language === 'fr' ? 'Sélectionnez un ou plusieurs programmes à suivre pour les mises à jour' :
+                                         language === 'zh' ? '选择一个或多个项目来获取更新' :
+                                         language === 'hi' ? 'अपडेट के लिए एक या अधिक कार्यक्रम चुनें' : 
+                                         'Select one or more programs to follow for updates'}
+                                    </p>
                                 </div>
                                 <div className="mb-4">
                                     <label className="block mb-2 text-black font-bold">{translations[language].areYouCurrentlyInThePool}</label>
@@ -448,6 +553,113 @@ export default function Home() {
                                     </>
                                 }
                             />
+
+                            {/* Additional info cards */}
+                            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {/* Quick Stats Card */}
+                                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg shadow-md border border-blue-200">
+                                    <div className="flex items-center mb-3">
+                                        <div className="bg-blue-100 p-2 rounded-lg">
+                                            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="ml-3 text-lg font-semibold text-gray-900">
+                                            {language === 'en' ? 'Quick Stats' :
+                                             language === 'fr' ? 'Statistiques rapides' :
+                                             language === 'zh' ? '快速统计' :
+                                             language === 'hi' ? 'त्वरित आंकड़े' : 'Quick Stats'}
+                                        </h3>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-medium">
+                                                {language === 'en' ? 'Total Draws This Year:' :
+                                                 language === 'fr' ? 'Total des tirages cette année:' :
+                                                 language === 'zh' ? '今年总抽签次数:' :
+                                                 language === 'hi' ? 'इस वर्ष कुल ड्रॉ:' : 'Total Draws This Year:'}
+                                            </span>
+                                            <span className="ml-2 font-bold text-blue-600">{drawStats.totalDraws}</span>
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-medium">
+                                                {language === 'en' ? 'Average Score:' :
+                                                 language === 'fr' ? 'Score moyen:' :
+                                                 language === 'zh' ? '平均分数:' :
+                                                 language === 'hi' ? 'औसत स्कोर:' : 'Average Score:'}
+                                            </span>
+                                            <span className="ml-2 font-bold text-blue-600">{drawStats.averageScore}</span>
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-medium">
+                                                {language === 'en' ? 'Score Range:' :
+                                                 language === 'fr' ? 'Gamme de scores:' :
+                                                 language === 'zh' ? '分数范围:' :
+                                                 language === 'hi' ? 'स्कोर रेंज:' : 'Score Range:'}
+                                            </span>
+                                            <span className="ml-2 font-bold text-blue-600">
+                                                {drawStats.scoreRange.min}-{drawStats.scoreRange.max}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Next Draw Prediction Card */}
+                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg shadow-md border border-green-200">
+                                    <div className="flex items-center mb-3">
+                                        <div className="bg-green-100 p-2 rounded-lg">
+                                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="ml-3 text-lg font-semibold text-gray-900">
+                                            {language === 'en' ? 'AI Prediction' :
+                                             language === 'fr' ? 'Prédiction IA' :
+                                             language === 'zh' ? 'AI预测' :
+                                             language === 'hi' ? 'AI भविष्यवाणी' : 'AI Prediction'}
+                                        </h3>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-medium">
+                                                {language === 'en' ? 'Next Draw Date:' :
+                                                 language === 'fr' ? 'Date du prochain tirage:' :
+                                                 language === 'zh' ? '下次抽签日期:' :
+                                                 language === 'hi' ? 'अगले ड्रॉ की तिथि:' : 'Next Draw Date:'}
+                                            </span>
+                                            <span className="ml-2 font-bold text-green-600">
+                                                {aiPrediction.nextDrawDate ? 
+                                                    new Date(aiPrediction.nextDrawDate).toLocaleDateString() : 
+                                                    (language === 'en' ? 'Calculating...' :
+                                                     language === 'fr' ? 'Calcul...' :
+                                                     language === 'zh' ? '计算中...' :
+                                                     language === 'hi' ? 'गणना...' : 'Calculating...')
+                                                }
+                                            </span>
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-medium">
+                                                {language === 'en' ? 'Predicted Score:' :
+                                                 language === 'fr' ? 'Score prédit:' :
+                                                 language === 'zh' ? '预测分数:' :
+                                                 language === 'hi' ? 'भविष्यवाणी स्कोर:' : 'Predicted Score:'}
+                                            </span>
+                                            <span className="ml-2 font-bold text-green-600">
+                                                {aiPrediction.predictedScoreRange.min}-{aiPrediction.predictedScoreRange.max}
+                                            </span>
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            <span className="font-medium">
+                                                {language === 'en' ? 'Confidence:' :
+                                                 language === 'fr' ? 'Confiance:' :
+                                                 language === 'zh' ? '置信度:' :
+                                                 language === 'hi' ? 'विश्वास:' : 'Confidence:'}
+                                            </span>
+                                            <span className="ml-2 font-bold text-green-600">{aiPrediction.confidence}%</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* feature info */}
                             <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2 mt-36" >
