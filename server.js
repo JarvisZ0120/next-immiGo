@@ -164,11 +164,20 @@ async function checkSubscribersAndSendEmails(draw) {
 // 发送更新邮件给符合 selectedPrograms 的用户
 async function sendUpdateEmail(subscriber, draw) {
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
+        tls: {
+            ciphers: 'SSLv3',
+            rejectUnauthorized: false
+        },
+        connectionTimeout: 60000,
+        greetingTimeout: 30000,
+        socketTimeout: 60000,
     });
 
     const mailOptions = {
@@ -192,11 +201,20 @@ async function sendUpdateEmail(subscriber, draw) {
 // 发送祝贺邮件给符合 currentProgram 的用户且 CRS 分数高于 drawCRS
 async function sendCongratsEmail(subscriber, draw) {
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
+        tls: {
+            ciphers: 'SSLv3',
+            rejectUnauthorized: false
+        },
+        connectionTimeout: 60000,
+        greetingTimeout: 30000,
+        socketTimeout: 60000,
     });
 
     const mailOptions = {

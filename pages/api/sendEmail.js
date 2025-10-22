@@ -1,13 +1,22 @@
 "use client";
 import nodemailer from 'nodemailer';
 
-// 使用 Gmail 的 SMTP 配置
+// 使用 Gmail 的 SMTP 配置 - 针对Railway优化
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // 使用STARTTLS
     auth: {
-        user: process.env.GMAIL_USER, // 你的 Gmail 邮箱地址
-        pass: process.env.GMAIL_PASS, // 你的 Gmail 应用专用密码
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
     },
+    tls: {
+        ciphers: 'SSLv3',
+        rejectUnauthorized: false
+    },
+    connectionTimeout: 60000,
+    greetingTimeout: 30000,
+    socketTimeout: 60000,
 });
 
 // 验证 SMTP 连接
