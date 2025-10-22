@@ -70,19 +70,10 @@ export default async function handler(req, res) {
             try {
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
-                    host: 'smtp.gmail.com',
-                    port: 587,
-                    secure: false,
                     auth: {
                         user: process.env.GMAIL_USER,
                         pass: process.env.GMAIL_PASS,
                     },
-                    connectionTimeout: 20000, // 20 seconds (减少超时)
-                    greetingTimeout: 10000,   // 10 seconds
-                    socketTimeout: 20000,     // 20 seconds
-                    tls: {
-                        rejectUnauthorized: false
-                    }
                 });
 
                 // 添加15秒超时保护

@@ -1,22 +1,13 @@
 "use client";
 import nodemailer from 'nodemailer';
 
-// 使用 Gmail 的 SMTP 配置
+// 使用 Gmail 的 SMTP 配置（恢复到最简单的工作配置）
 const transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465, // 尝试使用SSL端口
-    secure: true, // true for 465, false for other ports
     auth: {
         user: process.env.GMAIL_USER, // 你的 Gmail 邮箱地址
         pass: process.env.GMAIL_PASS, // 你的 Gmail 应用专用密码
     },
-    connectionTimeout: 30000, // 30 seconds (减少超时时间)
-    greetingTimeout: 15000,   // 15 seconds
-    socketTimeout: 30000,     // 30 seconds
-    tls: {
-        rejectUnauthorized: false
-    }
 });
 
 // 调试环境变量

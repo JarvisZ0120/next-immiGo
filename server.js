@@ -165,19 +165,10 @@ async function checkSubscribersAndSendEmails(draw) {
 async function sendUpdateEmail(subscriber, draw) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
-        connectionTimeout: 20000, // 20 seconds (减少超时)
-        greetingTimeout: 10000,   // 10 seconds
-        socketTimeout: 20000,     // 20 seconds
-        tls: {
-            rejectUnauthorized: false
-        }
     });
 
     const mailOptions = {
@@ -212,19 +203,10 @@ async function sendUpdateEmail(subscriber, draw) {
 async function sendCongratsEmail(subscriber, draw) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
-        connectionTimeout: 20000, // 20 seconds (减少超时)
-        greetingTimeout: 10000,   // 10 seconds
-        socketTimeout: 20000,     // 20 seconds
-        tls: {
-            rejectUnauthorized: false
-        }
     });
 
     const mailOptions = {
