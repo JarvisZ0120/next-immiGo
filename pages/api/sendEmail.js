@@ -1,22 +1,13 @@
 "use client";
 import nodemailer from 'nodemailer';
 
-// 使用 Gmail 的 SMTP 配置 - 针对Railway优化
+// 使用 Gmail 的 SMTP 配置
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // 使用STARTTLS
+    service: 'gmail',
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS,
     },
-    tls: {
-        ciphers: 'SSLv3',
-        rejectUnauthorized: false
-    },
-    connectionTimeout: 60000,
-    greetingTimeout: 30000,
-    socketTimeout: 60000,
 });
 
 // 验证 SMTP 连接
@@ -42,7 +33,7 @@ export default async function handler(req, res) {
 
             return res.status(200).json({ success: true, message: 'Email sent successfully!' });
         } catch (error) {
-            console.error('Error sending email:', error); // 打印完整的错误信息
+            console.error('Error sending email:', error);
             return res.status(500).json({
                 success: false,
                 error: error.message,
@@ -55,4 +46,3 @@ export default async function handler(req, res) {
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
