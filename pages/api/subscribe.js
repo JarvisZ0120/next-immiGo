@@ -13,6 +13,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 import Subscriber from '../../models/Subscriber';
+const { welcomeEmailTemplate } = require('../../utils/emailTemplates');
 
 
 const app = express();
@@ -64,6 +65,42 @@ export default async function handler(req, res) {
 
             // 保存订阅者到数据库
             await newSubscriber.save();
+            
+            // 发送欢迎邮件
+            try {
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    host: 'smtp.gmail.com',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: process.env.GMAIL_USER,
+                        pass: process.env.GMAIL_PASS,
+                    },
+                    connectionTimeout: 30000,
+                    greetingTimeout: 15000,
+                    socketTimeout: 30000,
+                    tls: {
+                        rejectUnauthorized: false
+                    }
+                });
+
+                await transporter.sendMail({
+                    from: {
+                        name: 'ImmiGo Immigration Updates',
+                        address: process.env.GMAIL_USER
+                    },
+                    to: email,
+                    subject: '🎉 Welcome to ImmiGo - Your Immigration Journey Begins!',
+                    html: welcomeEmailTemplate(newSubscriber),
+                });
+                
+                console.log(`Welcome email sent to ${email}`);
+            } catch (emailError) {
+                console.error('Failed to send welcome email:', emailError);
+                // 不影响订阅成功的响应
+            }
+            
             res.status(200).json({ success: true, message: 'Subscribed successfully!' });
         } catch (error) {
             console.error('Error saving subscriber:', error);

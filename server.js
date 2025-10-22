@@ -14,6 +14,7 @@ require('dotenv').config();
 
 const Subscriber = require('./models/Subscriber'); // 导入订阅者模型
 const Draw = require('./models/Draw'); // 导入Draw模型
+const { updateEmailTemplate, congratsEmailTemplate } = require('./utils/emailTemplates');
 
 const app = express();
 
@@ -184,25 +185,13 @@ async function sendUpdateEmail(subscriber, draw) {
     updatedDrawDate.setDate(updatedDrawDate.getDate());
 
     const mailOptions = {
-        from: process.env.GMAIL_USER,
+        from: {
+            name: 'ImmiGo Immigration Updates',
+            address: process.env.GMAIL_USER
+        },
         to: subscriber.email,
-        subject: 'New Express Entry Draw Update',
-        html: `
-      <h2>New Express Entry Draw Announced!</h2>
-      <div style="font-family: Arial, sans-serif; text-align: center;">
-        <h3 style="color: #333; margin-bottom: 10px;">Recent Draw Update</h3>
-        <p style="color: #333; margin-bottom: 20px;">
-          The latest draw for <strong style="color: #007BFF;">${draw.details}</strong> took place on <strong style="color: #007BFF;">${updatedDrawDate.toDateString()}</strong>. 
-          The minimum score required was <strong style="color: #007BFF;">${draw.crsScore}</strong>, and a total of <strong style="color: #007BFF;">${draw.invitations}</strong> invitations were sent out.
-        </p>
-        <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
-        <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
-        Opt out of receiving further emails by clicking on the following
-        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault();" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
-        </p>
-        <p>ImmiGo, Vancouver, BC, Canada</p>
-      </div>
-    `,
+        subject: '🎯 New Express Entry Draw Announced!',
+        html: updateEmailTemplate(subscriber, draw),
     };
 
     try {
@@ -233,23 +222,13 @@ async function sendCongratsEmail(subscriber, draw) {
     });
 
     const mailOptions = {
-        from: process.env.GMAIL_USER,
+        from: {
+            name: 'ImmiGo Immigration Updates',
+            address: process.env.GMAIL_USER
+        },
         to: subscriber.email,
-        subject: 'Congratulations on Your Success!',
-        html: `
-      <div style="font-family: Arial, sans-serif; text-align: center;">
-        <h2 style="color: #007BFF;">Congratulations!</h2>
-        <p style="color: #333; margin-bottom: 20px;">You have surpassed the latest <strong style="color: #007BFF;">${draw.details}</strong> draw's minimum CRS score of <strong style="color: #007BFF;">${draw.crsScore}</strong> with your score of <strong style="color: #007BFF;">${subscriber.score}</strong>.</p>
-        <p style="color: #333;">Keep an eye on your email for further updates.</p>
-
-        <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
-        <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
-        Opt out of receiving further emails by clicking on the following
-        <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault();" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
-        </p>
-        <p>ImmiGo, Vancouver, BC, Canada</p>        
-      </div>
-    `,
+        subject: '🎉 Congratulations! You Qualify for the Latest Draw!',
+        html: congratsEmailTemplate(subscriber, draw),
     };
 
     try {
