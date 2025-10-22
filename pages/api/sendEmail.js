@@ -1,32 +1,23 @@
 "use client";
 import nodemailer from 'nodemailer';
 
-// 使用 Gmail 的 SMTP 配置（恢复到最简单的工作配置）
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.GMAIL_USER, // 你的 Gmail 邮箱地址
-        pass: process.env.GMAIL_PASS, // 你的 Gmail 应用专用密码
-    },
-});
-
-// 调试环境变量
-console.log('Gmail User:', process.env.GMAIL_USER ? 'Set: ' + process.env.GMAIL_USER : 'Not set');
-console.log('Gmail Pass:', process.env.GMAIL_PASS ? 'Set (length: ' + process.env.GMAIL_PASS.length + ')' : 'Not set');
-console.log('Gmail Pass first 4 chars:', process.env.GMAIL_PASS ? process.env.GMAIL_PASS.substring(0, 4) + '...' : 'Not set');
-
-// 验证 SMTP 连接
-transporter.verify((error, success) => {
-    if (error) {
-        console.error('SMTP connection error:', error);
-    } else {
-        console.log('SMTP server is ready to take messages');
-    }
-});
+// 创建 transporter 函数（每次发送时创建新连接，避免连接池问题）
+function createTransporter() {
+    return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
+        },
+    });
+}
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { email, subject, message } = req.body;
+
+        // 每次发送时创建新的 transporter
+        const transporter = createTransporter();
 
         try {
             // 添加10秒超时保护（更短的超时）

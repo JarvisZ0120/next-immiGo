@@ -68,12 +68,14 @@ export default async function handler(req, res) {
             
             // 发送欢迎邮件
             try {
+                // 每次发送时创建新的 transporter，避免连接池问题
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
                         user: process.env.GMAIL_USER,
                         pass: process.env.GMAIL_PASS,
                     },
+                    pool: false, // 禁用连接池
                 });
 
                 // 添加10秒超时保护

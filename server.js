@@ -163,12 +163,14 @@ async function checkSubscribersAndSendEmails(draw) {
 
 // 发送更新邮件给符合 selectedPrograms 的用户
 async function sendUpdateEmail(subscriber, draw) {
+    // 每次发送时创建新的 transporter，避免连接池问题
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
+        pool: false, // 禁用连接池
     });
 
     const mailOptions = {
@@ -198,12 +200,14 @@ async function sendUpdateEmail(subscriber, draw) {
 
 // 发送祝贺邮件给符合 currentProgram 的用户且 CRS 分数高于 drawCRS
 async function sendCongratsEmail(subscriber, draw) {
+    // 每次发送时创建新的 transporter，避免连接池问题
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
+        pool: false, // 禁用连接池
     });
 
     const mailOptions = {
