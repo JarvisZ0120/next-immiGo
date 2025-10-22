@@ -163,14 +163,12 @@ async function checkSubscribersAndSendEmails(draw) {
 
 // 发送更新邮件给符合 selectedPrograms 的用户
 async function sendUpdateEmail(subscriber, draw) {
-    // 每次发送时创建新的 transporter，避免连接池问题
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
-        pool: false, // 禁用连接池
     });
 
     const mailOptions = {
@@ -184,32 +182,21 @@ async function sendUpdateEmail(subscriber, draw) {
     };
 
     try {
-        console.log(`📧 Attempting to send update email to ${subscriber.email}`);
-        
-        // 添加20秒超时保护
-        const emailPromise = transporter.sendMail(mailOptions);
-        const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Email timeout')), 20000);
-        });
-
-        await Promise.race([emailPromise, timeoutPromise]);
-        console.log(`✅ Update email sent to ${subscriber.email}`);
+        await transporter.sendMail(mailOptions);
+        console.log(`Update email sent to ${subscriber.email}`);
     } catch (error) {
-        // 所有错误都静默处理，不影响系统运行
-        console.log(`⏳ Update email queued for ${subscriber.email} (${error.message})`);
+        console.error(`Failed to send update email to ${subscriber.email}:`, error);
     }
 }
 
 // 发送祝贺邮件给符合 currentProgram 的用户且 CRS 分数高于 drawCRS
 async function sendCongratsEmail(subscriber, draw) {
-    // 每次发送时创建新的 transporter，避免连接池问题
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
-        pool: false, // 禁用连接池
     });
 
     const mailOptions = {
@@ -223,19 +210,10 @@ async function sendCongratsEmail(subscriber, draw) {
     };
 
     try {
-        console.log(`📧 Attempting to send congrats email to ${subscriber.email}`);
-        
-        // 添加20秒超时保护
-        const emailPromise = transporter.sendMail(mailOptions);
-        const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Email timeout')), 20000);
-        });
-
-        await Promise.race([emailPromise, timeoutPromise]);
-        console.log(`🎉 Congrats email sent to ${subscriber.email}`);
+        await transporter.sendMail(mailOptions);
+        console.log(`Congrats email sent to ${subscriber.email}`);
     } catch (error) {
-        // 所有错误都静默处理，不影响系统运行
-        console.log(`⏳ Congrats email queued for ${subscriber.email} (${error.message})`);
+        console.error(`Failed to send congrats email to ${subscriber.email}:`, error);
     }
 }
 

@@ -68,20 +68,15 @@ export default async function handler(req, res) {
             
             // 发送欢迎邮件
             try {
-                // 每次发送时创建新的 transporter，避免连接池问题
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
                         user: process.env.GMAIL_USER,
                         pass: process.env.GMAIL_PASS,
                     },
-                    pool: false, // 禁用连接池
                 });
 
-                console.log(`📧 Attempting to send welcome email to ${email}`);
-                
-                // 添加20秒超时保护
-                const emailPromise = transporter.sendMail({
+                await transporter.sendMail({
                     from: {
                         name: 'ImmiGo Immigration Updates',
                         address: process.env.GMAIL_USER
@@ -90,16 +85,11 @@ export default async function handler(req, res) {
                     subject: '🎉 Welcome to ImmiGo - Your Immigration Journey Begins!',
                     html: welcomeEmailTemplate(newSubscriber),
                 });
-
-                const timeoutPromise = new Promise((_, reject) => {
-                    setTimeout(() => reject(new Error('Email timeout')), 20000);
-                });
-
-                await Promise.race([emailPromise, timeoutPromise]);
-                console.log(`✅ Welcome email sent to ${email}`);
+                
+                console.log(`Welcome email sent to ${email}`);
             } catch (emailError) {
-                // 所有错误都静默处理，不影响订阅成功
-                console.log(`⏳ Welcome email queued for ${email} (${emailError.message})`);
+                console.error('Failed to send welcome email:', emailError);
+                // 不影响订阅成功的响应
             }
             
             res.status(200).json({ success: true, message: 'Subscribed successfully!' });
