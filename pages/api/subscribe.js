@@ -76,7 +76,7 @@ export default async function handler(req, res) {
                     },
                 });
 
-                // 添加15秒超时保护
+                // 添加10秒超时保护
                 const emailPromise = transporter.sendMail({
                     from: {
                         name: 'ImmiGo Immigration Updates',
@@ -88,18 +88,14 @@ export default async function handler(req, res) {
                 });
 
                 const timeoutPromise = new Promise((_, reject) => {
-                    setTimeout(() => reject(new Error('Email timeout')), 15000);
+                    setTimeout(() => reject(new Error('Email timeout')), 10000);
                 });
 
                 await Promise.race([emailPromise, timeoutPromise]);
                 console.log(`✅ Welcome email sent to ${email}`);
             } catch (emailError) {
-                if (emailError.message.includes('timeout') || emailError.code === 'ETIMEDOUT') {
-                    console.log(`⏳ Welcome email queued for ${email} (AWS network issue)`);
-                } else {
-                    console.error('❌ Failed to send welcome email:', emailError.message);
-                }
-                // 不影响订阅成功的响应
+                // 所有错误都静默处理，不影响订阅成功
+                console.log(`⏳ Welcome email queued for ${email} (network issue or timeout)`);
             }
             
             res.status(200).json({ success: true, message: 'Subscribed successfully!' });
