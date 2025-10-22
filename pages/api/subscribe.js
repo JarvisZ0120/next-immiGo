@@ -1,34 +1,7 @@
-"use client";
-require('dotenv').config(); // 加载环境变量
-
-const https = require('https');
-const fs = require('fs');
-
-const express = require('express');
 import mongoose from 'mongoose';
-const nodemailer = require('nodemailer');
-const cron = require('node-cron');
-const cors = require('cors');
-// const fetch = require('node-fetch'); // 使用 node-fetch 获取数据
-require('dotenv').config();
-
+import nodemailer from 'nodemailer';
 import Subscriber from '../../models/Subscriber';
 const { welcomeEmailTemplate } = require('../../utils/emailTemplates');
-
-
-const app = express();
-
-// 读取自签名证书和私钥
-const privateKey = fs.readFileSync('server.key', 'utf8');
-const certificate = fs.readFileSync('server.cert', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
-
-app.use(cors()); // 允许跨域请求
-app.use(cors({
-    origin: 'https://immigoo.com'
-}));
-
-app.use(express.json());
 
 // MongoDB Atlas 连接字符串
 const mongoURI = process.env.MONGODB_URI;
