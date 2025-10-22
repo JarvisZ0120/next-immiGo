@@ -20,7 +20,9 @@ export default async function handler(req, res) {
         const transporter = createTransporter();
 
         try {
-            // 添加10秒超时保护（更短的超时）
+            console.log(`📧 Attempting to send email to: ${email}`);
+            
+            // 添加20秒超时保护
             const emailPromise = transporter.sendMail({
                 from: process.env.GMAIL_USER,
                 to: email,
@@ -28,9 +30,9 @@ export default async function handler(req, res) {
                 html: message,
             });
 
-            // 设置10秒超时
+            // 设置20秒超时
             const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error('Email sending timeout')), 10000);
+                setTimeout(() => reject(new Error('Email sending timeout')), 20000);
             });
 
             await Promise.race([emailPromise, timeoutPromise]);

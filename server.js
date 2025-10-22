@@ -184,17 +184,19 @@ async function sendUpdateEmail(subscriber, draw) {
     };
 
     try {
-        // 添加10秒超时保护
+        console.log(`📧 Attempting to send update email to ${subscriber.email}`);
+        
+        // 添加20秒超时保护
         const emailPromise = transporter.sendMail(mailOptions);
         const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Email timeout')), 10000);
+            setTimeout(() => reject(new Error('Email timeout')), 20000);
         });
 
         await Promise.race([emailPromise, timeoutPromise]);
         console.log(`✅ Update email sent to ${subscriber.email}`);
     } catch (error) {
         // 所有错误都静默处理，不影响系统运行
-        console.log(`⏳ Email queued for ${subscriber.email} (network issue or timeout)`);
+        console.log(`⏳ Update email queued for ${subscriber.email} (${error.message})`);
     }
 }
 
@@ -221,17 +223,19 @@ async function sendCongratsEmail(subscriber, draw) {
     };
 
     try {
-        // 添加10秒超时保护
+        console.log(`📧 Attempting to send congrats email to ${subscriber.email}`);
+        
+        // 添加20秒超时保护
         const emailPromise = transporter.sendMail(mailOptions);
         const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Email timeout')), 10000);
+            setTimeout(() => reject(new Error('Email timeout')), 20000);
         });
 
         await Promise.race([emailPromise, timeoutPromise]);
         console.log(`🎉 Congrats email sent to ${subscriber.email}`);
     } catch (error) {
         // 所有错误都静默处理，不影响系统运行
-        console.log(`⏳ Congrats email queued for ${subscriber.email} (network issue or timeout)`);
+        console.log(`⏳ Congrats email queued for ${subscriber.email} (${error.message})`);
     }
 }
 
