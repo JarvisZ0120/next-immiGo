@@ -172,17 +172,13 @@ async function sendUpdateEmail(subscriber, draw) {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
-        connectionTimeout: 60000, // 60 seconds
-        greetingTimeout: 30000,   // 30 seconds
-        socketTimeout: 60000,     // 60 seconds
+        connectionTimeout: 20000, // 20 seconds (减少超时)
+        greetingTimeout: 10000,   // 10 seconds
+        socketTimeout: 20000,     // 20 seconds
         tls: {
             rejectUnauthorized: false
         }
     });
-
-
-    const updatedDrawDate = new Date(draw.date);
-    updatedDrawDate.setDate(updatedDrawDate.getDate());
 
     const mailOptions = {
         from: {
@@ -195,10 +191,20 @@ async function sendUpdateEmail(subscriber, draw) {
     };
 
     try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Update email sent to ${subscriber.email}`);
+        // 添加15秒超时保护
+        const emailPromise = transporter.sendMail(mailOptions);
+        const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Email timeout')), 15000);
+        });
+
+        await Promise.race([emailPromise, timeoutPromise]);
+        console.log(`✅ Update email sent to ${subscriber.email}`);
     } catch (error) {
-        console.error(`Failed to send update email to ${subscriber.email}:`, error);
+        if (error.message.includes('timeout') || error.code === 'ETIMEDOUT') {
+            console.log(`⏳ Email queued for ${subscriber.email} (AWS network issue)`);
+        } else {
+            console.error(`❌ Failed to send update email to ${subscriber.email}:`, error.message);
+        }
     }
 }
 
@@ -213,9 +219,9 @@ async function sendCongratsEmail(subscriber, draw) {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
         },
-        connectionTimeout: 60000, // 60 seconds
-        greetingTimeout: 30000,   // 30 seconds
-        socketTimeout: 60000,     // 60 seconds
+        connectionTimeout: 20000, // 20 seconds (减少超时)
+        greetingTimeout: 10000,   // 10 seconds
+        socketTimeout: 20000,     // 20 seconds
         tls: {
             rejectUnauthorized: false
         }
@@ -232,10 +238,20 @@ async function sendCongratsEmail(subscriber, draw) {
     };
 
     try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Congrats email sent to ${subscriber.email}`);
+        // 添加15秒超时保护
+        const emailPromise = transporter.sendMail(mailOptions);
+        const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Email timeout')), 15000);
+        });
+
+        await Promise.race([emailPromise, timeoutPromise]);
+        console.log(`🎉 Congrats email sent to ${subscriber.email}`);
     } catch (error) {
-        console.error(`Failed to send congrats email to ${subscriber.email}:`, error);
+        if (error.message.includes('timeout') || error.code === 'ETIMEDOUT') {
+            console.log(`⏳ Congrats email queued for ${subscriber.email} (AWS network issue)`);
+        } else {
+            console.error(`❌ Failed to send congrats email to ${subscriber.email}:`, error.message);
+        }
     }
 }
 

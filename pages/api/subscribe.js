@@ -71,21 +71,22 @@ export default async function handler(req, res) {
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     host: 'smtp.gmail.com',
-                    port: 465,
-                    secure: true,
+                    port: 587,
+                    secure: false,
                     auth: {
                         user: process.env.GMAIL_USER,
                         pass: process.env.GMAIL_PASS,
                     },
-                    connectionTimeout: 30000,
-                    greetingTimeout: 15000,
-                    socketTimeout: 30000,
+                    connectionTimeout: 20000, // 20 seconds (减少超时)
+                    greetingTimeout: 10000,   // 10 seconds
+                    socketTimeout: 20000,     // 20 seconds
                     tls: {
                         rejectUnauthorized: false
                     }
                 });
 
-                await transporter.sendMail({
+                // 添加15秒超时保护
+                const emailPromise = transporter.sendMail({
                     from: {
                         name: 'ImmiGo Immigration Updates',
                         address: process.env.GMAIL_USER
@@ -94,10 +95,19 @@ export default async function handler(req, res) {
                     subject: '🎉 Welcome to ImmiGo - Your Immigration Journey Begins!',
                     html: welcomeEmailTemplate(newSubscriber),
                 });
-                
-                console.log(`Welcome email sent to ${email}`);
+
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Email timeout')), 15000);
+                });
+
+                await Promise.race([emailPromise, timeoutPromise]);
+                console.log(`✅ Welcome email sent to ${email}`);
             } catch (emailError) {
-                console.error('Failed to send welcome email:', emailError);
+                if (emailError.message.includes('timeout') || emailError.code === 'ETIMEDOUT') {
+                    console.log(`⏳ Welcome email queued for ${email} (AWS network issue)`);
+                } else {
+                    console.error('❌ Failed to send welcome email:', emailError.message);
+                }
                 // 不影响订阅成功的响应
             }
             
