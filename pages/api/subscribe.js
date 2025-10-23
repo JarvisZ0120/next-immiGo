@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import nodemailer from 'nodemailer';
 import Subscriber from '../../models/Subscriber';
-const { welcomeEmailTemplate } = require('../../utils/emailTemplates');
+const { sendWelcomeEmail } = require('../../utils/emailService');
 
 // MongoDB Atlas 连接字符串
 const mongoURI = process.env.MONGODB_URI;
@@ -41,25 +40,7 @@ export default async function handler(req, res) {
             
             // 发送欢迎邮件
             try {
-                const transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: process.env.GMAIL_USER,
-                        pass: process.env.GMAIL_PASS,
-                    },
-                });
-
-                await transporter.sendMail({
-                    from: {
-                        name: 'ImmiGo Immigration Updates',
-                        address: process.env.GMAIL_USER
-                    },
-                    to: email,
-                    subject: '🎉 Welcome to ImmiGo - Your Immigration Journey Begins!',
-                    html: welcomeEmailTemplate(newSubscriber),
-                });
-                
-                console.log(`Welcome email sent to ${email}`);
+                await sendWelcomeEmail(newSubscriber);
             } catch (emailError) {
                 console.error('Failed to send welcome email:', emailError);
                 // 不影响订阅成功的响应

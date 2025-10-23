@@ -14,7 +14,7 @@ require('dotenv').config();
 
 const Subscriber = require('./models/Subscriber'); // 导入订阅者模型
 const Draw = require('./models/Draw'); // 导入Draw模型
-const { updateEmailTemplate, congratsEmailTemplate } = require('./utils/emailTemplates');
+const { sendUpdateEmail, sendCongratsEmail } = require('./utils/emailService');
 
 const app = express();
 
@@ -162,60 +162,10 @@ async function checkSubscribersAndSendEmails(draw) {
 }
 
 // 发送更新邮件给符合 selectedPrograms 的用户
-async function sendUpdateEmail(subscriber, draw) {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_PASS,
-        },
-    });
-
-    const mailOptions = {
-        from: {
-            name: 'ImmiGo Immigration Updates',
-            address: process.env.GMAIL_USER
-        },
-        to: subscriber.email,
-        subject: '🎯 New Express Entry Draw Announced!',
-        html: updateEmailTemplate(subscriber, draw),
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Update email sent to ${subscriber.email}`);
-    } catch (error) {
-        console.error(`Failed to send update email to ${subscriber.email}:`, error);
-    }
-}
+// 使用统一的邮件服务
 
 // 发送祝贺邮件给符合 currentProgram 的用户且 CRS 分数高于 drawCRS
-async function sendCongratsEmail(subscriber, draw) {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_PASS,
-        },
-    });
-
-    const mailOptions = {
-        from: {
-            name: 'ImmiGo Immigration Updates',
-            address: process.env.GMAIL_USER
-        },
-        to: subscriber.email,
-        subject: '🎉 Congratulations! You Qualify for the Latest Draw!',
-        html: congratsEmailTemplate(subscriber, draw),
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Congrats email sent to ${subscriber.email}`);
-    } catch (error) {
-        console.error(`Failed to send congrats email to ${subscriber.email}:`, error);
-    }
-}
+// 使用统一的邮件服务
 
 
 // 取消订阅 API 路由
