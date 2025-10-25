@@ -7,13 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "start:server": "node server.js",
-    "prestart": "./deploy.sh",
-    "prebuild": "./deploy.sh",
-    "deploy": "./deploy.sh",
-    "deploy:railway": "./railway-deploy.sh",
-    "clean": "pkill -f 'next dev' && pkill -f 'node server.js' && pkill -f 'next-server' && pkill -f 'pm2' || true",
-    "restart": "npm run clean && sleep 3 && npm run dev"
+    "start:server": "node server.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.10",

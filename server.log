@@ -7,17 +7,18 @@
   - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 931ms
+ ✓ Ready in 955ms
  ○ Compiling / ...
 Browserslist: caniuse-lite is outdated. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
- ✓ Compiled / in 1038ms (664 modules)
+ ✓ Compiled / in 1665ms (682 modules)
 setLanguage: [Function: bound oD]
- GET / 200 in 1174ms
- ✓ Compiled /api/sendEmail in 334ms (723 modules)
+ GET / 200 in 1788ms
+ ✓ Compiled /api/sendEmail in 454ms (723 modules)
 📧 使用Gmail邮件服务
-✅ Gmail email sent successfully to test@example.com
- POST /api/sendEmail 200 in 1055ms
- ✓ Compiled in 531ms (912 modules)
-[?25h
+❌ Gmail failed to send email to test@example.com: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33fed81b40fsm1489566a91.16 - gsmtp
+ POST /api/sendEmail 500 in 567ms
+ ✓ Compiled in 788ms (566 modules)
+ ✓ Compiled in 208ms (566 modules)
