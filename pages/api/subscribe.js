@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Subscriber from '../../models/Subscriber';
-const { sendWelcomeEmail } = require('../../utils/emailService');
+const { sendWelcomeEmail } = require('../../utils/emailServiceUnified');
 
 // MongoDB Atlas 连接字符串
 const mongoURI = process.env.MONGODB_URI;

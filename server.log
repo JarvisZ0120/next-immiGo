@@ -1,0 +1,23 @@
+
+> next-immigo@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.13
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 931ms
+ ○ Compiling / ...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled / in 1038ms (664 modules)
+setLanguage: [Function: bound oD]
+ GET / 200 in 1174ms
+ ✓ Compiled /api/sendEmail in 334ms (723 modules)
+📧 使用Gmail邮件服务
+✅ Gmail email sent successfully to test@example.com
+ POST /api/sendEmail 200 in 1055ms
+ ✓ Compiled in 531ms (912 modules)
+[?25h

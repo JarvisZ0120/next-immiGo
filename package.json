@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "start:server": "node server.js"
+    "start:server": "node server.js",
+    "prestart": "./deploy.sh",
+    "prebuild": "./deploy.sh",
+    "deploy": "./deploy.sh",
+    "deploy:railway": "./railway-deploy.sh",
+    "clean": "pkill -f 'next dev' && pkill -f 'node server.js' && pkill -f 'next-server' && pkill -f 'pm2' || true",
+    "restart": "npm run clean && sleep 3 && npm run dev"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.10",
@@ -31,7 +37,8 @@
     "nodemailer": "^6.9.15",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "resend": "^6.2.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

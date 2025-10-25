@@ -1,1 +1,1 @@
-web: concurrently "next start" "node server.js"
+web: ./start.sh

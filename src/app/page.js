@@ -291,52 +291,14 @@ export default function Home() {
             }
             
             if (result.success) {
-                // 发送订阅确认邮件
-                const responseSubscribeEmail = await fetch('/api/sendEmail', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email,
-                        subject: `Welcome to ImmiGo, ${name}`,
-                        message: `
-                      <div style="font-family: Arial, sans-serif; text-align: center;">
-                          <h2 style="color: #000;">Welcome to ImmiGo</h2>
-                          <p>Congratulations! You've subscribed to ImmiGo, the free service that helps you track Canadian Express Entry updates.</p>
-                          <p>Here's what you'll get:</p>
-                          <ul style="text-align: left; max-width: 600px; margin: 0 auto;">
-                              <li><strong><u>Instant notifications for new Express Entry draws.</u></strong> You'll receive an email from us as soon as a new draw in <strong>${selectedPrograms.join(', ')}</strong> is announced.</li>
-                              ${inPool ? `<li><strong><u>Quick congratulatory message.</u></strong> You will receive a congratulatory message from us once your score <strong>${score}</strong> in <strong>${currentProgram}</strong> exceeds the new draw's lowest score.</li>` : ''}
-                              <li><strong><u>Interactive dashboard to explore all historical data.</u></strong> We've compiled and cleaned Express Entry data to create a comprehensive dashboard for your use. Feel free to explore it at any time.</li>
-                          </ul>
-                          <a href="https://immigoo.com/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Explore Historical Data</a>
-                          <p style="font-family: Arial, sans-serif; color: #333; font-size: 16px;">
-                            Opt out of receiving further emails by clicking on the following
-                            <a href="https://immigoo.com/unsubscribe" onclick="event.preventDefault(); handleUnsubscribe('${email}');" style="color: #007BFF; text-decoration: underline;">Unsubscribe</a> link.
-                          </p>
-                          <p>ImmiGo, Vancouver, BC, Canada</p>
-                      </div>
-                      `,
-                    }),
-                });
+                // 订阅成功，显示成功消息和撒花效果
+                // TODO: There is a Confetti issue needs to be fixed
+                setShowConfetti(true); // 显示撒花效果
+                setTimeout(() => {
+                    setShowConfetti(false); // 几秒后隐藏撒花效果
+                }, 3000); // 3秒后隐藏
 
-                const resultSubscribeEmail = await responseSubscribeEmail.json();
-                console.log('Send email API response:', resultSubscribeEmail);
-
-                if (resultSubscribeEmail.success) {
-                    // TODO: There is a Confetti issue needs to be fixed
-                    setShowConfetti(true); // 显示撒花效果
-                    setTimeout(() => {
-                        setShowConfetti(false); // 几秒后隐藏撒花效果
-                    }, 3000); // 3秒后隐藏
-
-                    setMessage('Subscription successful! Check your email for updates.');
-                } else {
-                    // 即使邮件发送失败，订阅也已经成功了
-                    setMessage('Subscription successful! (Email notification may be delayed)');
-                    console.warn('Email sending failed but subscription was saved:', resultSubscribeEmail);
-                }
+                setMessage('Subscription successful! Check your email for updates.');
             } else {
                 setMessage(result.message || 'Failed to subscribe. Please try again.');
             }
@@ -455,7 +417,7 @@ export default function Home() {
                                                         const value = e.target.value;
                                                         if (value === 'No Program Specified') {
                                                             // 如果选择"No Program Specified"，则只选择这个选项，取消其他所有选项
-                                                            setSelectedPrograms(selectedPrograms.includes(value) ? [] : ['No Program Specified']);
+                                                            setSelectedPrograms(prev => prev.includes(value) ? [] : ['No Program Specified']);
                                                         } else {
                                                             // 如果选择其他选项，则取消"No Program Specified"选项
                                                             setSelectedPrograms(prev => {
