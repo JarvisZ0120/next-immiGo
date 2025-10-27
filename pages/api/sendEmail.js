@@ -1,4 +1,8 @@
 import { sendEmail } from '../../utils/emailServiceES6.js';
+import dotenv from 'dotenv';
+
+// 确保加载环境变量
+dotenv.config();
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {

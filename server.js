@@ -10,7 +10,6 @@ const nodemailer = require('nodemailer');
 const cron = require('node-cron');
 const cors = require('cors');
 // const fetch = require('node-fetch'); // 使用 node-fetch 获取数据
-require('dotenv').config();
 
 const Subscriber = require('./models/Subscriber'); // 导入订阅者模型
 const Draw = require('./models/Draw'); // 导入Draw模型

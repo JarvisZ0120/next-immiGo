@@ -253,19 +253,31 @@ export default function Home() {
         };
 
         fetchData();
+        
+        // 确保form事件绑定在客户端正确执行
+        const form = document.querySelector('form');
+        if (form && !form.hasAttribute('data-event-bound')) {
+            form.addEventListener('submit', handleSubscribe);
+            form.setAttribute('data-event-bound', 'true');
+            console.log('🔗 Form event listener bound manually');
+        }
     }, []);
 
 
 
     const handleSubscribe = async (e) => {
         e.preventDefault();
+        console.log('🚀 handleSubscribe called');
+        console.log('📝 Form data:', { name, email, score, selectedPrograms, currentProgram });
 
         if (!email || !name) {
+            console.log('❌ Missing required fields');
             setMessage('Please fill in all fields correctly.');
             return;
         }
 
         try {
+            console.log('📤 Sending request to /api/subscribe');
             // 发送订阅请求到后端
             const response = await fetch('/api/subscribe', {
                 method: 'POST',
@@ -280,10 +292,10 @@ export default function Home() {
                     currentProgram,
                 }),
             });
-            console.log(response);
+            console.log('📥 Response received:', response.status, response.statusText);
 
             const result = await response.json();
-            console.log('Subscribe API response:', result);
+            console.log('📋 Subscribe API response:', result);
             
             if (!response.ok) {
                 setMessage(result.message || `Failed to subscribe: ${response.status}`);
@@ -303,6 +315,7 @@ export default function Home() {
                 setMessage(result.message || 'Failed to subscribe. Please try again.');
             }
         } catch (error) {
+            console.log('💥 Subscription error caught:', error);
             setMessage('An error occurred. Please try again later.');
             console.error('Subscription error:', error);
             console.error('Error details:', {

@@ -1,5 +1,9 @@
 // ES6版本的Gmail邮件服务
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+// 确保加载环境变量
+dotenv.config();
 
 console.log('📧 使用Gmail邮件服务');
 
