@@ -150,6 +150,7 @@ export default function Home() {
     const [inPool, setInPool] = useState(false); // 新增状态
     const [message, setMessage] = useState(''); // 新增消息状态
     const [showConfetti, setShowConfetti] = useState(false); // 控制撒花效果
+    const [isSubmitting, setIsSubmitting] = useState(false); // 控制提交状态
 
 
     const [latestDraw, setLatestDraw] = useState({});
@@ -276,6 +277,9 @@ export default function Home() {
             return;
         }
 
+        setIsSubmitting(true);
+        setMessage('Submitting... Please wait.');
+
         try {
             console.log('📤 Sending request to /api/subscribe');
             // 发送订阅请求到后端
@@ -304,13 +308,19 @@ export default function Home() {
             
             if (result.success) {
                 // 订阅成功，显示成功消息和撒花效果
-                // TODO: There is a Confetti issue needs to be fixed
                 setShowConfetti(true); // 显示撒花效果
                 setTimeout(() => {
                     setShowConfetti(false); // 几秒后隐藏撒花效果
                 }, 3000); // 3秒后隐藏
 
                 setMessage('Subscription successful! Check your email for updates.');
+                
+                // 只有在成功时才重置表单字段
+                setName('');
+                setScore('');
+                setEmail('');
+                setSelectedPrograms([]);
+                setCurrentProgram('');
             } else {
                 setMessage(result.message || 'Failed to subscribe. Please try again.');
             }
@@ -323,14 +333,9 @@ export default function Home() {
                 message: error.message,
                 stack: error.stack
             });
+        } finally {
+            setIsSubmitting(false);
         }
-
-        // Reset form fields
-        setName('');
-        setScore('');
-        setEmail('');
-        setSelectedPrograms([]);
-        setCurrentProgram('');
     };
 
     return (
@@ -511,8 +516,16 @@ export default function Home() {
                                         </div>
                                     </>
                                 )}
-                                <button type="submit" className="w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200">
-                                    {translations[language].subscribeButton}
+                                <button 
+                                    type="submit" 
+                                    disabled={isSubmitting}
+                                    className={`w-full rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200 ${
+                                        isSubmitting 
+                                            ? 'bg-gray-400 cursor-not-allowed' 
+                                            : 'bg-indigo-600 hover:bg-indigo-500'
+                                    }`}
+                                >
+                                    {isSubmitting ? 'Submitting...' : translations[language].subscribeButton}
                                 </button>
                                 {message && (
                                     <div className={`mt-4 p-4 rounded-lg ${
