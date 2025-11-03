@@ -374,6 +374,18 @@ const welcomeEmailTemplate = (subscriber) => {
                     <span class="info-value">${subscriber.currentProgram}</span>
                 </div>
                 ` : ''}
+                ${subscriber.selectedPrograms && subscriber.selectedPrograms.length > 0 ? `
+                <div class="info-row" style="flex-direction: column; align-items: flex-start;">
+                    <span class="info-label" style="margin-bottom: 10px;">🎯 Programs You're Tracking</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${subscriber.selectedPrograms.map(program => `
+                            <span style="background: rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 6px; font-size: 14px; color: white; display: inline-block;">
+                                ${program}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
             </div>
 
             <div style="text-align: center;">
