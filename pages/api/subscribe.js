@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 // 确保加载环境变量
 dotenv.config();
 
-// 确保环境变量在require之前加载
+// 导入邮件服务
 const { sendWelcomeEmail } = require('../../utils/emailServiceUnified');
 
 // MongoDB Atlas 连接字符串
@@ -43,16 +43,29 @@ export default async function handler(req, res) {
 
             // 保存订阅者到数据库
             await newSubscriber.save();
+            console.log('✅ New subscriber saved to database:', email);
             
-            // 发送欢迎邮件
-            try {
-                await sendWelcomeEmail(newSubscriber);
-            } catch (emailError) {
-                console.error('Failed to send welcome email:', emailError);
-                // 不影响订阅成功的响应
-            }
-            
+            // 立即返回成功响应给用户
             res.status(200).json({ success: true, message: 'Subscribed successfully!' });
+            
+            // 异步发送欢迎邮件（不阻塞响应）
+            setImmediate(async () => {
+                try {
+                    const result = await sendWelcomeEmail(newSubscriber);
+                    if (result && result.success) {
+                        // 标记为已发送欢迎邮件
+                        await Subscriber.updateOne(
+                            { _id: newSubscriber._id },
+                            { welcomeEmailSent: true }
+                        );
+                        console.log('✅ Welcome email sent asynchronously to:', email);
+                    } else {
+                        console.log('⚠️ Welcome email failed:', result ? result.error : 'Unknown error');
+                    }
+                } catch (emailError) {
+                    console.error('Failed to send welcome email:', emailError);
+                }
+            });
         } catch (error) {
             console.error('Error saving subscriber:', error);
             res.status(500).json({ success: false, message: 'Failed to save subscriber.' });

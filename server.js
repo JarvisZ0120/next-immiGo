@@ -13,7 +13,7 @@ const cors = require('cors');
 
 const Subscriber = require('./models/Subscriber'); // 导入订阅者模型
 const Draw = require('./models/Draw'); // 导入Draw模型
-const { sendUpdateEmail, sendCongratsEmail } = require('./utils/emailServiceUnified');
+const { sendUpdateEmail, sendCongratsEmail, sendWelcomeEmail } = require('./utils/emailServiceUnified');
 
 const app = express();
 
