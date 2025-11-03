@@ -7,7 +7,7 @@ dotenv.config();
 
 console.log('📧 使用Gmail邮件服务');
 
-// 创建Gmail transporter
+// 创建Gmail transporter (使用3146619版本的简单配置)
 const createGmailTransporter = () => {
     return nodemailer.createTransport({
         service: 'gmail',

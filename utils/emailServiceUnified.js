@@ -4,12 +4,9 @@ const nodemailer = require('nodemailer');
 // 注意：环境变量应该在server.js中已经加载，这里不需要重复加载
 
 console.log('📧 使用Gmail邮件服务');
-console.log('🔍 Gmail User:', process.env.GMAIL_USER ? 'Set: ' + process.env.GMAIL_USER : 'Not set');
-console.log('🔍 Gmail Pass:', process.env.GMAIL_PASS ? 'Set (length: ' + process.env.GMAIL_PASS.length + ')' : 'Not set');
-console.log('🔍 Gmail Pass 内容:', process.env.GMAIL_PASS);
-console.log('🔍 Gmail Pass 十六进制:', Buffer.from(process.env.GMAIL_PASS || '', 'utf8').toString('hex'));
+// Gmail配置已加载
 
-// 创建Gmail transporter
+// 创建Gmail transporter (使用3146619版本的简单配置)
 const createGmailTransporter = () => {
     return nodemailer.createTransport({
         service: 'gmail',

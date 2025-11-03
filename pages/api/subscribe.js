@@ -5,10 +5,6 @@ import dotenv from 'dotenv';
 // 确保加载环境变量
 dotenv.config();
 
-// 调试环境变量
-console.log('🔍 API Gmail User:', process.env.GMAIL_USER ? 'Set: ' + process.env.GMAIL_USER : 'Not set');
-console.log('🔍 API Gmail Pass:', process.env.GMAIL_PASS ? 'Set (length: ' + process.env.GMAIL_PASS.length + ')' : 'Not set');
-
 // 确保环境变量在require之前加载
 const { sendWelcomeEmail } = require('../../utils/emailServiceUnified');
 

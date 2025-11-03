@@ -77,26 +77,30 @@ mongoose.connect(mongoURI)
     
 // 定时任务 - 每 12 分钟检查一次最新的 draws 更新
 cron.schedule('*/12 * * * *', async () => {
-    console.log('Checking for new draws...');
+    const now = new Date();
+    console.log(`🔍 [${now.toISOString()}] 检查新的draws...`);
     try {
         const latestDraw = await fetchLatestDraw();
         if (!latestDraw) {
-            console.log('No new draws fetched.');
+            console.log(`❌ [${new Date().toISOString()}] 无法获取最新draw数据`);
             return;
         }
+
+        console.log(`📊 [${new Date().toISOString()}] 获取到draw: ${latestDraw.drawNumber}, 日期: ${latestDraw.drawDateFull}, CRS: ${latestDraw.drawCRS}`);
 
         const existingDraw = await Draw.findOne({ id: latestDraw.id });
 
         if (!existingDraw) {
+            console.log(`🆕 [${new Date().toISOString()}] 发现新draw! 开始保存并发送邮件...`);
             const newDraw = new Draw(latestDraw);
             await newDraw.save();
             await checkSubscribersAndSendEmails(newDraw); // 检查订阅者并发送相应邮件
-            console.log('New draw saved and emails sent.');
+            console.log(`✅ [${new Date().toISOString()}] 新draw已保存，邮件已发送`);
         } else {
-            console.log('No new draws found.');
+            console.log(`ℹ️ [${new Date().toISOString()}] 没有新的draws`);
         }
     } catch (error) {
-        console.error('Error during scheduled task:', error);
+        console.error(`💥 [${new Date().toISOString()}] 定时任务出错:`, error);
     }
 });
 
@@ -143,18 +147,37 @@ async function fetchLatestDraw() {
 async function checkSubscribersAndSendEmails(draw) {
     try {
         const subscribers = await Subscriber.find({ isSubscribed: true });
+        console.log(`📧 检查 ${subscribers.length} 个订阅者...`);
+
+        let updateEmailsSent = 0;
+        let congratsEmailsSent = 0;
+        let emailsFailed = 0;
 
         for (const subscriber of subscribers) {
             // 检查 drawName 是否在用户的 selectedPrograms 中
             if (subscriber.selectedPrograms.includes(draw.details)) {
-                await sendUpdateEmail(subscriber, draw);
+                console.log(`📤 发送更新邮件给: ${subscriber.email}`);
+                const result = await sendUpdateEmail(subscriber, draw);
+                if (result && result.success) {
+                    updateEmailsSent++;
+                } else {
+                    emailsFailed++;
+                }
             }
 
             // 检查 drawName 是否等于 currentProgram 且用户 score 高于 drawCRS
             if (subscriber.currentProgram === draw.details && subscriber.score > draw.crsScore) {
-                await sendCongratsEmail(subscriber, draw);
+                console.log(`🎉 发送祝贺邮件给: ${subscriber.email}`);
+                const result = await sendCongratsEmail(subscriber, draw);
+                if (result && result.success) {
+                    congratsEmailsSent++;
+                } else {
+                    emailsFailed++;
+                }
             }
         }
+        
+        console.log(`✅ 邮件发送完成: 更新邮件 ${updateEmailsSent} 封, 祝贺邮件 ${congratsEmailsSent} 封, 失败 ${emailsFailed} 封`);
     } catch (error) {
         console.error('Error checking subscribers and sending emails:', error);
     }
