@@ -16,15 +16,16 @@ const createGmailTransporter = () => {
         port: 587,
         secure: false, // 使用 STARTTLS
         auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_PASS,
+            user: (process.env.GMAIL_USER || '').trim(),
+            pass: (process.env.GMAIL_PASS || '').trim(),
         },
         // 增加超时和重试设置，特别针对云环境
-        connectionTimeout: 10000, // 10秒
-        greetingTimeout: 5000,   // 5秒
-        socketTimeout: 5000,     // 5秒
+        // Railway等云环境需要更长的超时时间
+        connectionTimeout: isProduction ? 60000 : 30000, // 生产环境60秒，本地30秒
+        greetingTimeout: isProduction ? 30000 : 15000,   // 生产环境30秒，本地15秒
+        socketTimeout: isProduction ? 60000 : 30000,     // 生产环境60秒，本地30秒
         // DNS解析优先使用IPv4（云环境更稳定）
-        dnsTimeout: 5000,
+        dnsTimeout: isProduction ? 30000 : 10000,        // 生产环境30秒，本地10秒
         // TLS设置
         tls: {
             rejectUnauthorized: !isProduction, // 生产环境放宽TLS验证

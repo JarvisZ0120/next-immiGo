@@ -1,4 +1,10 @@
 // server.js
+// 重要：先清理Shell环境变量，确保使用.env文件中的值
+// 这样可以避免Shell环境变量覆盖.env文件
+delete process.env.GMAIL_USER;
+delete process.env.GMAIL_PASS;
+
+// 然后加载.env文件
 require('dotenv').config(); // 加载环境变量
 
 const https = require('https');
@@ -86,7 +92,7 @@ cron.schedule('*/12 * * * *', async () => {
             return;
         }
 
-        console.log(`📊 [${new Date().toISOString()}] 获取到draw: ${latestDraw.drawNumber}, 日期: ${latestDraw.drawDateFull}, CRS: ${latestDraw.drawCRS}`);
+        console.log(`📊 [${new Date().toISOString()}] 获取到draw: ${latestDraw.id}, 日期: ${latestDraw.date}, CRS: ${latestDraw.crsScore}, 详情: ${latestDraw.details}`);
 
         const existingDraw = await Draw.findOne({ id: latestDraw.id });
 
@@ -109,35 +115,68 @@ async function fetchLatestDraw() {
     try {
         const { default: fetch } = await import('node-fetch');
         const response = await fetch('https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const allRounds = await response.json();
+
+        if (!allRounds || !allRounds.rounds || allRounds.rounds.length === 0) {
+            throw new Error('No rounds data found in API response');
+        }
 
         const data = allRounds.rounds[0];
 
-        // 解析日期并检查是否有效
-        const drawDate = new Date(data.drawDate);
+        if (!data) {
+            throw new Error('First round data is empty');
+        }
+
+        // 解析日期 - 尝试多个可能的字段名
+        const drawDateStr = data.drawDateFull || data.drawDate || data.date;
+        if (!drawDateStr) {
+            throw new Error('No draw date field found in data');
+        }
+        
+        const drawDate = new Date(drawDateStr);
         if (isNaN(drawDate.getTime())) {
-            throw new Error('Invalid draw date format');
+            throw new Error(`Invalid draw date format: ${drawDateStr}`);
         }
 
         // 检查 drawName 是否存在并有效
-        const drawName = (data.drawName || 'No Program Specified').replace(/\(Version 1\)/g, '').trim(); // 如果 drawName 为空，提供默认值
+        const drawName = (data.drawName || 'No Program Specified').replace(/\(Version \d+\)/g, '').trim();
 
         // 检查 CRS 分数，确保是有效整数
-        const crsScore = parseInt(data.drawCRS, 10);
+        const crsScoreStr = data.drawCRS || data.crsScore;
+        if (!crsScoreStr) {
+            throw new Error('No CRS score found in data');
+        }
+        
+        const crsScore = parseInt(String(crsScoreStr).replace(/,/g, ''), 10);
         if (isNaN(crsScore)) {
-            throw new Error('Invalid CRS score format');
+            throw new Error(`Invalid CRS score format: ${crsScoreStr}`);
+        }
+
+        // 检查 drawNumber
+        const drawNumber = data.drawNumber;
+        if (!drawNumber) {
+            throw new Error('No draw number found in data');
         }
 
         // 提取最新的 draw 数据
-        return {
-            id: `draw-${data.drawNumber}`, // 使用 drawNumber 作为唯一 ID
+        const drawData = {
+            id: `draw-${drawNumber}`, // 使用 drawNumber 作为唯一 ID
             date: drawDate, // 确保日期是有效的 Date 对象
             details: drawName, // drawName 描述
             crsScore, // CRS 分数，确保为整数
-            invitations: data.drawSize,
+            invitations: String(data.drawSize || data.invitations || '0'),
         };
+
+        console.log(`✅ 成功解析draw数据:`, JSON.stringify(drawData, null, 2));
+        return drawData;
     } catch (error) {
-        console.error('Error fetching draw data:', error);
+        console.error('❌ Error fetching draw data:', error.message);
+        console.error('错误堆栈:', error.stack);
         return null; // 返回 null 表示获取数据失败
     }
 }

@@ -2,7 +2,12 @@ import mongoose from 'mongoose';
 import Subscriber from '../../models/Subscriber';
 import dotenv from 'dotenv';
 
-// 确保加载环境变量
+// 重要：先清理Shell环境变量，确保使用.env文件中的值
+// 这样可以避免Shell环境变量覆盖.env文件
+delete process.env.GMAIL_USER;
+delete process.env.GMAIL_PASS;
+
+// 然后加载.env文件
 dotenv.config();
 
 // 导入邮件服务
@@ -48,9 +53,11 @@ export default async function handler(req, res) {
             // 立即返回成功响应给用户
             res.status(200).json({ success: true, message: 'Subscribed successfully!' });
             
-            // 异步发送欢迎邮件（不阻塞响应）
-            setImmediate(async () => {
+            // 异步发送欢迎邮件（在响应返回后，使用process.nextTick确保执行）
+            // 这样可以避免Next.js在响应返回后立即终止进程
+            process.nextTick(async () => {
                 try {
+                    console.log('📧 开始发送欢迎邮件到:', email);
                     const result = await sendWelcomeEmail(newSubscriber);
                     if (result && result.success) {
                         // 标记为已发送欢迎邮件
@@ -58,12 +65,17 @@ export default async function handler(req, res) {
                             { _id: newSubscriber._id },
                             { welcomeEmailSent: true }
                         );
-                        console.log('✅ Welcome email sent asynchronously to:', email);
+                        console.log('✅ Welcome email sent successfully to:', email);
                     } else {
-                        console.log('⚠️ Welcome email failed:', result ? result.error : 'Unknown error');
+                        console.error('⚠️ Welcome email failed for:', email);
+                        console.error('错误信息:', result ? result.error : 'Unknown error');
+                        console.error('错误代码:', result ? result.code : 'N/A');
+                        console.error('尝试次数:', result ? result.attempts : 'N/A');
                     }
                 } catch (emailError) {
-                    console.error('Failed to send welcome email:', emailError);
+                    console.error('❌ Failed to send welcome email to:', email);
+                    console.error('错误:', emailError.message);
+                    console.error('堆栈:', emailError.stack);
                 }
             });
         } catch (error) {

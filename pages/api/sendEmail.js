@@ -1,7 +1,12 @@
 import { sendEmail } from '../../utils/emailServiceES6.js';
 import dotenv from 'dotenv';
 
-// 确保加载环境变量
+// 重要：先清理Shell环境变量，确保使用.env文件中的值
+// 这样可以避免Shell环境变量覆盖.env文件
+delete process.env.GMAIL_USER;
+delete process.env.GMAIL_PASS;
+
+// 然后加载.env文件
 dotenv.config();
 
 export default async function handler(req, res) {
