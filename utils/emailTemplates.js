@@ -231,10 +231,12 @@ const baseTemplate = (content, preheader = '') => `
 // 更新邮件模板 (新抽签通知)
 const updateEmailTemplate = (subscriber, draw) => {
     const drawDate = new Date(draw.date);
+    // 使用 UTC 时区避免日期偏移问题
     const formattedDate = drawDate.toLocaleDateString('en-US', { 
         year: 'numeric', 
         month: 'long', 
-        day: 'numeric' 
+        day: 'numeric',
+        timeZone: 'UTC'
     });
 
     const content = `
