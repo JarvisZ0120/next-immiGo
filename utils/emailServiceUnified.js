@@ -1,80 +1,103 @@
-// 邮件服务 - 通过HTTP API调用
-// 使用Node.js内置的fetch（Node 18+）或动态导入node-fetch
-let fetch;
-if (typeof globalThis.fetch !== 'undefined') {
-    // Node.js 18+ 内置fetch
-    fetch = globalThis.fetch;
-} else {
-    // 动态导入node-fetch（ES模块）
-    fetch = async (url, options) => {
-        const { default: fetchModule } = await import('node-fetch');
-        return fetchModule(url, options);
-    };
-}
+// 邮件服务 - 直接使用 Gmail API (HTTP)
+const { google } = require('googleapis');
 
-console.log('📧 使用HTTP API邮件服务');
+console.log('📧 使用 Gmail API 邮件服务（直接调用）');
 
-// 获取API基础URL
-const getApiBaseUrl = () => {
-    // 如果在生产环境（Railway），使用完整URL
-    if (process.env.RAILWAY_ENVIRONMENT === 'production' || process.env.RAILWAY === 'true') {
-        return process.env.NEXT_PUBLIC_SITE_URL || 'https://immigoo.com';
-    }
-    // 本地开发环境
-    return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+// Gmail API 配置
+const getGmailConfig = () => ({
+    clientId: process.env.GMAIL_CLIENT_ID,
+    clientSecret: process.env.GMAIL_CLIENT_SECRET,
+    refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+    user: process.env.GMAIL_USER
+});
+
+// 创建 OAuth2 客户端
+const createOAuth2Client = () => {
+    const config = getGmailConfig();
+    
+    const oauth2Client = new google.auth.OAuth2(
+        config.clientId,
+        config.clientSecret,
+        'https://developers.google.com/oauthplayground'
+    );
+    
+    oauth2Client.setCredentials({
+        refresh_token: config.refreshToken
+    });
+    
+    return oauth2Client;
 };
 
-// 通过HTTP API发送邮件
-const sendEmail = async (to, subject, html, fromName = 'ImmiGo Immigration Updates') => {
-    const apiUrl = `${getApiBaseUrl()}/api/send-email`;
+// 创建邮件内容（RFC 2822 格式）
+const createEmailMessage = (to, subject, html, fromName) => {
+    const config = getGmailConfig();
+    const from = `${fromName} <${config.user}>`;
     
+    const messageParts = [
+        `From: ${from}`,
+        `To: ${to}`,
+        `Subject: =?UTF-8?B?${Buffer.from(subject).toString('base64')}?=`,
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        '',
+        html
+    ];
+    
+    const message = messageParts.join('\r\n');
+    
+    // Base64url 编码
+    const encodedMessage = Buffer.from(message)
+        .toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+    
+    return encodedMessage;
+};
+
+// 发送邮件函数 - 直接调用 Gmail API
+const sendEmail = async (to, subject, html, fromName = 'ImmiGo Immigration Updates') => {
+    const config = getGmailConfig();
+    
+    // 检查配置
+    if (!config.clientId || !config.clientSecret || !config.refreshToken || !config.user) {
+        console.error('❌ Gmail API 配置不完整');
+        console.error('需要: GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN, GMAIL_USER');
+        return {
+            success: false,
+            error: 'Gmail API not configured',
+            code: 'NO_CONFIG'
+        };
+    }
+
     try {
-        console.log(`📤 [HTTP] 发送邮件到 ${to}`);
+        console.log(`📤 [Gmail API] 发送邮件到 ${to}`);
         
-        // 使用AbortController实现超时
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60秒超时
+        const oauth2Client = createOAuth2Client();
+        const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
         
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                to,
-                subject,
-                html,
-                fromName
-            }),
-            signal: controller.signal
+        const encodedMessage = createEmailMessage(to, subject, html, fromName);
+        
+        const result = await gmail.users.messages.send({
+            userId: 'me',
+            requestBody: {
+                raw: encodedMessage
+            }
         });
-        
-        clearTimeout(timeoutId);
 
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        
-        if (result.success) {
-            console.log(`✅ 邮件发送成功 via ${result.provider || 'HTTP API'}`);
-            return {
-                success: true,
-                message: result.message || 'Email sent successfully',
-                provider: result.provider,
-                id: result.id
-            };
-        } else {
-            throw new Error(result.error || 'Email sending failed');
-        }
+        console.log(`✅ [Gmail API] 邮件发送成功 to ${to}, messageId: ${result.data.id}`);
+        return {
+            success: true,
+            message: 'Email sent successfully via Gmail API',
+            provider: 'gmail-api',
+            id: result.data.id
+        };
     } catch (error) {
-        console.error(`❌ HTTP邮件发送失败:`, error.message);
+        console.error(`❌ [Gmail API] 发送失败:`, error.message);
         return {
             success: false,
             error: error.message,
-            code: error.code
+            code: error.code || 'GMAIL_API_ERROR'
         };
     }
 };
