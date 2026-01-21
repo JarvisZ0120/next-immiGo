@@ -169,20 +169,50 @@ export default function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json');
-                const data = await response.json();
-                const rounds = data.rounds || [];
+                // 首先尝试从数据库获取最新 draw
+                let latestRound = null;
+                try {
+                    const dbResponse = await fetch('/api/latest-draw', { cache: 'no-store' });
+                    if (dbResponse.ok) {
+                        const dbData = await dbResponse.json();
+                        if (dbData.success && dbData.draw) {
+                            latestRound = dbData.draw;
+                            console.log('✅ 从数据库获取最新 draw:', latestRound);
+                        }
+                    }
+                } catch (dbError) {
+                    console.warn('⚠️ 数据库获取失败，使用 Canada.ca API:', dbError.message);
+                }
 
-                // 获取最新一轮的抽签数据
-                const latestRound = rounds[0];
+                // 如果数据库没有数据，从 Canada.ca API 获取
+                if (!latestRound) {
+                    const timestamp = new Date().getTime();
+                    const response = await fetch(`https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json?t=${timestamp}`, {
+                        cache: 'no-store',
+                        headers: { 'Cache-Control': 'no-cache' }
+                    });
+                    const data = await response.json();
+                    const rounds = data.rounds || [];
+                    latestRound = rounds[0];
+                    console.log('📡 从 Canada.ca 获取最新 draw');
+                }
+
                 const type = (latestRound.drawName || 'No Program Specified').replace(/\(Version \d+\)/g, '').trim();
 
                 setLatestDraw({
                     drawName: type,
                     drawCRS: latestRound.drawCRS,
                     drawSize: latestRound.drawSize,
-                    drawDate: latestRound.drawDateFull,
+                    drawDate: latestRound.drawDateFull || latestRound.drawDate,
                 });
+
+                // 获取完整的 rounds 数据用于统计（从 Canada.ca）
+                const timestamp = new Date().getTime();
+                const response = await fetch(`https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json?t=${timestamp}`, {
+                    cache: 'no-store'
+                });
+                const data = await response.json();
+                const rounds = data.rounds || [];
 
                 // 计算动态统计数据
                 const currentYear = new Date().getFullYear();
@@ -562,7 +592,7 @@ export default function Home() {
                                             <span className="font-semibold">{translations[language].numberOfInvitations}</span> {latestDraw.drawSize}
                                         </p>
                                         <p className="text-black">
-                                            <span className="font-semibold">{translations[language].date}</span> {latestDraw.drawDate}
+                                            <span className="font-semibold">{translations[language].date}</span> {latestDraw.drawDate ? new Date(latestDraw.drawDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : 'N/A'}
                                         </p>
                                     </>
                                 }

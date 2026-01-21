@@ -1,226 +1,127 @@
-// 专业的邮件HTML模板
+// 专业的邮件HTML模板 - Outlook 兼容版本
 
-// 基础邮件模板结构
+// 基础邮件模板结构 - 使用表格布局兼容 Outlook
 const baseTemplate = (content, preheader = '') => `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="x-apple-disable-message-reformatting">
     <title>ImmiGo - Canada Immigration Updates</title>
     <!--[if mso]>
-    <style>
-        table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
-        div, td {padding:0;}
-        div {margin:0 !important;}
-    </style>
     <noscript>
         <xml>
             <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
                 <o:PixelsPerInch>96</o:PixelsPerInch>
             </o:OfficeDocumentSettings>
         </xml>
     </noscript>
-    <![endif]-->
     <style>
+        table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
+        div, td {padding:0;}
+        div {margin:0 !important;}
+        .info-row td {padding: 12px 0;}
+    </style>
+    <![endif]-->
+    <style type="text/css">
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: Arial, Helvetica, sans-serif;
             background-color: #f3f4f6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+        table {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+        a {
+            text-decoration: none;
+        }
         .email-container {
             max-width: 600px;
             margin: 0 auto;
-            background-color: #ffffff;
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-            text-align: center;
-        }
-        .logo {
-            font-size: 36px;
-            font-weight: 900;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            letter-spacing: -0.5px;
-            margin: 0;
-        }
-        .tagline {
-            color: rgba(255,255,255,0.9);
-            font-size: 14px;
-            margin: 8px 0 0 0;
-        }
-        .content {
-            padding: 40px 30px;
-        }
-        .hero-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1f2937;
-            margin: 0 0 16px 0;
-            line-height: 1.3;
-        }
-        .hero-subtitle {
-            font-size: 16px;
-            color: #6b7280;
-            margin: 0 0 30px 0;
-            line-height: 1.6;
-        }
-        .info-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .info-card-white {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        .info-label {
-            color: rgba(255,255,255,0.9);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .info-value {
-            color: #ffffff;
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .info-label-dark {
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .info-value-dark {
-            color: #1f2937;
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .cta-button {
-            display: inline-block;
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff !important;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
-            margin: 20px 0;
-            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-        }
-        .cta-button:hover {
-            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.5);
-            transform: translateY(-2px);
-        }
-        .congrats-emoji {
-            font-size: 48px;
-            margin: 20px 0;
-        }
-        .footer {
-            background-color: #f9fafb;
-            padding: 30px;
-            text-align: center;
-            border-top: 1px solid #e5e7eb;
-        }
-        .footer-text {
-            color: #6b7280;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 8px 0;
-        }
-        .footer-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .footer-link:hover {
-            text-decoration: underline;
-        }
-        .social-links {
-            margin: 20px 0;
-        }
-        .social-link {
-            display: inline-block;
-            margin: 0 8px;
-            color: #667eea;
-            text-decoration: none;
-        }
-        .divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
-            margin: 30px 0;
         }
         @media only screen and (max-width: 600px) {
-            .content {
-                padding: 30px 20px !important;
+            .email-container {
+                width: 100% !important;
+            }
+            .content-padding {
+                padding: 20px !important;
             }
             .hero-title {
-                font-size: 24px !important;
+                font-size: 22px !important;
             }
-            .info-card, .info-card-white {
-                padding: 20px !important;
+            .info-value {
+                font-size: 18px !important;
             }
         }
     </style>
 </head>
-<body>
-    <!-- 预览文本 (在邮件客户端中显示，但在正文中隐藏) -->
-    <div style="display: none; max-height: 0; overflow: hidden;">
+<body style="margin: 0; padding: 0; background-color: #f3f4f6;">
+    <!-- 预览文本 -->
+    <div style="display: none; font-size: 1px; color: #f3f4f6; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
         ${preheader}
     </div>
     
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6; padding: 20px 0;">
+    <!-- 主容器 -->
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
         <tr>
-            <td align="center">
-                <div class="email-container">
+            <td align="center" style="padding: 20px 10px;">
+                <!-- 邮件内容容器 -->
+                <table role="presentation" class="email-container" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+                    
                     <!-- Header -->
-                    <div class="header">
-                        <h1 class="logo">🇨🇦 ImmiGo</h1>
-                        <p class="tagline">Your Trusted Canadian Immigration Partner</p>
-                    </div>
+                    <tr>
+                        <td align="center" style="background-color: #667eea; padding: 40px 20px;">
+                            <h1 style="margin: 0; font-size: 36px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">🇨🇦 ImmiGo</h1>
+                            <p style="margin: 8px 0 0 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">Your Trusted Canadian Immigration Partner</p>
+                        </td>
+                    </tr>
                     
                     <!-- Content -->
                     ${content}
                     
                     <!-- Footer -->
-                    <div class="footer">
-                        <p class="footer-text" style="font-weight: 600; color: #1f2937; margin-bottom: 12px;">
-                            📍 ImmiGo Immigration Services
-                        </p>
-                        <p class="footer-text">
-                            Vancouver, BC, Canada
-                        </p>
-                        <div class="divider"></div>
-                        <p class="footer-text">
-                            <a href="https://immigoo.com" class="footer-link">Visit Website</a> • 
-                            <a href="https://immigoo.com/dashboard" class="footer-link">Dashboard</a> • 
-                            <a href="https://immigoo.com/unsubscribe" class="footer-link">Unsubscribe</a>
-                        </p>
-                        <p class="footer-text" style="font-size: 12px; margin-top: 20px;">
-                            You're receiving this email because you subscribed to ImmiGo immigration updates.
-                        </p>
-                    </div>
-                </div>
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 30px; border-top: 1px solid #e5e7eb;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td align="center">
+                                        <p style="margin: 0 0 12px 0; font-size: 14px; font-weight: bold; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">
+                                            📍 ImmiGo Immigration Services
+                                        </p>
+                                        <p style="margin: 0 0 20px 0; font-size: 14px; color: #6b7280; font-family: Arial, Helvetica, sans-serif;">
+                                            Vancouver, BC, Canada
+                                        </p>
+                                        <p style="margin: 0 0 20px 0; font-size: 14px; color: #6b7280; font-family: Arial, Helvetica, sans-serif;">
+                                            <a href="https://immigoo.com" style="color: #667eea; text-decoration: none;">Visit Website</a> &nbsp;•&nbsp; 
+                                            <a href="https://immigoo.com/dashboard" style="color: #667eea; text-decoration: none;">Dashboard</a> &nbsp;•&nbsp; 
+                                            <a href="https://immigoo.com/unsubscribe" style="color: #667eea; text-decoration: none;">Unsubscribe</a>
+                                        </p>
+                                        <p style="margin: 0; font-size: 12px; color: #9ca3af; font-family: Arial, Helvetica, sans-serif;">
+                                            You're receiving this email because you subscribed to ImmiGo immigration updates.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                </table>
             </td>
         </tr>
     </table>
@@ -240,43 +141,76 @@ const updateEmailTemplate = (subscriber, draw) => {
     });
 
     const content = `
-        <div class="content">
-            <h2 class="hero-title">🎯 New Express Entry Draw Announced!</h2>
-            <p class="hero-subtitle">
-                Great news! A new draw has been conducted for your selected program. Here are the details:
-            </p>
-
-            <div class="info-card">
-                <div class="info-row">
-                    <span class="info-label">📋 Program</span>
-                    <span class="info-value">${draw.details || 'All Programs'}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">📅 Draw Date</span>
-                    <span class="info-value">${formattedDate}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">🎯 Minimum CRS Score</span>
-                    <span class="info-value">${draw.crsScore}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">✉️ Invitations Issued</span>
-                    <span class="info-value">${draw.invitations.toLocaleString()}</span>
-                </div>
-            </div>
-
-            <div style="text-align: center;">
-                <a href="https://immigoo.com/dashboard" class="cta-button">
-                    📊 View Historical Data & Trends
-                </a>
-            </div>
-
-            <div class="info-card-white">
-                <p style="margin: 0; color: #4b5563; line-height: 1.6;">
-                    <strong style="color: #1f2937;">💡 Pro Tip:</strong> Check out our dashboard to analyze historical draw patterns and improve your chances of success in future draws!
+        <tr>
+            <td class="content-padding" style="padding: 40px 30px;">
+                <h2 style="margin: 0 0 16px 0; font-size: 28px; font-weight: bold; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">🎯 New Express Entry Draw Announced!</h2>
+                <p style="margin: 0 0 30px 0; font-size: 16px; color: #6b7280; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
+                    Great news! A new draw has been conducted for your selected program. Here are the details:
                 </p>
-            </div>
-        </div>
+
+                <!-- Info Card -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #667eea; border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 30px;">
+                            <!-- Program -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr class="info-row">
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">📋 Program</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${draw.details || 'All Programs'}</td>
+                                </tr>
+                            </table>
+                            <!-- Draw Date -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr class="info-row">
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">📅 Draw Date</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${formattedDate}</td>
+                                </tr>
+                            </table>
+                            <!-- CRS Score -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr class="info-row">
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">🎯 Minimum CRS Score</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${draw.crsScore}</td>
+                                </tr>
+                            </table>
+                            <!-- Invitations -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr class="info-row">
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">✉️ Invitations Issued</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${String(draw.invitations).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- CTA Button -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px;">
+                    <tr>
+                        <td align="center">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="background-color: #667eea; border-radius: 8px;">
+                                        <a href="https://immigoo.com/dashboard" style="display: inline-block; padding: 14px 32px; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; font-family: Arial, Helvetica, sans-serif;">📊 View Historical Data & Trends</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Pro Tip -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px; background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 25px;">
+                            <p style="margin: 0; font-size: 14px; color: #4b5563; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
+                                <strong style="color: #1f2937;">💡 Pro Tip:</strong> Check out our dashboard to analyze historical draw patterns and improve your chances of success in future draws!
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     `;
 
     const preheader = `New Express Entry draw: ${draw.details} - CRS ${draw.crsScore} - ${draw.invitations} invitations`;
@@ -287,57 +221,93 @@ const updateEmailTemplate = (subscriber, draw) => {
 // 祝贺邮件模板 (用户分数超过最低分数)
 const congratsEmailTemplate = (subscriber, draw) => {
     const content = `
-        <div class="content">
-            <div style="text-align: center;">
-                <div class="congrats-emoji">🎉🎊🥳</div>
-                <h2 class="hero-title" style="color: #10b981;">Congratulations, ${subscriber.name}!</h2>
-                <p class="hero-subtitle">
+        <tr>
+            <td class="content-padding" style="padding: 40px 30px; text-align: center;">
+                <p style="margin: 0 0 20px 0; font-size: 48px;">🎉🎊🥳</p>
+                <h2 style="margin: 0 0 16px 0; font-size: 28px; font-weight: bold; color: #10b981; font-family: Arial, Helvetica, sans-serif;">Congratulations, ${subscriber.name}!</h2>
+                <p style="margin: 0 0 30px 0; font-size: 16px; color: #6b7280; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
                     Fantastic news! Your CRS score qualifies you for the latest Express Entry draw!
                 </p>
-            </div>
 
-            <div class="info-card-white">
-                <div class="info-row">
-                    <span class="info-label-dark">✨ Your CRS Score</span>
-                    <span class="info-value-dark" style="color: #10b981;">${subscriber.score}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label-dark">📊 Minimum Required</span>
-                    <span class="info-value-dark">${draw.crsScore}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label-dark">🚀 Score Advantage</span>
-                    <span class="info-value-dark" style="color: #10b981;">+${subscriber.score - draw.crsScore}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label-dark">📋 Program</span>
-                    <span class="info-value-dark">${draw.details || subscriber.currentProgram}</span>
-                </div>
-            </div>
+                <!-- Score Card -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 30px;">
+                            <!-- Your Score -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid #e5e7eb;">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: #6b7280; font-family: Arial, Helvetica, sans-serif;">✨ Your CRS Score</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 20px; font-weight: bold; color: #10b981; font-family: Arial, Helvetica, sans-serif;">${subscriber.score}</td>
+                                </tr>
+                            </table>
+                            <!-- Minimum Required -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid #e5e7eb;">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: #6b7280; font-family: Arial, Helvetica, sans-serif;">📊 Minimum Required</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 20px; font-weight: bold; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">${draw.crsScore}</td>
+                                </tr>
+                            </table>
+                            <!-- Score Advantage -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid #e5e7eb;">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: #6b7280; font-family: Arial, Helvetica, sans-serif;">🚀 Score Advantage</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 20px; font-weight: bold; color: #10b981; font-family: Arial, Helvetica, sans-serif;">+${subscriber.score - draw.crsScore}</td>
+                                </tr>
+                            </table>
+                            <!-- Program -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: #6b7280; font-family: Arial, Helvetica, sans-serif;">📋 Program</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 20px; font-weight: bold; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">${draw.details || subscriber.currentProgram}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
 
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; padding: 25px; margin: 30px 0; color: white; text-align: center;">
-                <p style="margin: 0; font-size: 18px; font-weight: 600; line-height: 1.6;">
-                    🎯 You're in an excellent position!<br/>
-                    Keep an eye on your email for your Invitation to Apply (ITA).
-                </p>
-            </div>
+                <!-- Success Message -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px; background-color: #10b981; border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 25px; text-align: center;">
+                            <p style="margin: 0; font-size: 18px; font-weight: bold; color: #ffffff; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
+                                🎯 You're in an excellent position!<br/>
+                                Keep an eye on your email for your Invitation to Apply (ITA).
+                            </p>
+                        </td>
+                    </tr>
+                </table>
 
-            <div style="text-align: center;">
-                <a href="https://immigoo.com/dashboard" class="cta-button">
-                    📈 Track Your Progress
-                </a>
-            </div>
+                <!-- CTA Button -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px;">
+                    <tr>
+                        <td align="center">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="background-color: #667eea; border-radius: 8px;">
+                                        <a href="https://immigoo.com/dashboard" style="display: inline-block; padding: 14px 32px; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; font-family: Arial, Helvetica, sans-serif;">📈 Track Your Progress</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
 
-            <div class="info-card-white" style="margin-top: 30px;">
-                <h3 style="color: #1f2937; margin: 0 0 12px 0; font-size: 18px;">📝 Next Steps:</h3>
-                <ul style="color: #4b5563; line-height: 1.8; margin: 0; padding-left: 20px;">
-                    <li>Monitor your Express Entry account regularly</li>
-                    <li>Ensure all your documents are up-to-date</li>
-                    <li>Prepare for potential ITA within the next few weeks</li>
-                    <li>Review IRCC processing times and requirements</li>
-                </ul>
-            </div>
-        </div>
+                <!-- Next Steps -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px; background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px; text-align: left;">
+                    <tr>
+                        <td style="padding: 25px;">
+                            <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">📝 Next Steps:</h3>
+                            <ul style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.8; font-family: Arial, Helvetica, sans-serif;">
+                                <li>Monitor your Express Entry account regularly</li>
+                                <li>Ensure all your documents are up-to-date</li>
+                                <li>Prepare for potential ITA within the next few weeks</li>
+                                <li>Review IRCC processing times and requirements</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     `;
 
     const preheader = `🎉 Congratulations! Your score of ${subscriber.score} qualifies for the latest draw (CRS ${draw.crsScore})`;
@@ -347,65 +317,110 @@ const congratsEmailTemplate = (subscriber, draw) => {
 
 // 欢迎邮件模板 (新用户订阅)
 const welcomeEmailTemplate = (subscriber) => {
+    // 生成程序标签HTML
+    let programsHtml = '';
+    if (subscriber.selectedPrograms && subscriber.selectedPrograms.length > 0) {
+        programsHtml = subscriber.selectedPrograms.map(program => 
+            `<span style="display: inline-block; background-color: rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 6px; font-size: 14px; color: #ffffff; margin: 4px;">${program}</span>`
+        ).join(' ');
+    }
+
     const content = `
-        <div class="content">
-            <h2 class="hero-title">Welcome to ImmiGo! 🎉</h2>
-            <p class="hero-subtitle">
-                Thank you for subscribing to our Express Entry updates. We're excited to help you on your Canadian immigration journey!
-            </p>
+        <tr>
+            <td class="content-padding" style="padding: 40px 30px;">
+                <h2 style="margin: 0 0 16px 0; font-size: 28px; font-weight: bold; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">Welcome to ImmiGo! 🎉</h2>
+                <p style="margin: 0 0 30px 0; font-size: 16px; color: #6b7280; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
+                    Thank you for subscribing to our Express Entry updates. We're excited to help you on your Canadian immigration journey!
+                </p>
 
-            <div class="info-card">
-                <h3 style="color: white; margin: 0 0 20px 0; font-size: 20px;">📋 Your Subscription Details</h3>
-                <div class="info-row">
-                    <span class="info-label">👤 Name</span>
-                    <span class="info-value">${subscriber.name}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">📧 Email</span>
-                    <span class="info-value">${subscriber.email}</span>
-                </div>
-                ${subscriber.score ? `
-                <div class="info-row">
-                    <span class="info-label">🎯 Your CRS Score</span>
-                    <span class="info-value">${subscriber.score}</span>
-                </div>
-                ` : ''}
-                ${subscriber.currentProgram ? `
-                <div class="info-row">
-                    <span class="info-label">📋 Current Program</span>
-                    <span class="info-value">${subscriber.currentProgram}</span>
-                </div>
-                ` : ''}
-                ${subscriber.selectedPrograms && subscriber.selectedPrograms.length > 0 ? `
-                <div class="info-row" style="flex-direction: column; align-items: flex-start;">
-                    <span class="info-label" style="margin-bottom: 10px;">🎯 Programs You're Tracking</span>
-                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                        ${subscriber.selectedPrograms.map(program => `
-                            <span style="background: rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 6px; font-size: 14px; color: white; display: inline-block;">
-                                ${program}
-                            </span>
-                        `).join('')}
-                    </div>
-                </div>
-                ` : ''}
-            </div>
+                <!-- Subscription Details Card -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #667eea; border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 30px;">
+                            <h3 style="margin: 0 0 20px 0; font-size: 20px; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">📋 Your Subscription Details</h3>
+                            
+                            <!-- Name -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">👤 Name</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${subscriber.name}</td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Email -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">📧 Email</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${subscriber.email}</td>
+                                </tr>
+                            </table>
+                            
+                            ${subscriber.score ? `
+                            <!-- CRS Score -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">🎯 Your CRS Score</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${subscriber.score}</td>
+                                </tr>
+                            </table>
+                            ` : ''}
+                            
+                            ${subscriber.currentProgram ? `
+                            <!-- Current Program -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+                                <tr>
+                                    <td style="padding: 12px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">📋 Current Program</td>
+                                    <td align="right" style="padding: 12px 0; font-size: 18px; font-weight: bold; color: #ffffff; font-family: Arial, Helvetica, sans-serif;">${subscriber.currentProgram}</td>
+                                </tr>
+                            </table>
+                            ` : ''}
+                            
+                            ${subscriber.selectedPrograms && subscriber.selectedPrograms.length > 0 ? `
+                            <!-- Programs Tracking -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="padding: 12px 0;">
+                                        <p style="margin: 0 0 10px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-family: Arial, Helvetica, sans-serif;">🎯 Programs You're Tracking</p>
+                                        <p style="margin: 0;">${programsHtml}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            ` : ''}
+                        </td>
+                    </tr>
+                </table>
 
-            <div style="text-align: center;">
-                <a href="https://immigoo.com/dashboard" class="cta-button">
-                    🚀 Explore Dashboard
-                </a>
-            </div>
+                <!-- CTA Button -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px;">
+                    <tr>
+                        <td align="center">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="background-color: #667eea; border-radius: 8px;">
+                                        <a href="https://immigoo.com/dashboard" style="display: inline-block; padding: 14px 32px; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; font-family: Arial, Helvetica, sans-serif;">🚀 Explore Dashboard</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
 
-            <div class="info-card-white">
-                <h3 style="color: #1f2937; margin: 0 0 12px 0; font-size: 18px;">✨ What You'll Receive:</h3>
-                <ul style="color: #4b5563; line-height: 1.8; margin: 0; padding-left: 20px;">
-                    <li><strong>Instant Draw Notifications</strong> - Get notified immediately when new draws are announced</li>
-                    <li><strong>Personalized Alerts</strong> - Receive tailored updates based on your selected programs</li>
-                    <li><strong>Historical Analysis</strong> - Access comprehensive data and trends on our dashboard</li>
-                    <li><strong>Success Tips</strong> - Helpful insights to improve your CRS score</li>
-                </ul>
-            </div>
-        </div>
+                <!-- What You'll Receive -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px; background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px;">
+                    <tr>
+                        <td style="padding: 25px;">
+                            <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1f2937; font-family: Arial, Helvetica, sans-serif;">✨ What You'll Receive:</h3>
+                            <ul style="margin: 0; padding-left: 20px; color: #4b5563; line-height: 1.8; font-family: Arial, Helvetica, sans-serif;">
+                                <li><strong>Instant Draw Notifications</strong> - Get notified immediately when new draws are announced</li>
+                                <li><strong>Personalized Alerts</strong> - Receive tailored updates based on your selected programs</li>
+                                <li><strong>Historical Analysis</strong> - Access comprehensive data and trends on our dashboard</li>
+                                <li><strong>Success Tips</strong> - Helpful insights to improve your CRS score</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     `;
 
     const preheader = `Welcome to ImmiGo! Start tracking Express Entry draws and improve your chances.`;
@@ -419,5 +434,3 @@ module.exports = {
     congratsEmailTemplate,
     welcomeEmailTemplate
 };
- 
-
