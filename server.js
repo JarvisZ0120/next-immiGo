@@ -182,20 +182,68 @@ async function fetchLatestDraw() {
 }
 
 
+// 程序名称模糊匹配函数
+// 例如: "French-Language proficiency 2026-Version 2" 应该匹配 "French language proficiency"
+function programMatches(drawName, programName) {
+    if (!drawName || !programName) return false;
+    
+    // 标准化字符串：转小写，移除特殊字符，只保留字母数字和空格
+    const normalize = (str) => str.toLowerCase()
+        .replace(/[-_]/g, ' ')  // 将连字符和下划线转为空格
+        .replace(/\d{4}/g, '')  // 移除年份如 2026
+        .replace(/version\s*\d+/gi, '')  // 移除 "Version 1" 等
+        .replace(/[^a-z\s]/g, '')  // 只保留字母和空格
+        .replace(/\s+/g, ' ')  // 多个空格合并为一个
+        .trim();
+    
+    const normalizedDraw = normalize(drawName);
+    const normalizedProgram = normalize(programName);
+    
+    // 检查是否包含
+    if (normalizedDraw.includes(normalizedProgram)) {
+        return true;
+    }
+    
+    // 提取关键词进行匹配（至少80%的关键词匹配）
+    const programWords = normalizedProgram.split(' ').filter(w => w.length > 2);
+    const drawWords = normalizedDraw.split(' ');
+    
+    if (programWords.length === 0) return false;
+    
+    const matchedWords = programWords.filter(word => 
+        drawWords.some(dw => dw.includes(word) || word.includes(dw))
+    );
+    
+    const matchRatio = matchedWords.length / programWords.length;
+    
+    // 如果80%以上的关键词匹配，认为是同一个项目
+    return matchRatio >= 0.8;
+}
+
+// 检查订阅者是否关注了某个项目（模糊匹配）
+function subscriberInterestedIn(subscriber, drawDetails) {
+    if (!subscriber.selectedPrograms || subscriber.selectedPrograms.length === 0) {
+        return false;
+    }
+    
+    return subscriber.selectedPrograms.some(program => programMatches(drawDetails, program));
+}
+
 // 检查每个用户是否符合发送邮件的条件
 async function checkSubscribersAndSendEmails(draw) {
     try {
         const subscribers = await Subscriber.find({ isSubscribed: true });
         console.log(`📧 检查 ${subscribers.length} 个订阅者...`);
+        console.log(`📋 当前抽签项目: "${draw.details}"`);
 
         let updateEmailsSent = 0;
         let congratsEmailsSent = 0;
         let emailsFailed = 0;
 
         for (const subscriber of subscribers) {
-            // 检查 drawName 是否在用户的 selectedPrograms 中
-            if (subscriber.selectedPrograms.includes(draw.details)) {
-                console.log(`📤 发送更新邮件给: ${subscriber.email}`);
+            // 使用模糊匹配检查 drawName 是否在用户的 selectedPrograms 中
+            if (subscriberInterestedIn(subscriber, draw.details)) {
+                console.log(`📤 发送更新邮件给: ${subscriber.email} (匹配项目: ${draw.details})`);
                 const result = await sendUpdateEmail(subscriber, draw);
                 if (result && result.success) {
                     updateEmailsSent++;
@@ -204,9 +252,9 @@ async function checkSubscribersAndSendEmails(draw) {
                 }
             }
 
-            // 检查 drawName 是否等于 currentProgram 且用户 score 高于 drawCRS
-            if (subscriber.currentProgram === draw.details && subscriber.score > draw.crsScore) {
-                console.log(`🎉 发送祝贺邮件给: ${subscriber.email}`);
+            // 使用模糊匹配检查 currentProgram 且用户 score 高于 drawCRS
+            if (programMatches(draw.details, subscriber.currentProgram) && subscriber.score > draw.crsScore) {
+                console.log(`🎉 发送祝贺邮件给: ${subscriber.email} (分数 ${subscriber.score} > ${draw.crsScore})`);
                 const result = await sendCongratsEmail(subscriber, draw);
                 if (result && result.success) {
                     congratsEmailsSent++;
