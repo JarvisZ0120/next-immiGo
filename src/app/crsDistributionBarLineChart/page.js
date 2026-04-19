@@ -312,7 +312,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
     return (
         <div className="flex w-full flex-col bg-transparent px-0">
             <div className="w-full max-w-full">
-                <div className="mb-6 text-center px-2 sm:px-4">
+                <div className="relative z-40 mb-6 px-2 text-center sm:px-4">
                     <div className="canada-card mx-auto inline-block w-full max-w-3xl p-4 sm:p-6">
                         <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-end sm:gap-10">
                             <div className="w-full sm:flex-1">
@@ -336,7 +336,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
                     </div>
                 </div>
 
-                <div className="mb-6 flex justify-center px-2 sm:px-4">
+                <div className="relative z-20 mb-6 flex justify-center px-2 sm:px-4">
                     <div className="canada-card inline-flex w-full max-w-xl flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-center sm:gap-6">
                         <label className={`flex cursor-pointer items-center gap-2 rounded-2xl border px-4 py-3 text-sm transition-colors ${
                             showInvitations ? 'border-[#0071e3] bg-[#f5f5f7]' : 'border-black/[0.06] bg-white hover:bg-[#fafafa]'
@@ -371,7 +371,7 @@ const ChartPage = ({ pageLanguage = 'en' }) => {
 
                 <div
                     ref={chartShellRef}
-                    className="apple-chart-stage canada-card mobile-landscape-container w-full overflow-hidden"
+                    className="apple-chart-stage canada-card mobile-landscape-container relative z-10 w-full overflow-hidden"
                     style={{ minHeight: size.height ? size.height : 280 }}
                 >
                     <div

@@ -255,7 +255,7 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
                     {t.totalCandidates}
                 </h2>
 
-                <div className="mb-6 text-center px-2 sm:px-4">
+                <div className="relative z-40 mb-6 px-2 text-center sm:px-4">
                     <div className="canada-card mx-auto inline-block w-full max-w-3xl p-4 sm:p-6">
                         <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-end sm:gap-10">
                             <div className="w-full sm:flex-1">
@@ -281,7 +281,7 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
 
                 <div
                     ref={chartShellRef}
-                    className="apple-chart-stage canada-card mobile-landscape-container w-full overflow-hidden"
+                    className="apple-chart-stage canada-card mobile-landscape-container relative z-10 w-full overflow-hidden"
                     style={{ minHeight: size.height ? size.height : 280 }}
                 >
                     <div

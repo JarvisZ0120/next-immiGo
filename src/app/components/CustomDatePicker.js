@@ -105,7 +105,7 @@ const CustomDatePicker = ({ value, onChange, label, className = "" }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full z-50 mt-2 w-auto min-w-full overflow-hidden rounded-2xl border border-red-100/60 bg-white/95 shadow-maple backdrop-blur-md sm:min-w-[280px]">
+        <div className="absolute left-0 top-full z-[100] mt-2 w-auto min-w-full overflow-hidden rounded-2xl border border-red-100/60 bg-white/95 shadow-maple backdrop-blur-md sm:min-w-[280px]">
           <div className="flex items-center justify-between border-b border-red-100/50 bg-gradient-to-r from-red-50/80 to-teal-50/80 px-3 py-3">
             <button
               type="button"
