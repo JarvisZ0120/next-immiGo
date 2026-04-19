@@ -3,21 +3,76 @@
 @import 'tailwindcss/utilities';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f8ff;
+  --foreground: #1a1523;
+  --maple: #d80621;
+  --maple-deep: #b1051a;
+  --boreal: #0d9488;
+  --glacier: #38bdf8;
+  --apple-blue: #0071e3;
+  --apple-blue-hover: #0077ed;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0c0a10;
+    --foreground: #f5f5f7;
+  }
+}
+
+/* Canadian-inspired canvas: ice sky + soft aurora + warm maple tint */
+.canada-page-bg {
+  background-color: #eef6ff;
+  background-image:
+    radial-gradient(1200px 700px at 12% -8%, rgba(216, 6, 33, 0.11), transparent 58%),
+    radial-gradient(900px 520px at 92% 5%, rgba(13, 148, 136, 0.14), transparent 55%),
+    radial-gradient(800px 500px at 50% 105%, rgba(56, 189, 248, 0.12), transparent 52%),
+    linear-gradient(165deg, #f0f7ff 0%, #fff8f7 38%, #f0fdf9 72%, #f5f3ff 100%);
+  min-height: 100%;
+}
+
+.canada-aurora-overlay {
+  background:
+    radial-gradient(700px 420px at 20% 20%, rgba(216, 6, 33, 0.07), transparent 65%),
+    radial-gradient(600px 380px at 80% 30%, rgba(13, 148, 136, 0.09), transparent 60%),
+    radial-gradient(900px 500px at 55% 80%, rgba(99, 102, 241, 0.06), transparent 55%);
+  mix-blend-mode: multiply;
+  opacity: 0.92;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .canada-aurora-overlay {
+    animation: canada-aurora-pulse 14s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes canada-aurora-pulse {
+  0% {
+    opacity: 0.82;
+    filter: saturate(1) hue-rotate(0deg);
+  }
+  100% {
+    opacity: 0.98;
+    filter: saturate(1.15) hue-rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canada-aurora-overlay {
+    animation: none;
+    opacity: 0.92;
+    filter: none;
   }
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: 'Arial', sans-serif; /* 默认字体 */
+  font-family: var(--font-sans);
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer utilities {
@@ -26,158 +81,157 @@ body {
   }
 }
 
-
-/* 自定义样式 */
-.combined-chart-container {
-  @layer components {
-    .combined-chart-container {
-      max-width: 80rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
+.canada-card {
+  @apply rounded-3xl border border-white/60 bg-white/75 shadow-xl shadow-red-900/5 backdrop-blur-md;
+  box-shadow:
+    0 0 0 1px rgba(216, 6, 33, 0.06),
+    0 18px 50px -24px rgba(13, 148, 136, 0.18),
+    0 12px 28px -18px rgba(216, 6, 33, 0.12);
 }
 
-/* 为图表容器添加响应式高度 */
-.chart-container {
-  /* @apply h-64 md:h-96; */
-  height: 16rem; /* h-64 */
-  @media (min-width: 768px) {
-    height: 24rem; /* md:h-96 */
-  }
+.canada-text-gradient {
+  background-image: linear-gradient(
+    115deg,
+    #1a1523 0%,
+    #d80621 42%,
+    #0d9488 78%,
+    #2563eb 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-/* 自定义滑块样式 */
+.apple-chart-stage {
+  width: 100%;
+  min-height: 220px;
+}
+
+.apple-chart-stage > div {
+  width: 100%;
+  height: 100%;
+}
+
+.apple-section {
+  @apply mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-10;
+}
+
+.apple-nav-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
 .slider {
-  /* @apply w-full; */
-  width: 100%; /* 使用标准 CSS 替代 @apply */
+  width: 100%;
 }
 
-/* 自定义播放/暂停按钮样式 */
 .play-pause-button {
-  /* @apply 语法不被支持，手动添加样式 */
-  background-color: #3b82f6; /* bg-blue-500 */
-  color: white; /* text-white */
-  padding: 0.5rem 1rem; /* px-4 py-2 */
-  border-radius: 0.375rem; /* rounded */
-  transition: background-color 0.3s; /* transition duration-300 */
+  background: linear-gradient(90deg, var(--maple), #ff3355);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 980px;
+  transition: filter 0.2s ease, transform 0.2s ease;
 }
 
 .play-pause-button:hover {
-  background-color: #2563eb; /* hover:bg-blue-600 */
+  filter: brightness(1.06);
 }
 
-/* 在 globals.css 或其他样式文件中 */
-.text-black {
-  font-family: 'Arial', sans-serif; /* 其他文本使用默认字体 */
-}
-
-/* 美化日期选择器 */
-input[type="date"] {
+input[type='date'] {
   position: relative;
   cursor: pointer;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-calendar-picker-indicator {
   cursor: pointer;
-  opacity: 0.7;
-  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(220deg);
+  opacity: 0.45;
   transition: opacity 0.2s;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-  filter: invert(0.4) sepia(1) saturate(6) hue-rotate(220deg);
+input[type='date']::-webkit-calendar-picker-indicator:hover {
+  opacity: 0.85;
 }
 
-/* Webkit浏览器日期选择器样式 */
-input[type="date"]::-webkit-datetime-edit {
+input[type='date']::-webkit-datetime-edit {
   padding: 0.25rem;
 }
 
-input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+input[type='date']::-webkit-datetime-edit-fields-wrapper {
   padding: 0.25rem;
 }
 
-input[type="date"]::-webkit-datetime-edit-text {
-  color: #4b5563;
+input[type='date']::-webkit-datetime-edit-text {
+  color: #6e6e73;
   padding: 0 0.25rem;
 }
 
-input[type="date"]::-webkit-datetime-edit-month-field,
-input[type="date"]::-webkit-datetime-edit-day-field,
-input[type="date"]::-webkit-datetime-edit-year-field {
-  color: #1f2937;
+input[type='date']::-webkit-datetime-edit-month-field,
+input[type='date']::-webkit-datetime-edit-day-field,
+input[type='date']::-webkit-datetime-edit-year-field {
+  color: #1d1d1f;
   font-weight: 500;
 }
 
-input[type="date"]::-webkit-datetime-edit-month-field:focus,
-input[type="date"]::-webkit-datetime-edit-day-field:focus,
-input[type="date"]::-webkit-datetime-edit-year-field:focus {
-  background-color: #e0e7ff;
-  color: #4338ca;
+input[type='date']::-webkit-datetime-edit-month-field:focus,
+input[type='date']::-webkit-datetime-edit-day-field:focus,
+input[type='date']::-webkit-datetime-edit-year-field:focus {
+  background-color: rgba(216, 6, 33, 0.1);
+  color: var(--maple);
   border-radius: 0.25rem;
   outline: none;
 }
 
-/* 移动端横屏适配 */
 @media screen and (orientation: landscape) and (max-height: 500px) {
   .mobile-landscape-container {
     padding: 0.5rem !important;
     margin: 0 !important;
   }
-  
+
   .mobile-landscape-chart {
-    height: 200px !important;
-    min-height: 200px !important;
+    min-height: 160px !important;
   }
-  
+
   .mobile-landscape-header {
     margin-top: 1rem !important;
     margin-bottom: 0.5rem !important;
   }
-  
+
   .mobile-landscape-controls {
     margin-bottom: 0.5rem !important;
     padding: 0.25rem !important;
   }
-  
+
   .mobile-landscape-text {
     font-size: 0.875rem !important;
   }
-  
-  /* 移动端横屏时调整图表位置 */
+
   .lg\:ml-4 {
     margin-left: 0 !important;
   }
-  
+
   .lg\:ml-8 {
     margin-left: 0 !important;
   }
 }
 
-/* 移动端竖屏适配 */
 @media screen and (orientation: portrait) and (max-width: 768px) {
   .mobile-portrait-container {
     padding: 1rem;
   }
-  
+
   .mobile-portrait-chart {
-    height: 400px;
-    min-height: 400px;
+    min-height: 280px;
   }
-  
-  /* 移动端竖屏时调整图表位置 */
+
   .lg\:ml-4 {
     margin-left: 0 !important;
   }
-  
+
   .lg\:ml-8 {
     margin-left: 0 !important;
   }
 }
 
-/* 垂直布局优化 */
 .vertical-layout-container {
   display: flex;
   flex-direction: column;
@@ -185,23 +239,21 @@ input[type="date"]::-webkit-datetime-edit-year-field:focus {
   gap: 1.5rem;
 }
 
-/* 移动端横屏时的垂直布局优化 */
 @media screen and (orientation: landscape) and (max-height: 500px) {
   .vertical-layout-container {
     gap: 1rem;
   }
-  
+
   .chart-container-vertical {
     max-height: 40vh;
   }
 }
 
-/* 移动端竖屏时的垂直布局优化 */
 @media screen and (orientation: portrait) and (max-width: 768px) {
   .vertical-layout-container {
     gap: 2rem;
   }
-  
+
   .chart-container-vertical {
     max-height: 60vh;
   }

@@ -5,15 +5,17 @@ import { useState, useEffect } from 'react';
 import { CalendarDaysIcon, HandRaisedIcon } from '@heroicons/react/24/outline';
 import Header from '/src/app/components/Header'; // 导入 Header 组件
 import Footer from '/src/app/components/Footer'; // 导入 Footer 组件
+import { ALL_STREAMS_TOKEN, mergeStreamLists } from '@/constants/subscription';
 
 
 
+/** 纯白卡片 + 细纯色边（无外圈渐变，避免底部透过色带） */
 const stats = [
-    { name: 'Update', value: 'REAL-TIME' },
-    { name: 'Visualization', value: 'DATA' },
-    { name: 'Tracking', value: 'PERSONALIZED' },
-    { name: 'Service', value: 'FREE' },
-]
+    { name: 'Update', value: 'REAL-TIME', borderClass: 'border-[#fca5a5]' },
+    { name: 'Visualization', value: 'DATA', borderClass: 'border-[#5eead4]' },
+    { name: 'Tracking', value: 'PERSONALIZED', borderClass: 'border-[#93c5fd]' },
+    { name: 'Service', value: 'FREE', borderClass: 'border-[#e879f9]' },
+];
 
 
 const translations = {
@@ -39,7 +41,10 @@ const translations = {
         instantNotification: "Instant notification",
         instantNotificationMsg: "Get instant updates and never miss out on important news—delivered straight to your inbox!",
         noSpam: "No spam",
-        noSpamMsg: "Promise not to send any spam, and your information will be kept secure and confidential."
+        noSpamMsg: "Promise not to send any spam, and your information will be kept secure and confidential.",
+        allStreamsLabel: "All Express Entry draws & streams (recommended)",
+        allStreamsHint: "Get emailed on every new IRCC round—including streams they add later. Uncheck to follow only certain categories.",
+        pickStreamsError: "Please keep “All streams” checked or select at least one category.",
     },
     fr: {
         description: "Outil de suivi en temps réel pour le système d'immigration Express Entry du Canada",
@@ -63,7 +68,10 @@ const translations = {
         instantNotification: "Notification instantanée",
         instantNotificationMsg: "Recevez des mises à jour instantanées et ne manquez jamais d'informations importantes—livrées directement dans votre boîte de réception!",
         noSpam: "Pas de spam",
-        noSpamMsg: "Promesse de ne pas envoyer de spam, et vos informations seront gardées sécurisées et confidentielles."
+        noSpamMsg: "Promesse de ne pas envoyer de spam, et vos informations seront gardées sécurisées et confidentielles.",
+        allStreamsLabel: "Tous les tirages et volets d'Entrée express (recommandé)",
+        allStreamsHint: "Recevez un courriel pour chaque nouveau tirage — y compris les nouvelles catégories d'IRCC. Décochez pour choisir des volets précis.",
+        pickStreamsError: "Cochez « Tous les volets » ou au moins une catégorie.",
     },
     zh: {
         description: "加拿大快速通道移民系统的实时跟踪工具",
@@ -87,7 +95,10 @@ const translations = {
         instantNotification: "即时通知",
         instantNotificationMsg: "获取即时更新，绝不错过重要消息—直接送到您的收件箱！",
         noSpam: "无垃圾邮件",
-        noSpamMsg: "承诺不发送任何垃圾邮件，您的信息将被安全和保密地保存。"
+        noSpamMsg: "承诺不发送任何垃圾邮件，您的信息将被安全和保密地保存。",
+        allStreamsLabel: "全部快速通道抽签与类别（推荐）",
+        allStreamsHint: "每次有新抽签都会发邮件——包括今后 IRCC 新增的类别。取消勾选后可只订阅指定类别。",
+        pickStreamsError: "请勾选「全部」或至少选择一个类别。",
     },
     hi: {
         description: "कनाडा के एक्सप्रेस एंट्री इमिग्रेशन सिस्टम के लिए वास्तविक समय ट्रैकिंग टूल",
@@ -111,11 +122,14 @@ const translations = {
         instantNotification: "तत्काल सूचना",
         instantNotificationMsg: "तत्काल अपडेट प्राप्त करें और महत्वपूर्ण समाचारों को कभी न चूकें—सीधे आपके इनबॉक्स में!",
         noSpam: "कोई स्पैम नहीं",
-        noSpamMsg: "स्पैम न भेजने का वादा, और आपकी जानकारी सुरक्षित और गोपनीय रखी जाएगी।"
+        noSpamMsg: "स्पैम न भेजने का वादा, और आपकी जानकारी सुरक्षित और गोपनीय रखी जाएगी।",
+        allStreamsLabel: "सभी एक्सप्रेस एंट्री ड्रॉ और स्ट्रीम (अनुशंसित)",
+        allStreamsHint: "हर नए ड्रॉ पर ईमेल — भविष्य में IRCC द्वारा जोड़ी गई श्रेणियाँ भी। केवल चुनिंदा श्रेणियाँ चाहिए तो यह विकल्प अनचेक करें।",
+        pickStreamsError: "«सभी स्ट्रीम» चुनें या कम से कम एक श्रेणी।",
     },
 };
 
-const programs = [
+const FALLBACK_STREAMS = [
     'Provincial Nominee Program',
     'Federal Skilled Worker',
     'Canadian Experience Class',
@@ -126,13 +140,16 @@ const programs = [
     'Agriculture and agri-food occupations',
     'Transport occupations',
     'Trade occupations',
-    'No Program Specified'
+    'No Program Specified',
 ];
 
 const InfoCardForLatestDraw = ({ title, content }) => (
-    <div className="bg-blue-50 p-8 rounded-lg shadow-md w-full lg:h-2/5 mx-auto text-center">
-        <h3 className="text-2xl font-semibold mb-4 text-black">{title}</h3>
-        <div className="space-y-2">{content}</div>
+    <div className="canada-card w-full p-8 text-center">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-red-50 to-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#b1051a] ring-1 ring-red-200/60">
+            <span aria-hidden>🇨🇦</span> Express Entry
+        </div>
+        <h3 className="mb-5 text-xl font-bold tracking-tight text-[#1a1523]">{title}</h3>
+        <div className="space-y-3 text-[15px] leading-relaxed text-[#4a4456]">{content}</div>
     </div>
 );
 
@@ -144,7 +161,8 @@ export default function Home() {
     const [language, setLanguage] = useState('en'); // 默认语言为英语
     const [name, setName] = useState(''); // 新增姓名状态
     const [email, setEmail] = useState('');
-    const [selectedPrograms, setSelectedPrograms] = useState([]); // 默认不选择任何项目
+    const [selectedPrograms, setSelectedPrograms] = useState([ALL_STREAMS_TOKEN]); // 默认：全部类别，有抽签即通知
+    const [streamList, setStreamList] = useState(() => mergeStreamLists([], FALLBACK_STREAMS));
     const [score, setScore] = useState('');
     const [currentProgram, setCurrentProgram] = useState('');
     const [inPool, setInPool] = useState(false); // 新增状态
@@ -165,6 +183,23 @@ export default function Home() {
         predictedScoreRange: { min: 0, max: 0 },
         confidence: 0
     });
+
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const res = await fetch('/api/ircc-streams', { cache: 'no-store' });
+                const data = await res.json();
+                if (cancelled || !data.streams?.length) return;
+                setStreamList(mergeStreamLists(data.streams, FALLBACK_STREAMS));
+            } catch {
+                /* keep merged fallback */
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -307,6 +342,11 @@ export default function Home() {
             return;
         }
 
+        if (!selectedPrograms.length) {
+            setMessage(translations[language].pickStreamsError);
+            return;
+        }
+
         setIsSubmitting(true);
         setMessage('Submitting... Please wait.');
 
@@ -349,7 +389,7 @@ export default function Home() {
                 setName('');
                 setScore('');
                 setEmail('');
-                setSelectedPrograms([]);
+                setSelectedPrograms([ALL_STREAMS_TOKEN]);
                 setCurrentProgram('');
             } else {
                 setMessage(result.message || 'Failed to subscribe. Please try again.');
@@ -369,46 +409,36 @@ export default function Home() {
     };
 
     return (
-        <div className="bg-white flex flex-col">
+        <div className="flex min-h-screen flex-col">
 
-            {/* header*/}
             <Header setLanguage={setLanguage} language={language} />
 
-            <div className="relative isolate px-6 pt-14 lg:px-8">
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-                >
-                    <div
-                        style={{
-                            clipPath:
-                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                        }}
-                        className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-                    />
-                </div>
-                <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-                    <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                        <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                            Powered by 🇨🇦 IRCC{' '}
+            <div className="relative isolate">
+                <div className="apple-section pb-24 pt-10 sm:pb-28 sm:pt-16 lg:pb-32 lg:pt-24">
+                    <div className="hidden sm:mb-10 sm:flex sm:justify-center">
+                        <div className="inline-flex items-center gap-2 rounded-full border border-red-200/60 bg-white/85 px-4 py-2 text-xs font-semibold text-[#5c5666] shadow-md shadow-red-500/10 backdrop-blur-md">
+                            <span className="text-base" aria-hidden>🇨🇦</span>
+                            <span className="bg-gradient-to-r from-[#b1051a] to-[#0d9488] bg-clip-text text-transparent">
+                                Powered by IRCC open data
+                            </span>
                         </div>
                     </div>
-                    <div className="text-center">
-                        <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+                    <div className="mx-auto max-w-3xl text-center">
+                        <h1 className="canada-text-gradient text-balance pb-2 text-4xl font-extrabold leading-[1.15] tracking-tight sm:pb-3 sm:text-5xl sm:leading-[1.12] lg:text-[56px]">
                             {translations[language].description}
                         </h1>
-                        <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+                        <p className="mx-auto mt-8 max-w-2xl text-pretty text-lg font-normal leading-relaxed text-[#5c5666] sm:mt-10 sm:text-xl">
                             {translations[language].aboutContent}
                         </p>
-                        <div className="mt-10 flex items-center justify-center gap-x-6">
+                        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 px-2 pb-6 sm:gap-10 sm:pb-8">
                             <a
                                 href="#subscribe"
-                                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#d80621] via-[#ff4d6d] to-[#ff7a8a] px-8 py-3.5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(216,6,33,0.35)] transition-[filter,transform,box-shadow] hover:brightness-110 hover:shadow-[0_6px_20px_-6px_rgba(216,6,33,0.3)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d80621]"
                             >
                                 {translations[language].getStarted}
                             </a>
-                            <a href="/dashboard" className="text-sm font-semibold leading-6 text-gray-900">
-                                {translations[language].learnMore}<span aria-hidden="true">→</span>
+                            <a href="/dashboard" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-red-200/70 bg-white/80 px-5 py-3 text-sm font-semibold text-[#0d9488] shadow-sm backdrop-blur-sm transition-colors hover:border-teal-300 hover:bg-teal-50/80">
+                                {translations[language].learnMore}<span aria-hidden="true">↗</span>
                             </a>
                         </div>
                     </div>
@@ -416,20 +446,20 @@ export default function Home() {
 
 
 
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="apple-section pb-12">
                     {/* subscribe section */}
-                    <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
-                        <div id="subscribe" className="max-w-xl lg:max-w-lg mx-auto p-6 text-center">
-                            <h2 className="text-4xl font-semibold tracking-tight text-black">{translations[language].subscribe}</h2>
-                            <p className="mt-4 text-lg text-gray-500">
+                    <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:gap-16 lg:grid-cols-2 lg:items-start">
+                        <div id="subscribe" className="canada-card p-8 sm:p-10">
+                            <h2 className="text-3xl font-semibold tracking-tight text-[#1d1d1f]">{translations[language].subscribe}</h2>
+                            <p className="mt-3 text-[17px] text-[#6e6e73] leading-relaxed">
                                 {translations[language].subscribeContent}
                             </p>
-                            <form className="mt-6 max-w-md" onSubmit={handleSubscribe}>
+                            <form className="mt-8 max-w-lg" onSubmit={handleSubscribe}>
                                 <div className="flex flex-col mb-4">
                                     <input
                                         type="text"
-                                        placeholder={translations[language].enterYourName}  // 姓名输入框
-                                        className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        placeholder={translations[language].enterYourName}
+                                        className="w-full rounded-2xl border border-red-100/80 bg-white/90 px-4 py-3 text-[15px] text-[#1a1523] placeholder:text-[#86868b] outline-none transition-shadow focus:border-red-200 focus:ring-2 focus:ring-[#d80621]/25"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         required
@@ -439,107 +469,135 @@ export default function Home() {
                                     <input
                                         type="email"
                                         placeholder={translations[language].enterEmail}
-                                        className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                        className="w-full rounded-2xl border border-red-100/80 bg-white/90 px-4 py-3 text-[15px] text-[#1a1523] placeholder:text-[#86868b] outline-none transition-shadow focus:border-red-200 focus:ring-2 focus:ring-[#d80621]/25"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
                                 </div>
                                 <div className="mb-6">
-                                    <label className="block mb-4 text-black font-bold text-lg">{translations[language].selectProgramsToFollow}</label>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border border-gray-200 rounded-lg p-4 bg-gray-50">
-                                        {programs.map((program) => (
-                                            <label 
-                                                key={program} 
-                                                className={`flex items-center p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-white hover:shadow-sm ${
-                                                    selectedPrograms.includes(program) 
-                                                        ? 'bg-indigo-100 border-2 border-indigo-300' 
-                                                        : 'bg-white border-2 border-gray-200'
-                                                }`}
-                                            >
+                                    <label className="block mb-3 text-sm font-semibold text-[#1d1d1f]">{translations[language].selectProgramsToFollow}</label>
+                                    <div className="grid grid-cols-1 gap-2 rounded-2xl border border-teal-100/70 bg-gradient-to-br from-red-50/40 via-white to-teal-50/40 p-3 sm:grid-cols-2">
+                                        <label className="flex cursor-pointer flex-col rounded-xl border border-[#d80621]/35 bg-white/95 p-4 shadow-md shadow-red-500/10 ring-1 ring-red-200/40 sm:col-span-2">
+                                            <span className="flex items-start gap-3">
                                                 <input
                                                     type="checkbox"
-                                                    value={program}
-                                                    checked={selectedPrograms.includes(program)}
+                                                    checked={selectedPrograms.includes(ALL_STREAMS_TOKEN)}
                                                     onChange={(e) => {
-                                                        const value = e.target.value;
-                                                        if (value === 'No Program Specified') {
-                                                            // 如果选择"No Program Specified"，则只选择这个选项，取消其他所有选项
-                                                            setSelectedPrograms(prev => prev.includes(value) ? [] : ['No Program Specified']);
-                                                        } else {
-                                                            // 如果选择其他选项，则取消"No Program Specified"选项
-                                                            setSelectedPrograms(prev => {
-                                                                const filtered = prev.filter(p => p !== 'No Program Specified');
-                                                                return filtered.includes(value) 
-                                                                    ? filtered.filter(p => p !== value) 
-                                                                    : [...filtered, value];
-                                                            });
-                                                        }
+                                                        if (e.target.checked) setSelectedPrograms([ALL_STREAMS_TOKEN]);
+                                                        else setSelectedPrograms([]);
                                                     }}
-                                                    className="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
+                                                    className="mt-1 h-4 w-4 shrink-0 rounded border-[#d2d2d7] text-[#d80621] focus:ring-[#d80621]"
                                                 />
-                                                <span className={`ml-3 text-sm font-medium ${
-                                                    selectedPrograms.includes(program) ? 'text-indigo-900' : 'text-gray-700'
-                                                }`}>
-                                                    {program}
+                                                <span>
+                                                    <span className="block text-sm font-semibold text-[#1a1523]">{translations[language].allStreamsLabel}</span>
+                                                    <span className="mt-1 block text-xs font-normal leading-relaxed text-[#86868b]">{translations[language].allStreamsHint}</span>
                                                 </span>
-                                            </label>
-                                        ))}
+                                            </span>
+                                        </label>
+                                        {streamList.map((program) => {
+                                            const allOn = selectedPrograms.includes(ALL_STREAMS_TOKEN);
+                                            const checked = allOn || selectedPrograms.includes(program);
+                                            return (
+                                                <label
+                                                    key={program}
+                                                    className={`flex items-center rounded-xl border p-3 transition-colors ${
+                                                        allOn ? 'cursor-not-allowed opacity-55' : 'cursor-pointer hover:bg-white'
+                                                    } ${
+                                                        checked && !allOn
+                                                            ? 'border-[#d80621] bg-white shadow-md shadow-red-500/10 ring-1 ring-red-200/50'
+                                                            : 'border-transparent bg-white/70'
+                                                    }`}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        value={program}
+                                                        checked={checked}
+                                                        disabled={allOn}
+                                                        onChange={() => {
+                                                            if (allOn) return;
+                                                            if (program === 'No Program Specified') {
+                                                                setSelectedPrograms((prev) =>
+                                                                    prev.includes(program) ? [] : ['No Program Specified']
+                                                                );
+                                                                return;
+                                                            }
+                                                            setSelectedPrograms((prev) => {
+                                                                const filtered = prev.filter((p) => p !== 'No Program Specified');
+                                                                return filtered.includes(program)
+                                                                    ? filtered.filter((p) => p !== program)
+                                                                    : [...filtered, program];
+                                                            });
+                                                        }}
+                                                        className="h-4 w-4 rounded border-[#d2d2d7] text-[#d80621] focus:ring-[#d80621] disabled:opacity-60"
+                                                    />
+                                                    <span
+                                                        className={`ml-3 text-xs leading-snug sm:text-sm ${
+                                                            checked ? 'font-medium text-[#1d1d1f]' : 'text-[#424245]'
+                                                        }`}
+                                                    >
+                                                        {program}
+                                                    </span>
+                                                </label>
+                                            );
+                                        })}
                                     </div>
-                                    <p className="mt-2 text-xs text-gray-500">
-                                        {language === 'en' ? 'Select one or more programs to follow for updates' :
-                                         language === 'fr' ? 'Sélectionnez un ou plusieurs programmes à suivre pour les mises à jour' :
-                                         language === 'zh' ? '选择一个或多个项目来获取更新' :
-                                         language === 'hi' ? 'अपडेट के लिए एक या अधिक कार्यक्रम चुनें' : 
-                                         'Select one or more programs to follow for updates'}
+                                    <p className="mt-2 text-xs text-[#86868b]">
+                                        {language === 'en'
+                                            ? 'Stream list syncs from IRCC public data—new categories appear here automatically.'
+                                            : language === 'fr'
+                                              ? 'La liste provient des données publiques d\'IRCC — les nouvelles catégories apparaissent automatiquement.'
+                                              : language === 'zh'
+                                                ? '类别列表来自 IRCC 公开数据，新类别会自动出现在此。'
+                                                : 'IRCC सार्वजनिक डेटा से सूची — नई श्रेणियाँ स्वयं जुड़ती हैं।'}
                                     </p>
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block mb-2 text-black font-bold">{translations[language].areYouCurrentlyInThePool}</label>
-                                    <div className="flex items-center mb-4 justify-center">
-                                        <label className="mr-4 text-black">
+                                    <label className="block mb-2 text-sm font-semibold text-[#1d1d1f]">{translations[language].areYouCurrentlyInThePool}</label>
+                                    <div className="flex items-center gap-6">
+                                        <label className="inline-flex items-center gap-2 text-sm text-[#424245] cursor-pointer">
                                             <input
                                                 type="radio"
                                                 value="yes"
                                                 checked={inPool === true}
                                                 onChange={() => setInPool(true)}
-                                                className="form-radio text-black"
+                                                className="h-4 w-4 border-[#d2d2d7] text-[#d80621] focus:ring-[#d80621]"
                                             />
-                                            <span className="ml-2">Yes</span>
+                                            <span>Yes</span>
                                         </label>
-                                        <label className="text-black">
+                                        <label className="inline-flex items-center gap-2 text-sm text-[#424245] cursor-pointer">
                                             <input
                                                 type="radio"
                                                 value="no"
                                                 checked={inPool === false}
                                                 onChange={() => setInPool(false)}
-                                                className="form-radio text-black"
+                                                className="h-4 w-4 border-[#d2d2d7] text-[#d80621] focus:ring-[#d80621]"
                                             />
-                                            <span className="ml-2">No</span>
+                                            <span>No</span>
                                         </label>
                                     </div>
                                 </div>
                                 {inPool && (
                                     <>
                                         <div className="mb-4">
-                                            <label className="block mb-2 text-black font-bold">{translations[language].enterYourScore}</label>
+                                            <label className="block mb-2 text-sm font-semibold text-[#1d1d1f]">{translations[language].enterYourScore}</label>
                                             <input
                                                 type="number"
                                                 value={score}
                                                 onChange={(e) => setScore(e.target.value)}
-                                                className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                                className="w-full rounded-2xl border border-teal-100/80 bg-white/90 px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-[#0d9488]/25"
                                                 placeholder="Your Score"
                                             />
                                         </div>
                                         <div className="mb-4">
-                                            <label className="block mb-2 text-black font-bold">{translations[language].selectYourCurrentProgram}</label>
+                                            <label className="block mb-2 text-sm font-semibold text-[#1d1d1f]">{translations[language].selectYourCurrentProgram}</label>
                                             <select
                                                 value={currentProgram}
                                                 onChange={(e) => setCurrentProgram(e.target.value)}
-                                                className="min-w-0 flex-auto rounded-md border-0 bg-black/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                                                className="w-full rounded-2xl border border-teal-100/80 bg-white/90 px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-[#0d9488]/25"
                                             >
                                                 <option value="">Select a Program</option>
-                                                {programs.map((program) => (
+                                                {streamList.map((program) => (
                                                     <option key={program} value={program}>{program}</option>
                                                 ))}
                                             </select>
@@ -549,25 +607,21 @@ export default function Home() {
                                 <button 
                                     type="submit" 
                                     disabled={isSubmitting}
-                                    className={`w-full rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200 ${
+                                    className={`w-full rounded-full px-4 py-3.5 text-sm font-semibold text-white shadow-maple transition-[filter,transform] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d80621] ${
                                         isSubmitting 
-                                            ? 'bg-gray-400 cursor-not-allowed' 
-                                            : 'bg-indigo-600 hover:bg-indigo-500'
+                                            ? 'cursor-not-allowed bg-[#d2d2d7]' 
+                                            : 'bg-gradient-to-r from-[#d80621] via-[#ff4d6d] to-[#ff7a8a] hover:brightness-110 active:scale-[0.99]'
                                     }`}
                                 >
                                     {isSubmitting ? 'Submitting...' : translations[language].subscribeButton}
                                 </button>
                                 {message && (
-                                    <div className={`mt-4 p-4 rounded-lg ${
+                                    <div className={`mt-4 rounded-2xl border px-4 py-3 text-sm ${
                                         message.includes('successful') || message.includes('成功') 
-                                            ? 'bg-green-100 border-2 border-green-500' 
-                                            : 'bg-red-100 border-2 border-red-500'
+                                            ? 'border-green-200 bg-green-50 text-green-800' 
+                                            : 'border-red-200 bg-red-50 text-red-800'
                                     }`}>
-                                        <p className={`text-center font-semibold ${
-                                            message.includes('successful') || message.includes('成功')
-                                                ? 'text-green-700' 
-                                                : 'text-red-700'
-                                        }`}>
+                                        <p className="text-center font-medium">
                                             {message}
                                         </p>
                                     </div>
@@ -576,72 +630,76 @@ export default function Home() {
                             </form>
                         </div>
 
-                        <div className="mt-5">
+                        <div className="space-y-6">
                             {/* latest draw info */}
                             <InfoCardForLatestDraw
                                 title={translations[language].latestDraw}
                                 content={
                                     <>
-                                        <p className="text-black">
-                                            <span className="font-semibold">{translations[language].programName}</span> {latestDraw.drawName}
+                                        <p>
+                                            <span className="font-semibold text-[#1d1d1f]">{translations[language].programName}</span>{' '}
+                                            <span>{latestDraw.drawName}</span>
                                         </p>
-                                        <p className="text-black">
-                                            <span className="font-semibold">{translations[language].minimumScore}</span> {latestDraw.drawCRS}
+                                        <p>
+                                            <span className="font-semibold text-[#1d1d1f]">{translations[language].minimumScore}</span>{' '}
+                                            <span>{latestDraw.drawCRS}</span>
                                         </p>
-                                        <p className="text-black">
-                                            <span className="font-semibold">{translations[language].numberOfInvitations}</span> {latestDraw.drawSize}
+                                        <p>
+                                            <span className="font-semibold text-[#1d1d1f]">{translations[language].numberOfInvitations}</span>{' '}
+                                            <span>{latestDraw.drawSize}</span>
                                         </p>
-                                        <p className="text-black">
-                                            <span className="font-semibold">{translations[language].date}</span> {latestDraw.drawDate ? new Date(latestDraw.drawDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : 'N/A'}
+                                        <p>
+                                            <span className="font-semibold text-[#1d1d1f]">{translations[language].date}</span>{' '}
+                                            <span>{latestDraw.drawDate ? new Date(latestDraw.drawDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : 'N/A'}</span>
                                         </p>
                                     </>
                                 }
                             />
 
                             {/* Additional info cards */}
-                            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {/* Quick Stats Card */}
-                                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg shadow-md border border-blue-200">
+                                <div className="rounded-3xl border border-red-100/70 bg-gradient-to-br from-white via-red-50/30 to-white p-6 shadow-lg shadow-red-500/10 ring-1 ring-red-100/50">
                                     <div className="flex items-center mb-3">
-                                        <div className="bg-blue-100 p-2 rounded-lg">
-                                            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#d80621]/15 to-[#ff6b81]/20 ring-1 ring-red-200/40">
+                                            <svg className="h-5 w-5 text-[#b1051a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                             </svg>
                                         </div>
-                                        <h3 className="ml-3 text-lg font-semibold text-gray-900">
+                                        <h3 className="ml-3 text-[15px] font-semibold text-[#1d1d1f]">
                                             {language === 'en' ? 'Quick Stats' :
                                              language === 'fr' ? 'Statistiques rapides' :
                                              language === 'zh' ? '快速统计' :
                                              language === 'hi' ? 'त्वरित आंकड़े' : 'Quick Stats'}
                                         </h3>
                                     </div>
-                                    <div className="space-y-2">
-                                        <p className="text-sm text-gray-600">
-                                            <span className="font-medium">
+                                    <div className="space-y-2.5 text-[13px] leading-relaxed text-[#424245]">
+                                        <p>
+                                            <span className="text-[#6e6e73]">
                                                 {language === 'en' ? 'Total Draws This Year:' :
                                                  language === 'fr' ? 'Total des tirages cette année:' :
                                                  language === 'zh' ? '今年总抽签次数:' :
                                                  language === 'hi' ? 'इस वर्ष कुल ड्रॉ:' : 'Total Draws This Year:'}
                                             </span>
-                                            <span className="ml-2 font-bold text-blue-600">{drawStats.totalDraws}</span>
+                                            <span className="ml-2 font-semibold tabular-nums text-[#1d1d1f]">{drawStats.totalDraws}</span>
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                            <span className="font-medium">
+                                        <p>
+                                            <span className="text-[#6e6e73]">
                                                 {language === 'en' ? 'Average Score:' :
                                                  language === 'fr' ? 'Score moyen:' :
                                                  language === 'zh' ? '平均分数:' :
                                                  language === 'hi' ? 'औसत स्कोर:' : 'Average Score:'}
                                             </span>
-                                            <span className="ml-2 font-bold text-blue-600">{drawStats.averageScore}</span>
+                                            <span className="ml-2 font-semibold tabular-nums text-[#1d1d1f]">{drawStats.averageScore}</span>
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                            <span className="font-medium">
+                                        <p>
+                                            <span className="text-[#6e6e73]">
                                                 {language === 'en' ? 'Score Range:' :
                                                  language === 'fr' ? 'Gamme de scores:' :
                                                  language === 'zh' ? '分数范围:' :
                                                  language === 'hi' ? 'स्कोर रेंज:' : 'Score Range:'}
                                             </span>
-                                            <span className="ml-2 font-bold text-blue-600">
+                                            <span className="ml-2 font-semibold tabular-nums text-[#1d1d1f]">
                                                 {drawStats.scoreRange.min}-{drawStats.scoreRange.max}
                                             </span>
                                         </p>
@@ -649,29 +707,29 @@ export default function Home() {
                                 </div>
 
                                 {/* Next Draw Prediction Card */}
-                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg shadow-md border border-green-200">
+                                <div className="rounded-3xl border border-teal-100/70 bg-gradient-to-br from-white via-teal-50/35 to-white p-6 shadow-lg shadow-teal-500/10 ring-1 ring-teal-100/50">
                                     <div className="flex items-center mb-3">
-                                        <div className="bg-green-100 p-2 rounded-lg">
-                                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#0d9488]/15 to-[#5eead4]/25 ring-1 ring-teal-200/50">
+                                            <svg className="h-5 w-5 text-[#0f766e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                             </svg>
                                         </div>
-                                        <h3 className="ml-3 text-lg font-semibold text-gray-900">
+                                        <h3 className="ml-3 text-[15px] font-semibold text-[#1d1d1f]">
                                             {language === 'en' ? 'AI Prediction' :
                                              language === 'fr' ? 'Prédiction IA' :
                                              language === 'zh' ? 'AI预测' :
                                              language === 'hi' ? 'AI भविष्यवाणी' : 'AI Prediction'}
                                         </h3>
                                     </div>
-                                    <div className="space-y-2">
-                                        <p className="text-sm text-gray-600">
-                                            <span className="font-medium">
+                                    <div className="space-y-2.5 text-[13px] leading-relaxed text-[#424245]">
+                                        <p>
+                                            <span className="text-[#6e6e73]">
                                                 {language === 'en' ? 'Next Draw Date:' :
                                                  language === 'fr' ? 'Date du prochain tirage:' :
                                                  language === 'zh' ? '下次抽签日期:' :
                                                  language === 'hi' ? 'अगले ड्रॉ की तिथि:' : 'Next Draw Date:'}
                                             </span>
-                                            <span className="ml-2 font-bold text-green-600">
+                                            <span className="ml-2 font-semibold tabular-nums text-[#1d1d1f]">
                                                 {aiPrediction.nextDrawDate ? 
                                                     new Date(aiPrediction.nextDrawDate).toLocaleDateString() : 
                                                     (language === 'en' ? 'Calculating...' :
@@ -681,48 +739,48 @@ export default function Home() {
                                                 }
                                             </span>
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                            <span className="font-medium">
+                                        <p>
+                                            <span className="text-[#6e6e73]">
                                                 {language === 'en' ? 'Predicted Score:' :
                                                  language === 'fr' ? 'Score prédit:' :
                                                  language === 'zh' ? '预测分数:' :
                                                  language === 'hi' ? 'भविष्यवाणी स्कोर:' : 'Predicted Score:'}
                                             </span>
-                                            <span className="ml-2 font-bold text-green-600">
+                                            <span className="ml-2 font-semibold tabular-nums text-[#1d1d1f]">
                                                 {aiPrediction.predictedScoreRange.min}-{aiPrediction.predictedScoreRange.max}
                                             </span>
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                            <span className="font-medium">
+                                        <p>
+                                            <span className="text-[#6e6e73]">
                                                 {language === 'en' ? 'Confidence:' :
                                                  language === 'fr' ? 'Confiance:' :
                                                  language === 'zh' ? '置信度:' :
                                                  language === 'hi' ? 'विश्वास:' : 'Confidence:'}
                                             </span>
-                                            <span className="ml-2 font-bold text-green-600">{aiPrediction.confidence}%</span>
+                                            <span className="ml-2 font-semibold tabular-nums text-[#1d1d1f]">{aiPrediction.confidence}%</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* feature info */}
-                            <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2 mt-36" >
+                            <dl className="mt-16 grid grid-cols-1 gap-8 border-t border-red-100/60 pt-12 sm:grid-cols-2 lg:pt-4">
 
                                 <div className="flex flex-col items-start">
-                                    <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
-                                        <CalendarDaysIcon aria-hidden="true" className="h-6 w-6 text-black" />
+                                    <div className="rounded-2xl bg-gradient-to-br from-[#d80621]/12 to-[#0d9488]/10 p-3 ring-1 ring-red-200/40">
+                                        <CalendarDaysIcon aria-hidden="true" className="h-6 w-6 text-[#b1051a]" />
                                     </div>
-                                    <dt className="mt-4 font-semibold text-black">{translations[language].instantNotification}</dt>
-                                    <dd className="mt-2 leading-7 text-gray-500">
+                                    <dt className="mt-4 text-[15px] font-semibold text-[#1d1d1f]">{translations[language].instantNotification}</dt>
+                                    <dd className="mt-2 leading-relaxed text-[#6e6e73] text-[15px]">
                                         {translations[language].instantNotificationMsg}
                                     </dd>
                                 </div>
                                 <div className="flex flex-col items-start">
-                                    <div className="rounded-md bg-black/5 p-2 ring-1 ring-black/10">
-                                        <HandRaisedIcon aria-hidden="true" className="h-6 w-6 text-black" />
+                                    <div className="rounded-2xl bg-gradient-to-br from-[#2563eb]/12 to-[#c026d3]/10 p-3 ring-1 ring-blue-200/40">
+                                        <HandRaisedIcon aria-hidden="true" className="h-6 w-6 text-[#1d4ed8]" />
                                     </div>
-                                    <dt className="mt-4 font-semibold text-black">{translations[language].noSpam}</dt>
-                                    <dd className="mt-2 leading-7 text-gray-500">
+                                    <dt className="mt-4 text-[15px] font-semibold text-[#1d1d1f]">{translations[language].noSpam}</dt>
+                                    <dd className="mt-2 leading-relaxed text-[#6e6e73] text-[15px]">
                                         {translations[language].noSpamMsg}
                                     </dd>
                                 </div>
@@ -731,31 +789,28 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-                >
-                    <div
-                        style={{
-                            clipPath:
-                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                        }}
-                        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-                    />
-                </div>
-
             </div>
 
             {/* why us info */}
-            <div className="mx-auto max-w-2xl lg:mx-auto lg:max-w-none">
-                <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 justify-items-center mb-16">
-                    {stats.map((stat) => (
-                        <div key={stat.name} className="flex flex-col-reverse gap-1 text-center">
-                            <dt className="text-xl text-black">{stat.name}</dt>
-                            <dd className="text-4xl font-semibold tracking-tight text-black">{stat.value}</dd>
-                        </div>
-                    ))}
-                </dl>
+            <div className="border-t border-red-100/50 bg-gradient-to-br from-white/95 via-red-50/25 to-teal-50/30 backdrop-blur-sm">
+                <div className="apple-section">
+                    <div className="mx-auto grid max-w-[1100px] grid-cols-1 gap-x-10 gap-y-10 px-4 py-16 sm:grid-cols-2 sm:gap-x-14 sm:gap-y-12 sm:py-20 lg:[grid-template-columns:repeat(4,minmax(0,1fr))] lg:gap-x-12 lg:gap-y-12 xl:gap-x-16">
+                        {stats.map((stat) => (
+                            <div key={stat.name} className="flex min-h-0 min-w-0 justify-center">
+                                <div
+                                    className={`box-border w-full max-w-[min(100%,11.5rem)] rounded-2xl border-2 bg-white px-3 py-4 text-center shadow-md shadow-black/[0.06] sm:max-w-[12rem] sm:px-4 sm:py-5 ${stat.borderClass}`}
+                                >
+                                    <p className="break-words text-balance text-2xl font-bold leading-tight tracking-tight text-[#1a1523] sm:text-3xl">
+                                        {stat.value}
+                                    </p>
+                                    <p className="mt-2 text-[10px] font-bold uppercase leading-snug tracking-[0.18em] text-[#86868b] sm:text-[11px]">
+                                        {stat.name}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
             <Footer language={language} />
         </div>

@@ -1,99 +1,69 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
-import Header from '@/app/components/Header'; // 导入 Header 组件
-import Footer from '@/app/components/Footer'; // 导入 Footer 组件
-import { translations } from '@/app/about/translations'; // 导入 translations
-import { message } from '@/app/about/messages'; // 导入 message
-import CustomAccordion from '@/app/components/CustomAccordion'; // 导入 CustomAccordion 组件
+import { useState } from 'react';
+import Header from '@/app/components/Header';
+import Footer from '@/app/components/Footer';
+import { translations } from '@/app/about/translations';
+import { message } from '@/app/about/messages';
+import CustomAccordion from '@/app/components/CustomAccordion';
 
 export default function About() {
-    const accordionRef = useRef(null);
-
-    useEffect(() => {
-        if (accordionRef.current) {
-            accordionRef.current.style.width = '200px';
-        }
-    }, []);
-    const [language, setLanguage] = useState('en'); // 默认语言为英语
-    const currentTranslations = translations[language] || translations.en; // 默认英语
+    const [language, setLanguage] = useState('en');
+    const currentTranslations = translations[language] || translations.en;
 
     return (
-        <div className="min-h-screen flex flex-col justify-between bg-white">
-            {/* header*/}
+        <div className="flex min-h-screen flex-col">
             <Header setLanguage={setLanguage} language={language} />
 
-            <div className="relative isolate px-6  mt-14 lg:px-8">
-                {/* bg color */}
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-                >
-                    <div
-                        style={{
-                            clipPath:
-                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                        }}
-                        className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-                    />
-                </div>
-                {/* about main page */}
-                <main className="flex-grow">
-                    <div className="mx-auto max-w-8xl py-32 sm:py-30 lg:py-30">
-                        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                            <div className="mx-auto max-w-2xl lg:text-center">
-                                <h2 className="text-base font-semibold leading-7 text-indigo-600">Succeed faster</h2>
-                                <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl lg:text-balance">
-                                    {currentTranslations.title}
-                                </p>
-                            </div>
-                            <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-                                <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                                    {message.map((m) => (
-                                        <div key={m.name} className="relative pl-16">
-                                            <dt className="text-base font-semibold leading-7 text-gray-900">
-                                                <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                                                    <m.icon aria-hidden="true" className="h-6 w-6 text-white" />
-                                                </div>
-                                                {currentTranslations[m.name]}
-                                            </dt>
-                                            <dd className="mt-2 text-base leading-7 text-gray-600">{currentTranslations[m.description]}</dd>
-                                            {m.name === 'contact' && (
-                                                <a href="mailto:service.immigo@gmail.com" className="text-blue-600 underline">
+            <main className="flex-grow">
+                <div className="apple-section pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-16">
+                    <div className="mx-auto max-w-3xl text-center">
+                        <p className="inline-flex items-center gap-2 rounded-full border border-red-200/50 bg-white/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#b1051a] shadow-sm backdrop-blur-sm">
+                            <span aria-hidden>🍁</span> ImmiGo
+                        </p>
+                        <h1 className="canada-text-gradient mt-4 text-pretty text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[44px] lg:leading-tight">
+                            {currentTranslations.title}
+                        </h1>
+                    </div>
+
+                    <div className="mx-auto mt-14 max-w-5xl lg:mt-20">
+                        <dl className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:gap-x-12 lg:gap-y-14">
+                            {message.map((m) => (
+                                <div key={m.name} className="canada-card relative p-8 sm:pl-8 sm:pr-8">
+                                    <dt className="flex gap-4">
+                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#d80621] to-[#0d9488] text-white shadow-maple">
+                                            <m.icon aria-hidden="true" className="h-6 w-6" />
+                                        </div>
+                                        <span className="text-[17px] font-semibold leading-snug text-[#1d1d1f] pt-1">
+                                            {currentTranslations[m.name]}
+                                        </span>
+                                    </dt>
+                                    <dd className="mt-4 text-[15px] leading-relaxed text-[#6e6e73] sm:mt-5">
+                                        {currentTranslations[m.description]}
+                                        {m.name === 'contact' && (
+                                            <>
+                                                {' '}
+                                                <a href="mailto:service.immigo@gmail.com" className="font-semibold text-[#d80621] hover:underline">
                                                     service.immigo@gmail.com
                                                 </a>
-                                            )}
-                                        </div>
-                                    ))}
-                                </dl>
-                            </div>
-                        </div>
+                                            </>
+                                        )}
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
                     </div>
-                </main>
-
-                {/* bg color */}
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-0 -z-10 transform-gpu overflow-hidden blur-3xl sm:top-0"
-                >
-                    <div
-                        style={{
-                            clipPath:
-                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                        }}
-                        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-                    />
                 </div>
-            </div>
 
-            {/* Custom Accordion Component */}
-            <div className="my-16 mt-0">
-                <div className="rounded-lg max-w-4xl mx-auto text-base font-semibold text-gray-900 pl-3">
-                    <h3 className="mb-3 text-3xl sm:text-3xl md:text-3xl lg:text-3xl">{currentTranslations.faqTitle}</h3>
+                <div className="apple-section pb-20">
+                    <div className="mx-auto max-w-4xl">
+                        <h2 className="mb-6 text-2xl font-semibold tracking-tight text-[#1d1d1f] sm:text-3xl">
+                            {currentTranslations.faqTitle}
+                        </h2>
+                        <CustomAccordion faqTranslations={currentTranslations.faq} />
+                    </div>
                 </div>
-                <CustomAccordion faqTranslations={currentTranslations.faq} />
-            </div>
+            </main>
 
-            {/* Footer */}
             <Footer language={language} />
         </div>
     );

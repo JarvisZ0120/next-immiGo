@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import VChart from '@visactor/vchart';
 import CustomDatePicker from '../components/CustomDatePicker';
+import { useObservedChartSize } from '../hooks/useObservedChartSize';
 
 const translations = {
     en: {
@@ -23,19 +24,146 @@ const translations = {
         startDate: "प्रारंभ तिथि",
         endDate: "समाप्ति तिथि",
         totalCandidates: "समय के साथ कुल उम्मीदवारों की संख्या",
-    }
+    },
 };
 
+function buildSpec({ width, height, chartData }) {
+    const w = Math.max(width, 280);
+    const h = Math.max(height, 220);
+    const isMobile = w < 768;
+    const isMobileLandscape = isMobile && h < 260;
+
+    const dates = chartData?.dates || [];
+    const totals = chartData?.totals || [];
+
+    return {
+        type: 'common',
+        width: w,
+        height: h,
+        padding: isMobileLandscape ? [12, 10, 22, 10] : (isMobile ? [18, 12, 42, 14] : [28, 18, 52, 22]),
+        autoFit: false,
+        data: [
+            {
+                id: 'totalCandidates',
+                values: dates.map((date, index) => ({
+                    date,
+                    total: totals[index],
+                })),
+            },
+        ],
+        series: [
+            {
+                type: 'line',
+                dataIndex: 0,
+                xField: 'date',
+                yField: 'total',
+                point: {
+                    style: {
+                        size: isMobileLandscape ? 3 : (isMobile ? 4 : 5),
+                        fill: '#0071e3',
+                        stroke: '#0071e3',
+                        strokeWidth: 2,
+                    },
+                },
+                line: {
+                    style: {
+                        stroke: '#0071e3',
+                        strokeWidth: isMobileLandscape ? 2 : 3,
+                    },
+                },
+            },
+        ],
+        axes: [
+            {
+                orient: 'left',
+                label: {
+                    visible: true,
+                    style: {
+                        fill: '#424245',
+                        fontSize: isMobileLandscape ? 10 : (isMobile ? 11 : 12),
+                    },
+                },
+                domainLine: { style: { stroke: '#d2d2d7' } },
+                grid: { style: { lineDash: [4, 4], stroke: '#e8e8ed' } },
+                title: {
+                    visible: true,
+                    text: 'Total Number of Candidates',
+                    style: {
+                        fontSize: isMobileLandscape ? 11 : (isMobile ? 12 : 13),
+                        fill: '#1d1d1f',
+                        fontWeight: 600,
+                    },
+                },
+                min: (() => {
+                    const dataValues = totals || [];
+                    if (dataValues.length === 0) return 0;
+                    const minValue = Math.min(...dataValues);
+                    const maxValue = Math.max(...dataValues);
+                    const range = maxValue - minValue;
+                    return Math.max(0, minValue - range * 0.2);
+                })(),
+                max: (() => {
+                    const dataValues = totals || [];
+                    if (dataValues.length === 0) return 100000;
+                    const minValue = Math.min(...dataValues);
+                    const maxValue = Math.max(...dataValues);
+                    const range = maxValue - minValue;
+                    return maxValue + range * 0.2;
+                })(),
+            },
+            {
+                orient: 'bottom',
+                label: {
+                    visible: true,
+                    style: {
+                        fill: '#424245',
+                        fontSize: isMobileLandscape ? 9 : (isMobile ? 10 : 11),
+                        angle: -45,
+                        textAlign: 'end',
+                    },
+                    formatMethod: (text) => {
+                        if (text && text.length > 10) {
+                            const date = new Date(text);
+                            if (!isNaN(date.getTime())) {
+                                const year = date.getFullYear();
+                                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                                const day = date.getDate().toString().padStart(2, '0');
+                                return `${year}-${month}-${day}`;
+                            }
+                            return text.substring(0, 10);
+                        }
+                        return text;
+                    },
+                },
+                type: 'band',
+                tick: {
+                    visible: true,
+                    style: { stroke: '#d2d2d7', strokeWidth: 1 },
+                },
+                domainLine: { style: { stroke: '#d2d2d7' } },
+                tickCount: isMobileLandscape ? 3 : (isMobile ? 4 : 6),
+            },
+        ],
+        legends: { visible: false },
+    };
+}
+
 const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
-    const chartContainerRef = useRef(null);
-    const [chartData, setChartData] = useState([]);
+    const chartDomRef = useRef(null);
+    const chartInstanceRef = useRef(null);
+    const [chartShellRef, size] = useObservedChartSize({
+        minHeight: 240,
+        maxHeight: 560,
+        heightRatio: 0.42,
+    });
+
+    const [chartData, setChartData] = useState(null);
     const [language, setLanguage] = useState(pageLanguage);
     const [timeRange, setTimeRange] = useState({
         startDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString().split('T')[0],
-        endDate: new Date().toISOString().split('T')[0]
+        endDate: new Date().toISOString().split('T')[0],
     });
 
-    // 监听页面语言变化
     useEffect(() => {
         setLanguage(pageLanguage);
     }, [pageLanguage]);
@@ -47,7 +175,6 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
                 const data = await response.json();
                 const rounds = data.rounds || [];
 
-                // Filter data based on the specified date range
                 const filteredData = rounds.filter((round) => {
                     const distributionDate = new Date(round.drawDistributionAsOn);
                     const startDate = new Date(timeRange.startDate);
@@ -55,16 +182,14 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
                     return distributionDate >= startDate && distributionDate <= endDate;
                 });
 
-                // Map the data and sort by date, showing chronological order (oldest to newest)
                 const sortedData = filteredData
                     .map((round) => ({
                         date: round.drawDistributionAsOn,
                         total: parseInt(round['dd18']?.replace(',', '') || 0),
                     }))
                     .filter((item) => item.date)
-                    .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort dates chronologically (oldest to newest)
+                    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                // Use a Map to keep only the first occurrence of each date
                 const uniqueDateMap = new Map();
                 sortedData.forEach((item) => {
                     if (!uniqueDateMap.has(item.date)) {
@@ -72,13 +197,12 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
                     }
                 });
 
-                // Extract the aligned dates and data, ensuring no duplicates
                 const alignedDates = Array.from(uniqueDateMap.keys());
                 const alignedData = Array.from(uniqueDateMap.values());
 
                 setChartData({
                     dates: alignedDates,
-                    totals: alignedData
+                    totals: alignedData,
                 });
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -88,151 +212,34 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
         fetchData();
     }, [timeRange]);
 
+    const spec = useMemo(
+        () =>
+            buildSpec({
+                width: size.width || 800,
+                height: size.height || 400,
+                chartData: chartData || { dates: [], totals: [] },
+            }),
+        [size.width, size.height, chartData],
+    );
+
     useEffect(() => {
-        if (chartData.dates && chartData.totals) {
-            // 安全地获取窗口尺寸
-            const getWindowDimensions = () => {
-                if (typeof window !== 'undefined') {
-                    return {
-                        width: window.innerWidth,
-                        height: window.innerHeight
-                    };
-                }
-                return { width: 768, height: 1024 };
-            };
-            
-            const { width: windowWidth, height: windowHeight } = getWindowDimensions();
-            const isMobile = windowWidth < 768;
-            const isLandscape = windowWidth > windowHeight;
-            const isMobileLandscape = isMobile && isLandscape && windowHeight < 500;
+        if (!chartDomRef.current || size.width < 32 || !chartData?.dates?.length) return undefined;
 
-            const spec = {
-                type: 'common',
-                width: isMobile ? (isMobileLandscape ? windowWidth - 10 : windowWidth - 20) : Math.min(windowWidth * 0.9, 1200), // 移动端优化宽度
-                height: isMobileLandscape ? 200 : (isMobile ? (isLandscape ? 300 : 400) : 400), // 恢复高度
-                padding: isMobileLandscape ? [10, 10, 20, 10] : (isMobile ? (isLandscape ? [15, 10, 30, 10] : [20, 10, 40, 20]) : [25, 15, 50, 25]), // 调整padding
-                autoFit: true,
-                data: [
-                    {
-                        id: 'totalCandidates',
-                        values: chartData.dates.map((date, index) => ({
-                            date: date,
-                            total: chartData.totals[index]
-                        }))
-                    }
-                ],
-                series: [
-                    {
-                        type: 'line',
-                        dataIndex: 0,
-                        xField: 'date',
-                        yField: 'total',
-                        point: {
-                            style: {
-                                size: isMobileLandscape ? 3 : (isMobile ? 4 : 5),
-                                fill: 'rgba(153, 102, 255, 1)',
-                                stroke: 'rgba(153, 102, 255, 1)',
-                                strokeWidth: 2
-                            }
-                        },
-                        line: {
-                            style: {
-                                stroke: 'rgba(153, 102, 255, 1)',
-                                strokeWidth: isMobileLandscape ? 2 : 3
-                            }
-                        }
-                    }
-                ],
-                axes: [
-                    {
-                        orient: 'left',
-                        label: { 
-                            visible: true, // 确保标签可见
-                            style: { 
-                                fill: '#000',
-                                fontSize: isMobileLandscape ? 10 : (isMobile ? 12 : 14) // 增加字体大小
-                            } 
-                        },
-                        title: {
-                            visible: true,
-                            text: 'Total Number of Candidates',
-                            style: {
-                                fontSize: isMobileLandscape ? 12 : (isMobile ? 14 : 16), // 增加标题字体大小
-                                fill: '#000'
-                            }
-                        },
-                        // 动态调整Y轴范围，让波动更明显
-                        min: (() => {
-                            const dataValues = chartData.totals || [];
-                            if (dataValues.length === 0) return 0;
-                            const minValue = Math.min(...dataValues);
-                            const maxValue = Math.max(...dataValues);
-                            const range = maxValue - minValue;
-                            // 设置最小值为数据最小值减去20%的范围，但不少于0，让波动更明显
-                            return Math.max(0, minValue - range * 0.2);
-                        })(),
-                        max: (() => {
-                            const dataValues = chartData.totals || [];
-                            if (dataValues.length === 0) return 100000;
-                            const minValue = Math.min(...dataValues);
-                            const maxValue = Math.max(...dataValues);
-                            const range = maxValue - minValue;
-                            // 设置最大值为数据最大值加上20%的范围，让波动更明显
-                            return maxValue + range * 0.2;
-                        })()
-                    },
-                    {
-                        orient: 'bottom',
-                        label: { 
-                            visible: true, 
-                            style: { 
-                                fill: '#000',
-                                fontSize: isMobileLandscape ? 9 : (isMobile ? 11 : 12), // 增加字体大小
-                                angle: -45,
-                                textAlign: 'end'
-                            },
-                            formatMethod: (text) => {
-                                if (text && text.length > 10) {
-                                    // 更好的日期格式化，显示年-月-日
-                                    const date = new Date(text);
-                                    if (!isNaN(date.getTime())) {
-                                        const year = date.getFullYear();
-                                        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                                        const day = date.getDate().toString().padStart(2, '0');
-                                        return `${year}-${month}-${day}`;
-                                    }
-                                    return text.substring(0, 10); // 备用方案，显示完整日期
-                                }
-                                return text;
-                            }
-                        },
-                        type: 'band',
-                        tick: {
-                            visible: true,
-                            style: {
-                                stroke: '#ccc',
-                                strokeWidth: 1
-                            }
-                        },
-                        tickCount: isMobileLandscape ? 3 : (isMobile ? 4 : 6) // 减少标签数量以避免重叠
-                    }
-                ],
-                legends: {
-                    visible: false // 单线图不需要图例
-                }
-            };
-
-            const vchart = new VChart(spec, { dom: chartContainerRef.current });
-            vchart.renderSync();
-
-            // Cleanup chart on unmount
-            return () => {
-                if (chartContainerRef.current) {
-                    chartContainerRef.current.innerHTML = '';
-                }
-            };
+        if (chartInstanceRef.current) {
+            chartInstanceRef.current.release();
+            chartInstanceRef.current = null;
         }
-    }, [chartData]);
+        chartDomRef.current.innerHTML = '';
+
+        const chart = new VChart(spec, { dom: chartDomRef.current });
+        chart.renderSync();
+        chartInstanceRef.current = chart;
+
+        return () => {
+            chartInstanceRef.current?.release();
+            chartInstanceRef.current = null;
+        };
+    }, [spec, size.width, chartData]);
 
     const handleDateChange = (e) => {
         const { name, value } = e.target;
@@ -242,52 +249,50 @@ const TotalPopulationLineChart = ({ pageLanguage = 'en' }) => {
     const t = translations[language];
 
     return (
-        <div className="flex flex-col bg-white px-1 sm:px-4">
-            <div className="relative isolate px-1 sm:px-6 pt-2 lg:px-8 w-full max-w-full mx-auto lg:ml-4">
-                <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-gray-900 mb-4 px-4">
+        <div className="flex w-full flex-col bg-transparent px-0">
+            <div className="w-full max-w-full">
+                <h2 className="mb-6 bg-gradient-to-r from-[#1a1523] via-[#0d9488] to-[#2563eb] bg-clip-text px-4 text-center text-xl font-bold tracking-tight text-transparent sm:text-2xl lg:text-[28px]">
                     {t.totalCandidates}
                 </h2>
 
-                {/* 日期选择器 */}
-                <div className="text-center mb-3 sm:mb-6 lg:mb-8 px-2 sm:px-4 w-full mobile-landscape-controls">
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-5 lg:p-6 inline-block w-full max-w-3xl">
-                        <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-8 lg:gap-12">
-                            <div className="w-full sm:w-auto">
+                <div className="mb-6 text-center px-2 sm:px-4">
+                    <div className="canada-card mx-auto inline-block w-full max-w-3xl p-4 sm:p-6">
+                        <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-end sm:gap-10">
+                            <div className="w-full sm:flex-1">
                                 <CustomDatePicker
                                     label={t.startDate}
                                     value={timeRange.startDate}
                                     onChange={(date) => handleDateChange({ target: { name: 'startDate', value: date } })}
-                                    className="w-full sm:min-w-[200px] lg:min-w-[220px]"
+                                    className="w-full"
                                 />
                             </div>
-                            <div className="hidden sm:block text-gray-400 text-lg lg:text-xl">→</div>
-                            <div className="w-full sm:w-auto">
+                            <div className="hidden shrink-0 text-[#d2d2d7] sm:block sm:pb-3">→</div>
+                            <div className="w-full sm:flex-1">
                                 <CustomDatePicker
                                     label={t.endDate}
                                     value={timeRange.endDate}
                                     onChange={(date) => handleDateChange({ target: { name: 'endDate', value: date } })}
-                                    className="w-full sm:min-w-[200px] lg:min-w-[220px]"
+                                    className="w-full"
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* 图表容器 */}
-                <div className="w-full flex justify-center items-center px-0 mobile-landscape-container" style={{ 
-                    height: typeof window !== 'undefined' && window.innerWidth > window.innerHeight && window.innerHeight < 500 ? '25vh' : 
-                           (typeof window !== 'undefined' && window.innerWidth > window.innerHeight ? '35vh' : '50vh')
-                }}>
-                    <div 
-                        ref={chartContainerRef} 
-                        className="w-full h-full mobile-landscape-chart"
-                        style={{ 
-                            minHeight: typeof window !== 'undefined' && window.innerWidth > window.innerHeight && window.innerHeight < 500 ? '120px' :
-                                       (typeof window !== 'undefined' && window.innerWidth > window.innerHeight ? '200px' : '300px'),
-                            maxWidth: '100%',
-                            margin: '0'
+                <div
+                    ref={chartShellRef}
+                    className="apple-chart-stage canada-card mobile-landscape-container w-full overflow-hidden"
+                    style={{ minHeight: size.height ? size.height : 280 }}
+                >
+                    <div
+                        ref={chartDomRef}
+                        className="mobile-landscape-chart h-full w-full"
+                        style={{
+                            width: '100%',
+                            height: size.height || 320,
+                            minHeight: 220,
                         }}
-                    ></div>
+                    />
                 </div>
             </div>
         </div>

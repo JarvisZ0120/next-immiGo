@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Subscriber from '../../models/Subscriber';
 import dotenv from 'dotenv';
+import { ALL_STREAMS_TOKEN } from '@/constants/subscription';
 
 // 重要：先清理Shell环境变量，确保使用.env文件中的值
 // 这样可以避免Shell环境变量覆盖.env文件
@@ -24,10 +25,18 @@ mongoose.connect(mongoURI)
 // API 路由：处理订阅请求并保存订阅者信息
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const { name, email, score, selectedPrograms, currentProgram } = req.body;
+        let { name, email, score, selectedPrograms, currentProgram } = req.body;
 
         if (!name || !email) {
             return res.status(400).json({ error: 'Please provide all required fields.' });
+        }
+
+        if (!Array.isArray(selectedPrograms)) {
+            selectedPrograms = [];
+        }
+        // Empty selection = same as "all streams" (matches UI default)
+        if (selectedPrograms.length === 0) {
+            selectedPrograms = [ALL_STREAMS_TOKEN];
         }
 
         try {

@@ -43,12 +43,10 @@ const CustomDatePicker = ({ value, onChange, label, className = "" }) => {
 
     const days = [];
     
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null);
     }
     
-    // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day));
     }
@@ -88,63 +86,62 @@ const CustomDatePicker = ({ value, onChange, label, className = "" }) => {
 
   return (
     <div className={`relative ${className}`} ref={pickerRef}>
-      <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-        <CalendarIcon className="w-4 h-4 text-indigo-600" />
+      <label className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#7c5a62]">
+        <CalendarIcon className="h-4 w-4 text-[#d80621]" aria-hidden />
         {label}
       </label>
       
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 sm:px-5 py-2.5 sm:py-4 text-left bg-white border-2 border-indigo-200 rounded-xl shadow-sm hover:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+        className="w-full rounded-2xl border border-red-100/70 bg-white/85 px-4 py-3 text-left shadow-md shadow-red-500/5 outline-none transition-colors hover:border-red-200 hover:bg-white focus:ring-2 focus:ring-[#d80621]/30"
       >
-        <div className="flex items-center justify-between">
-          <span className={`text-sm sm:text-base lg:text-lg ${selectedDate ? 'text-gray-900' : 'text-gray-500'}`}>
+        <div className="flex items-center justify-between gap-3">
+          <span className={`text-[15px] ${selectedDate ? 'text-[#1d1d1f]' : 'text-[#86868b]'}`}>
             {selectedDate ? formatDisplayDate(selectedDate) : 'Select date'}
           </span>
-          <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-indigo-600 flex-shrink-0" />
+          <CalendarIcon className="h-5 w-5 flex-shrink-0 text-[#6e6e73]" aria-hidden />
         </div>
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-auto min-w-full sm:w-80 lg:w-96 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between p-3 sm:p-5 lg:p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+        <div className="absolute left-0 top-full z-50 mt-2 w-auto min-w-full overflow-hidden rounded-2xl border border-red-100/60 bg-white/95 shadow-maple backdrop-blur-md sm:min-w-[280px]">
+          <div className="flex items-center justify-between border-b border-red-100/50 bg-gradient-to-r from-red-50/80 to-teal-50/80 px-3 py-3">
             <button
               type="button"
               onClick={handlePrevMonth}
-              className="p-1.5 sm:p-2 lg:p-3 hover:bg-white/20 rounded-lg transition-colors duration-150"
+              className="rounded-full p-2 text-[#1d1d1f] hover:bg-black/[0.05]"
+              aria-label="Previous month"
             >
-              <ChevronLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+              <ChevronLeftIcon className="h-5 w-5" />
             </button>
             
-            <h3 className="text-base sm:text-lg lg:text-xl font-semibold">
+            <h3 className="text-sm font-semibold text-[#1d1d1f]">
               {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
             </h3>
             
             <button
               type="button"
               onClick={handleNextMonth}
-              className="p-1.5 sm:p-2 lg:p-3 hover:bg-white/20 rounded-lg transition-colors duration-150"
+              className="rounded-full p-2 text-[#1d1d1f] hover:bg-black/[0.05]"
+              aria-label="Next month"
             >
-              <ChevronRightIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+              <ChevronRightIcon className="h-5 w-5" />
             </button>
           </div>
 
-          {/* Week days */}
-          <div className="grid grid-cols-7 gap-0.5 sm:gap-1 lg:gap-1 p-1.5 sm:p-2 lg:p-2 bg-gray-50">
+          <div className="grid grid-cols-7 gap-0.5 bg-[#fafafa] px-2 py-2">
             {weekDays.map((day) => (
-              <div key={day} className="p-1 sm:p-1.5 lg:p-2 text-center text-xs sm:text-sm lg:text-sm font-semibold text-gray-600">
+              <div key={day} className="p-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-[#86868b]">
                 {day}
               </div>
             ))}
           </div>
 
-          {/* Calendar grid */}
-          <div className="grid grid-cols-7 gap-0.5 sm:gap-1 lg:gap-1 p-1.5 sm:p-2 lg:p-2">
+          <div className="grid grid-cols-7 gap-0.5 p-2">
             {days.map((day, index) => {
               if (!day) {
-                return <div key={index} className="p-1 sm:p-1.5 lg:p-2"></div>;
+                return <div key={index} className="p-2" />;
               }
 
               const isCurrentDay = isToday(day);
@@ -156,12 +153,12 @@ const CustomDatePicker = ({ value, onChange, label, className = "" }) => {
                   type="button"
                   onClick={() => handleDateSelect(day)}
                   className={`
-                    p-1 sm:p-1.5 lg:p-2 text-xs sm:text-sm lg:text-sm font-medium rounded-lg transition-all duration-150
+                    rounded-full p-2 text-xs font-medium transition-colors
                     ${isSelectedDay 
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg transform scale-105' 
+                      ? 'bg-gradient-to-br from-[#d80621] to-[#ff5c7a] text-white shadow-md shadow-red-500/25' 
                       : isCurrentDay
-                      ? 'bg-indigo-100 text-indigo-700 font-semibold'
-                      : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'
+                      ? 'bg-teal-100/80 text-[#0f766e] font-semibold'
+                      : 'text-[#424245] hover:bg-red-50/60'
                     }
                   `}
                 >
@@ -171,15 +168,14 @@ const CustomDatePicker = ({ value, onChange, label, className = "" }) => {
             })}
           </div>
 
-          {/* Footer */}
-          <div className="p-2 sm:p-3 lg:p-4 bg-gray-50 border-t border-gray-200">
+          <div className="border-t border-red-100/50 bg-white/90 px-2 py-2">
             <button
               type="button"
               onClick={() => {
                 const today = new Date();
                 handleDateSelect(today);
               }}
-              className="w-full px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-3 text-xs sm:text-sm lg:text-base font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors duration-150"
+              className="w-full rounded-xl px-3 py-2 text-sm font-semibold text-[#0d9488] hover:bg-teal-50/80"
             >
               Today
             </button>

@@ -220,13 +220,21 @@ function programMatches(drawName, programName) {
     return matchRatio >= 0.8;
 }
 
+/** Sync with src/constants/subscription.js ALL_STREAMS_TOKEN */
+const ALL_STREAMS_TOKEN = '__ALL_EXPRESS_ENTRY_STREAMS__';
+
 // 检查订阅者是否关注了某个项目（模糊匹配）
 function subscriberInterestedIn(subscriber, drawDetails) {
-    if (!subscriber.selectedPrograms || subscriber.selectedPrograms.length === 0) {
-        return false;
+    const programs = subscriber.selectedPrograms || [];
+    // 默认 / 显式「全部」：任意新抽签都通知（含未来新 stream）
+    if (programs.includes(ALL_STREAMS_TOKEN)) {
+        return true;
     }
-    
-    return subscriber.selectedPrograms.some(program => programMatches(drawDetails, program));
+    if (programs.length === 0) {
+        return true;
+    }
+
+    return programs.some(program => programMatches(drawDetails, program));
 }
 
 // 检查每个用户是否符合发送邮件的条件

@@ -5,15 +5,14 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
     const [currentAdIndex, setCurrentAdIndex] = useState(0);
     const [isVisible, setIsVisible] = useState(true);
 
-    // 广告内容数据
     const ads = [
         {
             id: 1,
             title: {
-                en: "🚀 Express Entry Success Stories",
-                fr: "🚀 Histoires de succès d'Entrée express",
-                zh: "🚀 快速通道成功案例",
-                hi: "🚀 एक्सप्रेस एंट्री सफलता की कहानियां"
+                en: "Express Entry Success Stories",
+                fr: "Histoires de succès d'Entrée express",
+                zh: "快速通道成功案例",
+                hi: "एक्सप्रेस एंट्री सफलता की कहानियां"
             },
             description: {
                 en: "Read how others achieved their Canadian dream through Express Entry",
@@ -22,16 +21,15 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
                 hi: "जानें कि कैसे दूसरों ने एक्सप्रेस एंट्री के माध्यम से अपना कनाडाई सपना साकार किया"
             },
             link: "#",
-            bgColor: "bg-gradient-to-r from-blue-500 to-purple-600",
-            textColor: "text-white"
+            accent: "border-[#0071e3]"
         },
         {
             id: 2,
             title: {
-                en: "📚 Free Immigration Guide",
-                fr: "📚 Guide d'immigration gratuit",
-                zh: "📚 免费移民指南",
-                hi: "📚 मुफ्त आप्रवासन गाइड"
+                en: "Free Immigration Guide",
+                fr: "Guide d'immigration gratuit",
+                zh: "免费移民指南",
+                hi: "मुफ्त आप्रवासन गाइड"
             },
             description: {
                 en: "Download our comprehensive guide to Canadian immigration",
@@ -40,16 +38,15 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
                 hi: "कनाडाई आप्रवासन की हमारी व्यापक गाइड डाउनलोड करें"
             },
             link: "#",
-            bgColor: "bg-gradient-to-r from-green-500 to-teal-600",
-            textColor: "text-white"
+            accent: "border-[#1d1d1f]"
         },
         {
             id: 3,
             title: {
-                en: "💼 Professional Services",
-                fr: "💼 Services professionnels",
-                zh: "💼 专业服务",
-                hi: "💼 पेशेवर सेवाएं"
+                en: "Professional Services",
+                fr: "Services professionnels",
+                zh: "专业服务",
+                hi: "पेशेवर सेवाएं"
             },
             description: {
                 en: "Get expert help with your immigration application",
@@ -58,16 +55,15 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
                 hi: "अपने आप्रवासन आवेदन के लिए विशेषज्ञ सहायता प्राप्त करें"
             },
             link: "#",
-            bgColor: "bg-gradient-to-r from-orange-500 to-red-600",
-            textColor: "text-white"
+            accent: "border-[#424245]"
         },
         {
             id: 4,
             title: {
-                en: "📊 CRS Score Calculator",
-                fr: "📊 Calculateur de score CRS",
-                zh: "📊 CRS分数计算器",
-                hi: "📊 CRS स्कोर कैलकुलेटर"
+                en: "CRS Score Calculator",
+                fr: "Calculateur de score CRS",
+                zh: "CRS分数计算器",
+                hi: "CRS स्कोर कैलकुलेटर"
             },
             description: {
                 en: "Calculate your Comprehensive Ranking System score instantly",
@@ -76,21 +72,18 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
                 hi: "अपना व्यापक रैंकिंग सिस्टम स्कोर तुरंत गणना करें"
             },
             link: "https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp",
-            bgColor: "bg-gradient-to-r from-indigo-500 to-blue-600",
-            textColor: "text-white"
+            accent: "border-[#0071e3]"
         }
     ];
 
-    // 自动轮播效果
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
-        }, 5000); // 每5秒切换一次
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [ads.length]);
 
-    // 手动切换广告
     const nextAd = () => {
         setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
     };
@@ -99,7 +92,6 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
         setCurrentAdIndex((prevIndex) => (prevIndex - 1 + ads.length) % ads.length);
     };
 
-    // 关闭广告窗口
     const closeAd = () => {
         setIsVisible(false);
     };
@@ -109,37 +101,35 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
     const currentAd = ads[currentAdIndex];
 
     return (
-        <div className="fixed top-2 right-2 sm:top-4 sm:right-4 z-50 max-w-xs sm:max-w-sm w-full mx-2 sm:mx-4">
-            <div className={`${currentAd.bgColor} rounded-lg shadow-lg overflow-hidden transform transition-all duration-500 hover:scale-105`}>
-                {/* 关闭按钮 */}
-                <div className="flex justify-end p-2">
+        <div className="fixed top-[72px] right-3 sm:top-20 sm:right-6 z-40 max-w-[min(100vw-1.5rem,320px)] w-[min(100vw-1.5rem,320px)]">
+            <div className={`rounded-2xl border bg-white shadow-apple-lg ring-1 ring-black/[0.04] overflow-hidden ${currentAd.accent} border-l-[3px]`}>
+                <div className="flex justify-end px-2 pt-2">
                     <button
+                        type="button"
                         onClick={closeAd}
-                        className="text-white hover:text-gray-200 transition-colors duration-200"
-                        aria-label="Close ad"
+                        className="rounded-full p-1.5 text-[#86868b] hover:bg-black/[0.04] hover:text-[#1d1d1f]"
+                        aria-label="Close"
                     >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
 
-                {/* 广告内容 */}
-                <div className="px-3 sm:px-4 pb-3 sm:pb-4">
-                    <h3 className={`${currentAd.textColor} text-sm sm:text-lg font-bold mb-1 sm:mb-2`}>
+                <div className="px-4 pb-4">
+                    <h3 className="text-sm font-semibold text-[#1d1d1f] leading-snug">
                         {currentAd.title[language] || currentAd.title.en}
                     </h3>
-                    <p className={`${currentAd.textColor} text-xs sm:text-sm mb-3 sm:mb-4 opacity-90`}>
+                    <p className="mt-1.5 text-xs leading-relaxed text-[#6e6e73]">
                         {currentAd.description[language] || currentAd.description.en}
                     </p>
                     
-                    {/* 操作按钮 */}
-                    <div className="flex justify-between items-center">
+                    <div className="mt-4 flex items-center justify-between gap-2">
                         <a
                             href={currentAd.link}
                             target={currentAd.link.startsWith('http') ? '_blank' : '_self'}
                             rel={currentAd.link.startsWith('http') ? 'noopener noreferrer' : ''}
-                            className={`${currentAd.textColor} bg-white bg-opacity-20 hover:bg-opacity-30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200`}
+                            className="inline-flex items-center rounded-full bg-[#f5f5f7] px-3 py-1.5 text-xs font-medium text-[#1d1d1f] ring-1 ring-black/[0.06] hover:bg-[#ebebed]"
                         >
                             {language === 'en' ? 'Learn More' : 
                              language === 'fr' ? 'En savoir plus' :
@@ -147,23 +137,24 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
                              language === 'hi' ? 'और जानें' : 'Learn More'}
                         </a>
                         
-                        {/* 导航按钮 */}
-                        <div className="flex space-x-1 sm:space-x-2">
+                        <div className="flex gap-1">
                             <button
+                                type="button"
                                 onClick={prevAd}
-                                className={`${currentAd.textColor} hover:bg-white hover:bg-opacity-20 p-0.5 sm:p-1 rounded-full transition-all duration-200`}
-                                aria-label="Previous ad"
+                                className="rounded-full p-1.5 text-[#6e6e73] hover:bg-black/[0.04]"
+                                aria-label="Previous"
                             >
-                                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
                             <button
+                                type="button"
                                 onClick={nextAd}
-                                className={`${currentAd.textColor} hover:bg-white hover:bg-opacity-20 p-0.5 sm:p-1 rounded-full transition-all duration-200`}
-                                aria-label="Next ad"
+                                className="rounded-full p-1.5 text-[#6e6e73] hover:bg-black/[0.04]"
+                                aria-label="Next"
                             >
-                                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
@@ -171,18 +162,18 @@ const ScrollingAdWindow = ({ language = 'en' }) => {
                     </div>
                 </div>
 
-                {/* 进度指示器 */}
-                <div className="flex justify-center space-x-1 pb-1.5 sm:pb-2">
+                <div className="flex justify-center gap-1 pb-2">
                     {ads.map((_, index) => (
                         <button
                             key={index}
+                            type="button"
                             onClick={() => setCurrentAdIndex(index)}
-                            className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-200 ${
+                            className={`h-1.5 rounded-full transition-all ${
                                 index === currentAdIndex 
-                                    ? 'bg-white' 
-                                    : 'bg-white bg-opacity-30 hover:bg-opacity-50'
+                                    ? 'w-4 bg-[#0071e3]' 
+                                    : 'w-1.5 bg-black/[0.15] hover:bg-black/[0.25]'
                             }`}
-                            aria-label={`Go to ad ${index + 1}`}
+                            aria-label={`Slide ${index + 1}`}
                         />
                     ))}
                 </div>

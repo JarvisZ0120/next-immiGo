@@ -1,4 +1,3 @@
-// CustomAccordion.js
 import { useState } from 'react';
 
 const CustomAccordion = ({ faqTranslations }) => {
@@ -9,34 +8,33 @@ const CustomAccordion = ({ faqTranslations }) => {
     };
 
     return (
-        <div className="accordion border-t border-gray-300 rounded-lg max-w-4xl mx-auto">
-
-
+        <div className="overflow-hidden rounded-3xl border border-black/[0.06] bg-white shadow-apple divide-y divide-black/[0.06]">
             {faqTranslations.map((item, index) => (
-                <div key={index} className="accordion-item border-b border-gray-300">
-                    <div
-                        className="accordion-header cursor-pointer p-4 bg-white flex justify-between items-center hover:bg-gray-200"
+                <div key={index}>
+                    <button
+                        type="button"
+                        className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-[#fafafa] sm:px-6 sm:py-5"
                         onClick={() => handleToggle(index)}
                     >
-                        <h3 className="text-gray-600">{item.question}</h3>
+                        <span className="text-[15px] font-medium text-[#1d1d1f]">{item.question}</span>
                         <span
-                            className={`transform transition-transform ${expanded === index ? 'rotate-90' : 'rotate-180'
-                                }`}
-                            style={{ color: 'gray' }}
+                            className={`shrink-0 text-[#86868b] transition-transform duration-200 ${
+                                expanded === index ? 'rotate-180' : ''
+                            }`}
+                            aria-hidden
                         >
-                            &#x279C;
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
                         </span>
-                    </div>
+                    </button>
                     {expanded === index && (
-                        <div className="accordion-content p-4 bg-white text-gray-600">
+                        <div className="border-t border-black/[0.04] bg-[#fafafa] px-5 py-4 text-[15px] leading-relaxed text-[#6e6e73] sm:px-6 sm:py-5">
                             {item.answer}
                         </div>
                     )}
                 </div>
             ))}
-
-
-
         </div>
     );
 };

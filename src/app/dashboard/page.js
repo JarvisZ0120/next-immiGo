@@ -1,19 +1,13 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-// Removed Chart.js imports as we're now using vchart
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Header from '/src/app/components/Header'; // 导入 Header 组件
-import Footer from '/src/app/components/Footer'; // 导入 Footer 组件
-import PieChart from '/src/app/crsScorePieChart/page'; // 导入 Pie chart 组件
-import BarLineChart from '/src/app/crsDistributionBarLineChart/page'; // 导入 Bar line chart 组件
-import TotalPopulationLineChart from '/src/app/totalPopulationLineChart/page'; // 导入 Total population line chart 组件
-import ScrollingAdWindow from '/src/app/components/ScrollingAdWindow'; // 导入滚动广告窗口组件
+import Header from '/src/app/components/Header';
+import Footer from '/src/app/components/Footer';
+import PieChart from '/src/app/crsScorePieChart/page';
+import BarLineChart from '/src/app/crsDistributionBarLineChart/page';
+import TotalPopulationLineChart from '/src/app/totalPopulationLineChart/page';
+import ScrollingAdWindow from '/src/app/components/ScrollingAdWindow';
 
-// Removed Chart.js setup as we're now using vchart
-
-// Removed roundTypeColors as it's no longer needed with vchart components
-
-// 语言翻译对象
 const translations = {
     en: {
         dashboard: "Dashboard",
@@ -50,74 +44,63 @@ const translations = {
 };
 
 export default function Dashboard() {
-    const [language, setLanguage] = useState('en'); // 默认语言
-
-    // Removed old Chart.js data processing logic as we're now using vchart components
-
-    const currentTranslations = translations[language]; // 根据当前语言获取翻译
+    const [language, setLanguage] = useState('en');
+    const currentTranslations = translations[language];
 
     return (
-        <div className="bg-white min-h-screen flex flex-col">
+        <div className="flex min-h-screen flex-col">
             <Header setLanguage={setLanguage} language={language} />
-            
-            {/* 滚动广告窗口 */}
+
             <ScrollingAdWindow language={language} />
 
-            <main className="flex-grow relative">
-                <div className="relative isolate flex-grow px-4 sm:px-6 pt-8 sm:pt-14 lg:px-14 lg:ml-8">
-                    {/* 第一个图表：CRS Score Distribution */}
-                    <div className="mb-4 sm:mb-8">
-                        <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-gray-900 mt-8 sm:mt-12 lg:mt-16 mb-4 sm:mb-6 lg:mb-8 px-4">
-                            {currentTranslations.crsOverTime}
-                        </h2>
-                    <BarLineChart pageLanguage={language} />
-                </div>
+            <main className="flex-grow">
+                <div className="apple-section pb-16 pt-8 sm:pb-20 sm:pt-12 lg:pt-14">
+                    <div className="mx-auto max-w-[1100px]">
+                        <div className="mb-10 text-center sm:mb-12">
+                            <p className="inline-flex items-center gap-2 rounded-full border border-red-200/50 bg-white/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#b1051a] shadow-sm backdrop-blur-sm">
+                                <span aria-hidden>🇨🇦</span>
+                                {currentTranslations.dashboard}
+                            </p>
+                            <h1 className="canada-text-gradient mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                                {currentTranslations.crsOverTime}
+                            </h1>
+                        </div>
 
-                    {/* 第二个图表：Total Population Line Chart */}
-                    <div className="mb-4 sm:mb-8">
-                        <TotalPopulationLineChart pageLanguage={language} />
+                        <section className="mb-10 sm:mb-14">
+                            <BarLineChart pageLanguage={language} />
+                        </section>
+
+                        <section className="mb-10 sm:mb-14">
+                            <TotalPopulationLineChart pageLanguage={language} />
+                        </section>
+
+                        <section className="mb-10 flex justify-center sm:mb-14">
+                            <div className="w-full max-w-4xl">
+                                <PieChart />
+                            </div>
+                        </section>
+
+                        <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
+                            <a
+                                href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#d80621] to-[#ff5c7a] px-6 py-3 text-sm font-semibold text-white shadow-maple transition-[filter] hover:brightness-110"
+                            >
+                                Calculate Your CRS Score
+                            </a>
+                            <Link
+                                href="/#subscribe"
+                                className="inline-flex items-center justify-center rounded-full border border-teal-200/70 bg-white/90 px-6 py-3 text-sm font-semibold text-[#0f766e] shadow-sm backdrop-blur-sm transition-colors hover:border-teal-300 hover:bg-teal-50/80"
+                            >
+                                Subscribe for Updates
+                            </Link>
+                        </div>
                     </div>
-
-                    {/* 第三个图表：Pie Chart */}
-                    <div className="mb-4 sm:mb-8 flex justify-center">
-                        <PieChart />
-                    </div>
-
-                    {/* 操作按钮 */}
-                    <div className="mt-4 sm:mt-8 text-center mb-4 sm:mb-8 mx-auto px-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a
-                        href="https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300 text-sm sm:text-base inline-block"
-                    >
-                        Calculate Your CRS Score
-                    </a>
-                        <a
-                            href="/#subscribe"
-                            className="bg-indigo-600 text-white px-4 sm:px-6 py-3 rounded-full font-semibold hover:bg-indigo-700 transition duration-300 text-sm sm:text-base inline-block"
-                        >
-                            Subscribe for Updates
-                    </a>
                 </div>
-
-                    {/* 背景装饰元素 */}
-                <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-                >
-                    <div
-                        style={{
-                            clipPath:
-                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                        }}
-                        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-                    />
-                </div>
-            </div>
             </main>
 
-            <div className="my-8 sm:my-16 mt-4 sm:mt-10"></div>
+            <div className="h-8 sm:h-12" />
             <Footer language={language} />
         </div>
     );
