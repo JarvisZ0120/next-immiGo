@@ -19,6 +19,8 @@ const cors = require('cors');
 
 const Subscriber = require('./models/Subscriber'); // 导入订阅者模型
 const Draw = require('./models/Draw'); // 导入Draw模型
+const IrccStreamsCache = require('./models/IrccStreamsCache');
+const { streamsPayloadFromIrccBody } = require('./utils/irccStreamsPayload');
 const { sendUpdateEmail, sendCongratsEmail, sendWelcomeEmail } = require('./utils/emailServiceUnified');
 
 const app = express();
@@ -86,9 +88,27 @@ cron.schedule('*/12 * * * *', async () => {
     const now = new Date();
     console.log(`🔍 [${now.toISOString()}] 检查新的draws...`);
     try {
-        const latestDraw = await fetchLatestDraw();
+        const irccJson = await fetchIrccJsonFull();
+        if (!irccJson) {
+            console.log(`❌ [${new Date().toISOString()}] 无法获取 IRCC JSON（draw 与 stream 缓存均跳过）`);
+            return;
+        }
+
+        try {
+            const streams = streamsPayloadFromIrccBody(irccJson);
+            await IrccStreamsCache.findOneAndUpdate(
+                { _id: 'singleton' },
+                { streams, updatedAt: new Date() },
+                { upsert: true }
+            );
+            console.log(`📋 [${new Date().toISOString()}] IRCC stream 列表已写入 MongoDB（${streams.length} 项）→ 供 Next /api/ircc-streams 读取`);
+        } catch (cacheErr) {
+            console.error('⚠️ IrccStreamsCache 写入失败:', cacheErr.message);
+        }
+
+        const latestDraw = parseLatestDrawFromIrccJson(irccJson);
         if (!latestDraw) {
-            console.log(`❌ [${new Date().toISOString()}] 无法获取最新draw数据`);
+            console.log(`❌ [${new Date().toISOString()}] 无法解析最新 draw`);
             return;
         }
 
@@ -110,74 +130,80 @@ cron.schedule('*/12 * * * *', async () => {
     }
 });
 
-// 从官方数据源获取最新 draw 数据
-async function fetchLatestDraw() {
+/** 拉取完整 IRCC JSON（一次请求同时用于 draw 检查 + stream 列表缓存） */
+async function fetchIrccJsonFull() {
     try {
         const { default: fetch } = await import('node-fetch');
-        const response = await fetch('https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json');
-        
+        const response = await fetch(
+            'https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json'
+        );
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const allRounds = await response.json();
 
         if (!allRounds || !allRounds.rounds || allRounds.rounds.length === 0) {
             throw new Error('No rounds data found in API response');
         }
 
+        return allRounds;
+    } catch (error) {
+        console.error('❌ fetchIrccJsonFull:', error.message);
+        return null;
+    }
+}
+
+/** 从已获取的 IRCC JSON 解析最新一轮 draw（原 fetchLatestDraw 逻辑） */
+function parseLatestDrawFromIrccJson(allRounds) {
+    try {
         const data = allRounds.rounds[0];
 
         if (!data) {
             throw new Error('First round data is empty');
         }
 
-        // 解析日期 - 尝试多个可能的字段名
         const drawDateStr = data.drawDateFull || data.drawDate || data.date;
         if (!drawDateStr) {
             throw new Error('No draw date field found in data');
         }
-        
+
         const drawDate = new Date(drawDateStr);
         if (isNaN(drawDate.getTime())) {
             throw new Error(`Invalid draw date format: ${drawDateStr}`);
         }
 
-        // 检查 drawName 是否存在并有效
         const drawName = (data.drawName || 'No Program Specified').replace(/\(Version \d+\)/g, '').trim();
 
-        // 检查 CRS 分数，确保是有效整数
         const crsScoreStr = data.drawCRS || data.crsScore;
         if (!crsScoreStr) {
             throw new Error('No CRS score found in data');
         }
-        
+
         const crsScore = parseInt(String(crsScoreStr).replace(/,/g, ''), 10);
         if (isNaN(crsScore)) {
             throw new Error(`Invalid CRS score format: ${crsScoreStr}`);
         }
 
-        // 检查 drawNumber
         const drawNumber = data.drawNumber;
         if (!drawNumber) {
             throw new Error('No draw number found in data');
         }
 
-        // 提取最新的 draw 数据
         const drawData = {
-            id: `draw-${drawNumber}`, // 使用 drawNumber 作为唯一 ID
-            date: drawDate, // 确保日期是有效的 Date 对象
-            details: drawName, // drawName 描述
-            crsScore, // CRS 分数，确保为整数
+            id: `draw-${drawNumber}`,
+            date: drawDate,
+            details: drawName,
+            crsScore,
             invitations: String(data.drawSize || data.invitations || '0'),
         };
 
-        console.log(`✅ 成功解析draw数据:`, JSON.stringify(drawData, null, 2));
+        console.log(`✅ 成功解析 draw:`, JSON.stringify(drawData, null, 2));
         return drawData;
     } catch (error) {
-        console.error('❌ Error fetching draw data:', error.message);
-        console.error('错误堆栈:', error.stack);
-        return null; // 返回 null 表示获取数据失败
+        console.error('❌ parseLatestDrawFromIrccJson:', error.message);
+        return null;
     }
 }
 

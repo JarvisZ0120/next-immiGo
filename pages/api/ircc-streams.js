@@ -1,20 +1,24 @@
-import { normalizeDrawName, mergeStreamLists } from '@/constants/subscription';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const FALLBACK = [
-  'Provincial Nominee Program',
-  'Federal Skilled Worker',
-  'Canadian Experience Class',
-  'Federal Skilled Trades',
-  'French language proficiency',
-  'STEM occupations',
-  'Healthcare occupations',
-  'Agriculture and agri-food occupations',
-  'Transport occupations',
-  'Trade occupations',
-  'No Program Specified',
-];
+dotenv.config();
 
-/** 与常见浏览器一致，降低 IRCC / CDN 对数据中心 IP 的拒绝率（prod serverless 常见；local 往往不受影响） */
+const mongoURI = process.env.MONGODB_URI;
+
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+  await mongoose.connect(mongoURI);
+};
+
+const {
+  streamsPayloadFromIrccBody,
+  mergeStreamLists,
+  FALLBACK,
+} = require('../../utils/irccStreamsPayload');
+
+const IrccStreamsCache = require('../../models/IrccStreamsCache');
+
+/** 直连 IRCC（Serverless 上可能失败；成功时写入 Mongo 供下次命中缓存） */
 const IRCC_FETCH_INIT = {
   cache: 'no-store',
   headers: {
@@ -34,6 +38,27 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, must-revalidate');
 
   try {
+    await connectDB();
+  } catch (e) {
+    console.error('ircc-streams Mongo connect:', e.message);
+  }
+
+  /** 1) 优先 Mongo：由本机/VPS 上 server.js 定时任务写入，避免 prod Serverless 连不上 IRCC */
+  try {
+    const cached = await IrccStreamsCache.findById('singleton').lean();
+    if (cached?.streams?.length) {
+      return res.status(200).json({
+        streams: cached.streams,
+        source: 'mongo-cache',
+        cachedAt: cached.updatedAt,
+      });
+    }
+  } catch (e) {
+    console.error('ircc-streams mongo read:', e.message);
+  }
+
+  /** 2) 无缓存时再直连 IRCC（本地开发常见） */
+  try {
     const response = await fetch(
       'https://www.canada.ca/content/dam/ircc/documents/json/ee_rounds_123_en.json',
       IRCC_FETCH_INIT
@@ -42,23 +67,42 @@ export default async function handler(req, res) {
       throw new Error(`IRCC HTTP ${response.status}`);
     }
     const data = await response.json();
-    const rounds = data.rounds || [];
-    const map = new Map();
-    for (const round of rounds) {
-      const n = normalizeDrawName(round.drawName);
-      if (!n) continue;
-      const key = n.toLowerCase();
-      if (!map.has(key)) map.set(key, n);
+    const streams = streamsPayloadFromIrccBody(data);
+
+    try {
+      await connectDB();
+      await IrccStreamsCache.findOneAndUpdate(
+        { _id: 'singleton' },
+        { streams, updatedAt: new Date() },
+        { upsert: true }
+      );
+    } catch (persistErr) {
+      console.error('ircc-streams persist:', persistErr.message);
     }
-    const fromApi = [...map.values()];
-    const streams = mergeStreamLists(fromApi, FALLBACK);
+
     return res.status(200).json({ streams, source: 'ircc' });
   } catch (e) {
-    console.error('ircc-streams:', e.message);
-    return res.status(200).json({
-      streams: mergeStreamLists([], FALLBACK),
-      source: 'fallback',
-      error: e.message,
-    });
+    console.error('ircc-streams IRCC fetch:', e.message);
   }
+
+  /** 3) IRCC 失败再读一次 Mongo（竞态或刚写入） */
+  try {
+    const cached = await IrccStreamsCache.findById('singleton').lean();
+    if (cached?.streams?.length) {
+      return res.status(200).json({
+        streams: cached.streams,
+        source: 'mongo-cache',
+        cachedAt: cached.updatedAt,
+      });
+    }
+  } catch (_) {
+    /* noop */
+  }
+
+  /** 4) 静态兜底 */
+  return res.status(200).json({
+    streams: mergeStreamLists([], FALLBACK),
+    source: 'fallback',
+    error: 'No Mongo cache and IRCC fetch unavailable',
+  });
 }
